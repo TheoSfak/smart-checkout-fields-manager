@@ -1,0 +1,57 @@
+/**
+ * Checkout Styles
+ *
+ * @package Smart_Checkout_Fields_Manager
+ */
+
+/* Custom checkout fields styling */
+.woocommerce-checkout .scfm-custom-field {
+    margin-bottom: 20px;
+}
+
+/* Date picker styling */
+.scfm-datepicker {
+    width: 100%;
+}
+
+/* Checkbox group styling */
+.scfm-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scfm-checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Radio button group styling */
+.scfm-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scfm-radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Heading field styling */
+.scfm-heading {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 20px 0 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+/* Paragraph field styling */
+.scfm-paragraph {
+    margin: 15px 0;
+    color: #666;
+    line-height: 1.6;
+}
