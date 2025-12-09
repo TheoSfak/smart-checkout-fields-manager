@@ -100,6 +100,25 @@ body.scfm-power-beautify .woocommerce form .form-row label {
     letter-spacing: 0.3px;
 }
 
+/* Override gradient for button-style radio/checkbox labels */
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label,
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="radio"] + label {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    -webkit-background-clip: padding-box !important;
+    -webkit-text-fill-color: #334155 !important;
+    background-clip: padding-box !important;
+    color: #334155 !important;
+}
+
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="checkbox"]:checked + label,
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+    -webkit-background-clip: padding-box !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background-clip: padding-box !important;
+    color: #ffffff !important;
+}
+
 body.scfm-power-beautify .woocommerce form .form-row ::placeholder {
     background: linear-gradient(135deg, #94a3b8 0%, #b794f4 100%);
     -webkit-background-clip: text;
@@ -182,17 +201,22 @@ body.scfm-power-beautify .woocommerce form .form-row ::placeholder {
     margin-right: 10px;
     margin-bottom: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: #334155 !important;
+    background-clip: padding-box !important;
+    -webkit-text-fill-color: unset !important;
 }
 
 .scfm-button-style .woocommerce form .form-row input[type="checkbox"]:checked + label,
 .scfm-button-style .woocommerce form .form-row input[type="radio"]:checked + label {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     border-color: #f093fb;
-    color: #ffffff;
+    color: #ffffff !important;
     box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4),
                 0 4px 15px rgba(245, 87, 108, 0.3),
                 0 0 30px rgba(240, 147, 251, 0.3);
     transform: translateY(-3px) scale(1.05);
+    background-clip: padding-box !important;
+    -webkit-text-fill-color: unset !important;
 }
 
 .scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label:hover,
@@ -201,6 +225,7 @@ body.scfm-power-beautify .woocommerce form .form-row ::placeholder {
     border-color: #94a3b8;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
     transform: translateY(-1px);
+    color: #1e293b !important;
 }
 
 /* Font Families */
