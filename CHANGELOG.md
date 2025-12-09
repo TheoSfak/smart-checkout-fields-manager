@@ -4,6 +4,14 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Fixed (WooCommerce Compatibility)
+- Added HPOS (High-Performance Order Storage) compatibility declaration
+- Declared compatibility with custom_order_tables feature
+- Declared compatibility with orders_cache feature
+- Added before_woocommerce_init hook for feature declaration
+- Ensures full compatibility with WooCommerce 8.0+ features
+- Resolves "incompatible plugin" warnings in WooCommerce
+
 ### Added (Phase 8 - Import/Export System)
 - Complete Import/Export functionality for field configurations
 - Export fields as JSON with metadata (version, timestamp, field count)

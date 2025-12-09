@@ -63,6 +63,9 @@ class Smart_Checkout_Fields_Manager {
      * Initialize hooks.
      */
     private function init_hooks() {
+        // Declare WooCommerce compatibility
+        add_action( 'before_woocommerce_init', array( $this, 'declare_compatibility' ) );
+        
         // Check if WooCommerce is active
         add_action( 'plugins_loaded', array( $this, 'check_woocommerce' ) );
         
@@ -71,6 +74,25 @@ class Smart_Checkout_Fields_Manager {
         
         // Initialize plugin
         add_action( 'woocommerce_init', array( $this, 'init' ) );
+    }
+    
+    /**
+     * Declare compatibility with WooCommerce features.
+     */
+    public function declare_compatibility() {
+        if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+                'custom_order_tables',
+                SCFM_PLUGIN_FILE,
+                true
+            );
+            
+            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+                'orders_cache',
+                SCFM_PLUGIN_FILE,
+                true
+            );
+        }
     }
     
     /**
