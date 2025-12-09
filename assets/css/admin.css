@@ -324,3 +324,222 @@
         max-height: calc(100vh - 40px);
     }
 }
+
+/* Stylish Tab Styles */
+.scfm-stylish-container {
+    max-width: 1200px;
+}
+
+.scfm-stylish-header {
+    margin-bottom: 30px;
+}
+
+.scfm-stylish-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+.scfm-power-beautify-section {
+    margin-bottom: 40px;
+}
+
+.scfm-power-beautify-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px;
+    border-radius: 12px;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.scfm-power-toggle-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.scfm-power-icon {
+    font-size: 32px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.scfm-power-beautify-card h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 22px;
+}
+
+.scfm-power-beautify-card p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 20px 0;
+}
+
+.scfm-power-switch {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.scfm-power-switch input[type="checkbox"] {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.3);
+    outline: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.scfm-power-switch input[type="checkbox"]:checked {
+    background: #10b981;
+}
+
+.scfm-power-switch input[type="checkbox"]:before {
+    content: '';
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: #fff;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.scfm-power-switch input[type="checkbox"]:checked:before {
+    left: 32px;
+}
+
+.scfm-power-label {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.scfm-stylish-options {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.scfm-stylish-options h3 {
+    margin-top: 0;
+    font-size: 20px;
+    border-bottom: 2px solid #4f46e5;
+    padding-bottom: 10px;
+}
+
+.scfm-style-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.scfm-style-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.scfm-style-section h4 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #334155;
+}
+
+.scfm-style-section .dashicons {
+    color: #4f46e5;
+}
+
+.scfm-color-picker {
+    width: 100px;
+    height: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.scfm-range-value {
+    display: inline-block;
+    min-width: 30px;
+    font-weight: 600;
+    color: #4f46e5;
+}
+
+input[type="range"] {
+    width: 300px;
+    margin-right: 10px;
+}
+
+.scfm-style-preview {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 30px;
+    border-radius: 12px;
+    border: 2px dashed #cbd5e1;
+}
+
+.scfm-style-preview h3 {
+    margin-top: 0;
+    color: #334155;
+}
+
+.scfm-preview-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.scfm-preview-field-wrapper {
+    margin-bottom: 20px;
+}
+
+.scfm-preview-field-wrapper label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.scfm-preview-field {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.scfm-preview-field:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+#scfm-save-stylish {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#scfm-save-stylish .dashicons {
+    margin-top: 3px;
+}

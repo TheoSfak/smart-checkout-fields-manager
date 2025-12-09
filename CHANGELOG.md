@@ -4,6 +4,26 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Added (Stylish - Field Beautification)
+- New "Stylish" tab with comprehensive field styling options
+- Power Beautify mode for instant professional styling with one click
+- Custom color controls (primary, background, text, label, placeholder)
+- Border radius adjustment (0-30px)
+- Shadow effects (none, light, medium, heavy, glow)
+- Hover and focus effects (glow, scale, lift)
+- Typography controls (6 Google Fonts: Inter, Roboto, Open Sans, Lato, Montserrat, Poppins)
+- Font size (12-20px) and weight (300-700) customization
+- Button-style checkboxes and radio buttons
+- Entrance animations (fade in, slide up, slide in, bounce)
+- Transition speed controls (fast, normal, slow)
+- Live preview of styling changes in admin
+- Frontend CSS generation based on settings
+- Body class system for modular styling
+- Responsive design optimizations
+- 15+ customization options with real-time preview
+- Save and reset functionality for stylish settings
+- SCFM_Stylish_Manager class for frontend styling
+
 ### Added (Address Format Override)
 - Custom address format integration for billing and shipping fields
 - "Show in Address Format" toggle for billing/shipping fields

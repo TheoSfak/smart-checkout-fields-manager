@@ -44,6 +44,8 @@ class SCFM_Admin_Settings {
         add_action( 'wp_ajax_scfm_toggle_field', array( $this, 'ajax_toggle_field' ) );
         add_action( 'wp_ajax_scfm_update_positions', array( $this, 'ajax_update_positions' ) );
         add_action( 'wp_ajax_scfm_reset_fields', array( $this, 'ajax_reset_fields' ) );
+        add_action( 'wp_ajax_scfm_save_stylish', array( $this, 'ajax_save_stylish' ) );
+        add_action( 'wp_ajax_scfm_reset_stylish', array( $this, 'ajax_reset_stylish' ) );
     }
     
     /**
@@ -310,5 +312,59 @@ class SCFM_Admin_Settings {
         }
         
         return apply_filters( 'scfm_sanitize_field_data', $sanitized, $data );
+    }
+    
+    /**
+     * AJAX: Save stylish settings.
+     */
+    public function ajax_save_stylish() {
+        check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
+        
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+        }
+        
+        $options = isset( $_POST['options'] ) ? $_POST['options'] : array();
+        
+        // Sanitize options
+        $sanitized_options = array(
+            'power_beautify'       => isset( $options['power_beautify'] ) ? (bool) $options['power_beautify'] : false,
+            'primary_color'        => isset( $options['primary_color'] ) ? sanitize_hex_color( $options['primary_color'] ) : '#4f46e5',
+            'background_color'     => isset( $options['background_color'] ) ? sanitize_hex_color( $options['background_color'] ) : '#f8fafc',
+            'text_color'           => isset( $options['text_color'] ) ? sanitize_hex_color( $options['text_color'] ) : '#1e293b',
+            'label_color'          => isset( $options['label_color'] ) ? sanitize_hex_color( $options['label_color'] ) : '#334155',
+            'border_radius'        => isset( $options['border_radius'] ) ? max( 0, min( 30, intval( $options['border_radius'] ) ) ) : 8,
+            'shadow'               => isset( $options['shadow'] ) ? sanitize_key( $options['shadow'] ) : 'medium',
+            'hover_effect'         => isset( $options['hover_effect'] ) ? (bool) $options['hover_effect'] : true,
+            'focus_effect'         => isset( $options['focus_effect'] ) ? sanitize_key( $options['focus_effect'] ) : 'glow',
+            'font_family'          => isset( $options['font_family'] ) ? sanitize_key( $options['font_family'] ) : 'default',
+            'font_size'            => isset( $options['font_size'] ) ? max( 12, min( 20, intval( $options['font_size'] ) ) ) : 14,
+            'font_weight'          => isset( $options['font_weight'] ) ? sanitize_key( $options['font_weight'] ) : '400',
+            'placeholder_color'    => isset( $options['placeholder_color'] ) ? sanitize_hex_color( $options['placeholder_color'] ) : '#94a3b8',
+            'placeholder_italic'   => isset( $options['placeholder_italic'] ) ? (bool) $options['placeholder_italic'] : true,
+            'button_style'         => isset( $options['button_style'] ) ? (bool) $options['button_style'] : false,
+            'button_accent'        => isset( $options['button_accent'] ) ? sanitize_hex_color( $options['button_accent'] ) : '#10b981',
+            'entrance_animation'   => isset( $options['entrance_animation'] ) ? sanitize_key( $options['entrance_animation'] ) : 'fadein',
+            'transition_speed'     => isset( $options['transition_speed'] ) ? sanitize_key( $options['transition_speed'] ) : 'normal',
+        );
+        
+        update_option( 'scfm_stylish_options', $sanitized_options );
+        
+        wp_send_json_success( array( 'message' => __( 'Stylish settings saved successfully!', 'smart-checkout-fields' ) ) );
+    }
+    
+    /**
+     * AJAX: Reset stylish settings.
+     */
+    public function ajax_reset_stylish() {
+        check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
+        
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+        }
+        
+        delete_option( 'scfm_stylish_options' );
+        
+        wp_send_json_success( array( 'message' => __( 'Stylish settings reset to defaults.', 'smart-checkout-fields' ) ) );
     }
 }

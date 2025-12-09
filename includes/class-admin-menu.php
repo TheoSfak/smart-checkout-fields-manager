@@ -67,11 +67,14 @@ class SCFM_Admin_Menu {
             return;
         }
         
+        // Enqueue WordPress color picker
+        wp_enqueue_style( 'wp-color-picker' );
+        
         // Enqueue CSS
         wp_enqueue_style(
             'scfm-admin',
             SCFM_PLUGIN_URL . 'assets/css/admin.css',
-            array(),
+            array( 'wp-color-picker' ),
             SCFM_VERSION
         );
         
@@ -79,7 +82,7 @@ class SCFM_Admin_Menu {
         wp_enqueue_script(
             'scfm-admin',
             SCFM_PLUGIN_URL . 'assets/js/admin.js',
-            array( 'jquery', 'jquery-ui-sortable' ),
+            array( 'jquery', 'jquery-ui-sortable', 'wp-color-picker' ),
             SCFM_VERSION,
             true
         );
@@ -122,6 +125,9 @@ class SCFM_Admin_Menu {
                 <a href="#additional-fields" class="nav-tab" data-tab="additional-fields">
                     <?php esc_html_e( 'Additional Fields', 'smart-checkout-fields' ); ?>
                 </a>
+                <a href="#stylish" class="nav-tab" data-tab="stylish">
+                    <span style="color: #ff6b6b;">✨</span> <?php esc_html_e( 'Stylish', 'smart-checkout-fields' ); ?>
+                </a>
             </h2>
             
             <div class="scfm-tab-content" id="billing-fields" style="display: block;">
@@ -134,6 +140,10 @@ class SCFM_Admin_Menu {
             
             <div class="scfm-tab-content" id="additional-fields" style="display: none;">
                 <?php $this->render_fields_table( 'order' ); ?>
+            </div>
+            
+            <div class="scfm-tab-content" id="stylish" style="display: none;">
+                <?php $this->render_stylish_settings(); ?>
             </div>
             
             <?php $this->render_field_modal(); ?>
@@ -402,6 +412,266 @@ class SCFM_Admin_Menu {
                 <div class="scfm-modal-footer">
                     <button type="button" class="button scfm-modal-close"><?php esc_html_e( 'Cancel', 'smart-checkout-fields' ); ?></button>
                     <button type="button" class="button button-primary" id="scfm-save-field"><?php esc_html_e( 'Save Field', 'smart-checkout-fields' ); ?></button>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+    
+    /**
+     * Render Stylish Settings tab.
+     */
+    private function render_stylish_settings() {
+        $stylish_options = get_option( 'scfm_stylish_options', array() );
+        $power_beautify = isset( $stylish_options['power_beautify'] ) ? $stylish_options['power_beautify'] : false;
+        ?>
+        <div class="scfm-stylish-container">
+            <div class="scfm-stylish-header">
+                <h2>✨ <?php esc_html_e( 'Checkout Field Beautification', 'smart-checkout-fields' ); ?></h2>
+                <p class="description">
+                    <?php esc_html_e( 'Enhance your checkout fields with beautiful styling options. Use Power Beautify for instant professional look!', 'smart-checkout-fields' ); ?>
+                </p>
+            </div>
+            
+            <!-- Power Beautify Toggle -->
+            <div class="scfm-power-beautify-section">
+                <div class="scfm-power-beautify-card">
+                    <div class="scfm-power-toggle-header">
+                        <span class="scfm-power-icon">⚡</span>
+                        <h3><?php esc_html_e( 'Power Beautify Mode', 'smart-checkout-fields' ); ?></h3>
+                    </div>
+                    <p><?php esc_html_e( 'Enable this to apply all premium styling options automatically with optimal settings.', 'smart-checkout-fields' ); ?></p>
+                    <label class="scfm-power-switch">
+                        <input type="checkbox" id="scfm-power-beautify" name="stylish[power_beautify]" value="1" <?php checked( $power_beautify, true ); ?>>
+                        <span class="scfm-power-slider"></span>
+                        <span class="scfm-power-label"><?php esc_html_e( 'Activate Power Mode', 'smart-checkout-fields' ); ?></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Individual Styling Options -->
+            <div class="scfm-stylish-options" id="scfm-individual-options">
+                <h3><?php esc_html_e( 'Individual Style Options', 'smart-checkout-fields' ); ?></h3>
+                
+                <!-- Field Colors -->
+                <div class="scfm-style-section">
+                    <h4><span class="dashicons dashicons-art"></span> <?php esc_html_e( 'Field Colors', 'smart-checkout-fields' ); ?></h4>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Primary Color', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <input type="text" class="scfm-color-picker" name="stylish[primary_color]" value="<?php echo esc_attr( isset( $stylish_options['primary_color'] ) ? $stylish_options['primary_color'] : '#4f46e5' ); ?>">
+                                <p class="description"><?php esc_html_e( 'Main color for borders, focus states, and accents.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Background Color', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <input type="text" class="scfm-color-picker" name="stylish[background_color]" value="<?php echo esc_attr( isset( $stylish_options['background_color'] ) ? $stylish_options['background_color'] : '#f8fafc' ); ?>">
+                                <p class="description"><?php esc_html_e( 'Field background color.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Text Color', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <input type="text" class="scfm-color-picker" name="stylish[text_color]" value="<?php echo esc_attr( isset( $stylish_options['text_color'] ) ? $stylish_options['text_color'] : '#1e293b' ); ?>">
+                                <p class="description"><?php esc_html_e( 'Text color for field content.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Label Color', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <input type="text" class="scfm-color-picker" name="stylish[label_color]" value="<?php echo esc_attr( isset( $stylish_options['label_color'] ) ? $stylish_options['label_color'] : '#334155' ); ?>">
+                                <p class="description"><?php esc_html_e( 'Color for field labels.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Field Effects -->
+                <div class="scfm-style-section">
+                    <h4><span class="dashicons dashicons-admin-appearance"></span> <?php esc_html_e( 'Field Effects', 'smart-checkout-fields' ); ?></h4>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Border Radius', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <input type="range" name="stylish[border_radius]" value="<?php echo esc_attr( isset( $stylish_options['border_radius'] ) ? $stylish_options['border_radius'] : '8' ); ?>" min="0" max="30" step="1">
+                                <span class="scfm-range-value"></span> px
+                                <p class="description"><?php esc_html_e( 'Roundness of field corners.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Shadow Intensity', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <select name="stylish[shadow]">
+                                    <option value="none" <?php selected( isset( $stylish_options['shadow'] ) ? $stylish_options['shadow'] : 'medium', 'none' ); ?>><?php esc_html_e( 'None', 'smart-checkout-fields' ); ?></option>
+                                    <option value="light" <?php selected( isset( $stylish_options['shadow'] ) ? $stylish_options['shadow'] : 'medium', 'light' ); ?>><?php esc_html_e( 'Light', 'smart-checkout-fields' ); ?></option>
+                                    <option value="medium" <?php selected( isset( $stylish_options['shadow'] ) ? $stylish_options['shadow'] : 'medium', 'medium' ); ?>><?php esc_html_e( 'Medium', 'smart-checkout-fields' ); ?></option>
+                                    <option value="heavy" <?php selected( isset( $stylish_options['shadow'] ) ? $stylish_options['shadow'] : 'medium', 'heavy' ); ?>><?php esc_html_e( 'Heavy', 'smart-checkout-fields' ); ?></option>
+                                    <option value="glow" <?php selected( isset( $stylish_options['shadow'] ) ? $stylish_options['shadow'] : 'medium', 'glow' ); ?>><?php esc_html_e( 'Glow Effect', 'smart-checkout-fields' ); ?></option>
+                                </select>
+                                <p class="description"><?php esc_html_e( 'Shadow effect around fields.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Hover Effect', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="stylish[hover_effect]" value="1" <?php checked( isset( $stylish_options['hover_effect'] ) ? $stylish_options['hover_effect'] : true, true ); ?>> <?php esc_html_e( 'Enable hover animations', 'smart-checkout-fields' ); ?></label>
+                                <p class="description"><?php esc_html_e( 'Add smooth hover transitions.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Focus Effect', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <select name="stylish[focus_effect]">
+                                    <option value="default" <?php selected( isset( $stylish_options['focus_effect'] ) ? $stylish_options['focus_effect'] : 'glow', 'default' ); ?>><?php esc_html_e( 'Default', 'smart-checkout-fields' ); ?></option>
+                                    <option value="glow" <?php selected( isset( $stylish_options['focus_effect'] ) ? $stylish_options['focus_effect'] : 'glow', 'glow' ); ?>><?php esc_html_e( 'Glow', 'smart-checkout-fields' ); ?></option>
+                                    <option value="scale" <?php selected( isset( $stylish_options['focus_effect'] ) ? $stylish_options['focus_effect'] : 'glow', 'scale' ); ?>><?php esc_html_e( 'Scale Up', 'smart-checkout-fields' ); ?></option>
+                                    <option value="lift" <?php selected( isset( $stylish_options['focus_effect'] ) ? $stylish_options['focus_effect'] : 'glow', 'lift' ); ?>><?php esc_html_e( 'Lift', 'smart-checkout-fields' ); ?></option>
+                                </select>
+                                <p class="description"><?php esc_html_e( 'Animation when field is focused.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Typography -->
+                <div class="scfm-style-section">
+                    <h4><span class="dashicons dashicons-editor-textcolor"></span> <?php esc_html_e( 'Typography', 'smart-checkout-fields' ); ?></h4>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Font Family', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <select name="stylish[font_family]">
+                                    <option value="default" <?php selected( isset( $stylish_options['font_family'] ) ? $stylish_options['font_family'] : 'default', 'default' ); ?>><?php esc_html_e( 'Default', 'smart-checkout-fields' ); ?></option>
+                                    <option value="inter" <?php selected( isset( $stylish_options['font_family'] ) ? $stylish_options['font_family'] : 'default', 'inter' ); ?>>Inter</option>
+                                    <option value="roboto" <?php selected( isset( $stylish_options['font_family'] ) ? $stylish_options['font_family'] : 'default', 'roboto' ); ?>>Roboto</option>
+                                    <option value="opensans" <?php selected( isset( $stylish_options['font_family'] ) ? $stylish_options['font_family'] : 'default', 'opensans' ); ?>>Open Sans</option>
+                                    <option value="lato" <?php selected( isset( $stylish_options['font_family'] ) ? $stylish_options['font_family'] : 'default', 'lato' ); ?>>Lato</option>
+                                    <option value="montserrat" <?php selected( isset( $stylish_options['font_family'] ) ? $stylish_options['font_family'] : 'default', 'montserrat' ); ?>>Montserrat</option>
+                                    <option value="poppins" <?php selected( isset( $stylish_options['font_family'] ) ? $stylish_options['font_family'] : 'default', 'poppins' ); ?>>Poppins</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Font Size', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <input type="range" name="stylish[font_size]" value="<?php echo esc_attr( isset( $stylish_options['font_size'] ) ? $stylish_options['font_size'] : '14' ); ?>" min="12" max="20" step="1">
+                                <span class="scfm-range-value"></span> px
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Font Weight', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <select name="stylish[font_weight]">
+                                    <option value="300" <?php selected( isset( $stylish_options['font_weight'] ) ? $stylish_options['font_weight'] : '400', '300' ); ?>><?php esc_html_e( 'Light', 'smart-checkout-fields' ); ?></option>
+                                    <option value="400" <?php selected( isset( $stylish_options['font_weight'] ) ? $stylish_options['font_weight'] : '400', '400' ); ?>><?php esc_html_e( 'Regular', 'smart-checkout-fields' ); ?></option>
+                                    <option value="500" <?php selected( isset( $stylish_options['font_weight'] ) ? $stylish_options['font_weight'] : '400', '500' ); ?>><?php esc_html_e( 'Medium', 'smart-checkout-fields' ); ?></option>
+                                    <option value="600" <?php selected( isset( $stylish_options['font_weight'] ) ? $stylish_options['font_weight'] : '400', '600' ); ?>><?php esc_html_e( 'Semi Bold', 'smart-checkout-fields' ); ?></option>
+                                    <option value="700" <?php selected( isset( $stylish_options['font_weight'] ) ? $stylish_options['font_weight'] : '400', '700' ); ?>><?php esc_html_e( 'Bold', 'smart-checkout-fields' ); ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Placeholder Styling -->
+                <div class="scfm-style-section">
+                    <h4><span class="dashicons dashicons-edit"></span> <?php esc_html_e( 'Placeholder Style', 'smart-checkout-fields' ); ?></h4>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Placeholder Color', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <input type="text" class="scfm-color-picker" name="stylish[placeholder_color]" value="<?php echo esc_attr( isset( $stylish_options['placeholder_color'] ) ? $stylish_options['placeholder_color'] : '#94a3b8' ); ?>">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Placeholder Style', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="stylish[placeholder_italic]" value="1" <?php checked( isset( $stylish_options['placeholder_italic'] ) ? $stylish_options['placeholder_italic'] : true, true ); ?>> <?php esc_html_e( 'Italic', 'smart-checkout-fields' ); ?></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Button Style Fields -->
+                <div class="scfm-style-section">
+                    <h4><span class="dashicons dashicons-button"></span> <?php esc_html_e( 'Button-Style Fields', 'smart-checkout-fields' ); ?></h4>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Make Checkboxes/Radio as Buttons', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="stylish[button_style]" value="1" <?php checked( isset( $stylish_options['button_style'] ) ? $stylish_options['button_style'] : false, true ); ?>> <?php esc_html_e( 'Enable button-style for checkboxes and radio buttons', 'smart-checkout-fields' ); ?></label>
+                                <p class="description"><?php esc_html_e( 'Transform checkboxes and radio buttons into modern clickable buttons.', 'smart-checkout-fields' ); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Button Accent Color', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <input type="text" class="scfm-color-picker" name="stylish[button_accent]" value="<?php echo esc_attr( isset( $stylish_options['button_accent'] ) ? $stylish_options['button_accent'] : '#10b981' ); ?>">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Animation Options -->
+                <div class="scfm-style-section">
+                    <h4><span class="dashicons dashicons-image-rotate"></span> <?php esc_html_e( 'Animations', 'smart-checkout-fields' ); ?></h4>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Field Entrance Animation', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <select name="stylish[entrance_animation]">
+                                    <option value="none" <?php selected( isset( $stylish_options['entrance_animation'] ) ? $stylish_options['entrance_animation'] : 'fadein', 'none' ); ?>><?php esc_html_e( 'None', 'smart-checkout-fields' ); ?></option>
+                                    <option value="fadein" <?php selected( isset( $stylish_options['entrance_animation'] ) ? $stylish_options['entrance_animation'] : 'fadein', 'fadein' ); ?>><?php esc_html_e( 'Fade In', 'smart-checkout-fields' ); ?></option>
+                                    <option value="slideup" <?php selected( isset( $stylish_options['entrance_animation'] ) ? $stylish_options['entrance_animation'] : 'fadein', 'slideup' ); ?>><?php esc_html_e( 'Slide Up', 'smart-checkout-fields' ); ?></option>
+                                    <option value="slidein" <?php selected( isset( $stylish_options['entrance_animation'] ) ? $stylish_options['entrance_animation'] : 'fadein', 'slidein' ); ?>><?php esc_html_e( 'Slide In', 'smart-checkout-fields' ); ?></option>
+                                    <option value="bounce" <?php selected( isset( $stylish_options['entrance_animation'] ) ? $stylish_options['entrance_animation'] : 'fadein', 'bounce' ); ?>><?php esc_html_e( 'Bounce', 'smart-checkout-fields' ); ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e( 'Transition Speed', 'smart-checkout-fields' ); ?></th>
+                            <td>
+                                <select name="stylish[transition_speed]">
+                                    <option value="fast" <?php selected( isset( $stylish_options['transition_speed'] ) ? $stylish_options['transition_speed'] : 'normal', 'fast' ); ?>><?php esc_html_e( 'Fast (0.2s)', 'smart-checkout-fields' ); ?></option>
+                                    <option value="normal" <?php selected( isset( $stylish_options['transition_speed'] ) ? $stylish_options['transition_speed'] : 'normal', 'normal' ); ?>><?php esc_html_e( 'Normal (0.3s)', 'smart-checkout-fields' ); ?></option>
+                                    <option value="slow" <?php selected( isset( $stylish_options['transition_speed'] ) ? $stylish_options['transition_speed'] : 'normal', 'slow' ); ?>><?php esc_html_e( 'Slow (0.5s)', 'smart-checkout-fields' ); ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Save Button -->
+            <p class="submit">
+                <button type="button" class="button button-primary button-hero" id="scfm-save-stylish">
+                    <span class="dashicons dashicons-saved"></span> <?php esc_html_e( 'Save Stylish Settings', 'smart-checkout-fields' ); ?>
+                </button>
+                <button type="button" class="button button-secondary" id="scfm-reset-stylish">
+                    <?php esc_html_e( 'Reset to Defaults', 'smart-checkout-fields' ); ?>
+                </button>
+            </p>
+            
+            <!-- Preview Section -->
+            <div class="scfm-style-preview">
+                <h3><?php esc_html_e( 'Live Preview', 'smart-checkout-fields' ); ?></h3>
+                <div class="scfm-preview-container">
+                    <div class="scfm-preview-field-wrapper">
+                        <label><?php esc_html_e( 'Sample Text Field', 'smart-checkout-fields' ); ?></label>
+                        <input type="text" class="scfm-preview-field" placeholder="<?php esc_attr_e( 'Enter your text here...', 'smart-checkout-fields' ); ?>">
+                    </div>
+                    <div class="scfm-preview-field-wrapper">
+                        <label><?php esc_html_e( 'Sample Select Field', 'smart-checkout-fields' ); ?></label>
+                        <select class="scfm-preview-field">
+                            <option><?php esc_html_e( 'Option 1', 'smart-checkout-fields' ); ?></option>
+                            <option><?php esc_html_e( 'Option 2', 'smart-checkout-fields' ); ?></option>
+                        </select>
+                    </div>
+                    <div class="scfm-preview-field-wrapper">
+                        <label><input type="checkbox" class="scfm-preview-checkbox"> <?php esc_html_e( 'Sample Checkbox', 'smart-checkout-fields' ); ?></label>
+                    </div>
                 </div>
             </div>
         </div>

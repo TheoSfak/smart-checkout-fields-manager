@@ -674,12 +674,213 @@
             
             // Trigger file selection
             fileInput.click();
+        },
+        
+        /**
+         * Initialize Stylish tab
+         */
+        initStylish: function() {
+            // Color pickers
+            if (typeof $.fn.wpColorPicker !== 'undefined') {
+                $('.scfm-color-picker').wpColorPicker({
+                    change: function() {
+                        SCFM_Admin.updatePreview();
+                    }
+                });
+            }
+            
+            // Range sliders
+            $('input[type="range"]').on('input', function() {
+                $(this).next('.scfm-range-value').text($(this).val());
+                SCFM_Admin.updatePreview();
+            });
+            
+            // Initialize range values
+            $('input[type="range"]').each(function() {
+                $(this).next('.scfm-range-value').text($(this).val());
+            });
+            
+            // Power beautify toggle
+            $('#scfm-power-beautify').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#scfm-individual-options').slideUp();
+                    SCFM_Admin.applyPowerBeautify();
+                } else {
+                    $('#scfm-individual-options').slideDown();
+                }
+                SCFM_Admin.updatePreview();
+            });
+            
+            // All style inputs
+            $('#scfm-individual-options input, #scfm-individual-options select').on('change', function() {
+                SCFM_Admin.updatePreview();
+            });
+            
+            // Save stylish settings
+            $('#scfm-save-stylish').on('click', function() {
+                SCFM_Admin.saveStylish();
+            });
+            
+            // Reset stylish settings
+            $('#scfm-reset-stylish').on('click', function() {
+                if (confirm('Are you sure you want to reset all stylish settings to defaults?')) {
+                    SCFM_Admin.resetStylish();
+                }
+            });
+            
+            // Initial preview update
+            SCFM_Admin.updatePreview();
+        },
+        
+        /**
+         * Apply power beautify values
+         */
+        applyPowerBeautify: function() {
+            $('input[name="stylish[primary_color]"]').wpColorPicker('color', '#4f46e5');
+            $('input[name="stylish[background_color]"]').wpColorPicker('color', '#f8fafc');
+            $('input[name="stylish[text_color]"]').wpColorPicker('color', '#1e293b');
+            $('input[name="stylish[label_color]"]').wpColorPicker('color', '#334155');
+            $('input[name="stylish[border_radius]"]').val(12).trigger('input');
+            $('select[name="stylish[shadow]"]').val('medium');
+            $('input[name="stylish[hover_effect]"]').prop('checked', true);
+            $('select[name="stylish[focus_effect]"]').val('glow');
+            $('select[name="stylish[font_family]"]').val('inter');
+            $('input[name="stylish[font_size]"]').val(15).trigger('input');
+            $('select[name="stylish[font_weight]"]').val('400');
+            $('input[name="stylish[placeholder_color]"]').wpColorPicker('color', '#94a3b8');
+            $('input[name="stylish[placeholder_italic]"]').prop('checked', true);
+            $('input[name="stylish[button_style]"]').prop('checked', true);
+            $('input[name="stylish[button_accent]"]').wpColorPicker('color', '#10b981');
+            $('select[name="stylish[entrance_animation]"]').val('fadein');
+            $('select[name="stylish[transition_speed]"]').val('normal');
+        },
+        
+        /**
+         * Update preview
+         */
+        updatePreview: function() {
+            var primaryColor = $('input[name="stylish[primary_color]"]').val();
+            var bgColor = $('input[name="stylish[background_color]"]').val();
+            var textColor = $('input[name="stylish[text_color]"]').val();
+            var labelColor = $('input[name="stylish[label_color]"]').val();
+            var borderRadius = $('input[name="stylish[border_radius]"]').val();
+            var fontSize = $('input[name="stylish[font_size]"]').val();
+            var fontWeight = $('select[name="stylish[font_weight]"]').val();
+            var shadow = $('select[name="stylish[shadow]"]').val();
+            var placeholderColor = $('input[name="stylish[placeholder_color]"]').val();
+            
+            var shadowValues = {
+                'none': 'none',
+                'light': '0 1px 3px rgba(0, 0, 0, 0.05)',
+                'medium': '0 2px 8px rgba(0, 0, 0, 0.08)',
+                'heavy': '0 4px 16px rgba(0, 0, 0, 0.12)',
+                'glow': '0 0 20px rgba(79, 70, 229, 0.15)'
+            };
+            
+            $('.scfm-preview-field').css({
+                'background-color': bgColor,
+                'color': textColor,
+                'border-radius': borderRadius + 'px',
+                'font-size': fontSize + 'px',
+                'font-weight': fontWeight,
+                'box-shadow': shadowValues[shadow],
+                'border': '2px solid #e2e8f0'
+            });
+            
+            $('.scfm-preview-field').on('focus', function() {
+                $(this).css('border-color', primaryColor);
+            }).on('blur', function() {
+                $(this).css('border-color', '#e2e8f0');
+            });
+            
+            $('.scfm-preview-field-wrapper label').css('color', labelColor);
+            
+            // Update placeholder color (requires style injection)
+            var styleId = 'scfm-preview-placeholder-style';
+            $('#' + styleId).remove();
+            $('<style id="' + styleId + '">.scfm-preview-field::placeholder { color: ' + placeholderColor + ' !important; }</style>').appendTo('head');
+        },
+        
+        /**
+         * Save stylish settings
+         */
+        saveStylish: function() {
+            var $button = $('#scfm-save-stylish');
+            var originalText = $button.html();
+            
+            $button.prop('disabled', true).html('<span class="dashicons dashicons-update spin"></span> ' + scfmAdmin.strings.saving);
+            
+            var formData = {};
+            $('#scfm-individual-options input, #scfm-individual-options select, #scfm-power-beautify').each(function() {
+                var $input = $(this);
+                var name = $input.attr('name');
+                if (name) {
+                    var key = name.replace('stylish[', '').replace(']', '');
+                    if ($input.attr('type') === 'checkbox') {
+                        formData[key] = $input.is(':checked') ? 1 : 0;
+                    } else {
+                        formData[key] = $input.val();
+                    }
+                }
+            });
+            
+            $.ajax({
+                url: scfmAdmin.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'scfm_save_stylish',
+                    nonce: scfmAdmin.nonce,
+                    options: formData
+                },
+                success: function(response) {
+                    if (response.success) {
+                        SCFM_Admin.showNotice(response.data.message, 'success');
+                    } else {
+                        SCFM_Admin.showNotice(response.data.message || scfmAdmin.strings.error, 'error');
+                    }
+                },
+                error: function() {
+                    SCFM_Admin.showNotice(scfmAdmin.strings.error, 'error');
+                },
+                complete: function() {
+                    $button.prop('disabled', false).html(originalText);
+                }
+            });
+        },
+        
+        /**
+         * Reset stylish settings
+         */
+        resetStylish: function() {
+            $.ajax({
+                url: scfmAdmin.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'scfm_reset_stylish',
+                    nonce: scfmAdmin.nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        SCFM_Admin.showNotice(response.data.message || scfmAdmin.strings.error, 'error');
+                    }
+                },
+                error: function() {
+                    SCFM_Admin.showNotice(scfmAdmin.strings.error, 'error');
+                }
+            });
         }
     };
     
     // Initialize on document ready
     $(document).ready(function() {
         SCFM_Admin.init();
+        
+        // Initialize stylish tab if it exists
+        if ($('#stylish').length) {
+            SCFM_Admin.initStylish();
+        }
     });
     
 })(jQuery);

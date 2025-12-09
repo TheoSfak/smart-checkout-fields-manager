@@ -178,6 +178,7 @@ class Smart_Checkout_Fields_Manager {
         require_once SCFM_PLUGIN_DIR . 'includes/class-checkout-fields.php';
         require_once SCFM_PLUGIN_DIR . 'includes/class-block-checkout.php';
         require_once SCFM_PLUGIN_DIR . 'includes/class-address-formatter.php';
+        require_once SCFM_PLUGIN_DIR . 'includes/class-stylish-manager.php';
     }
     
     /**
@@ -195,6 +196,7 @@ class Smart_Checkout_Fields_Manager {
         SCFM_Checkout_Fields::instance();
         SCFM_Block_Checkout::instance();
         SCFM_Address_Formatter::instance();
+        SCFM_Stylish_Manager::instance();
         SCFM_Order_Meta::instance();
         SCFM_Field_Validator::instance();
     }
