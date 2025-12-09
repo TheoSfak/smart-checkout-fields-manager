@@ -117,22 +117,22 @@ class SCFM_Stylish_Manager {
      */
     private function get_power_beautify_defaults() {
         return array(
-            'primary_color'        => '#4f46e5',
-            'background_color'     => '#f8fafc',
-            'text_color'           => '#1e293b',
-            'label_color'          => '#334155',
-            'border_radius'        => '12',
-            'shadow'               => 'medium',
+            'primary_color'        => '#667eea',
+            'background_color'     => '#ffffff',
+            'text_color'           => '#1a202c',
+            'label_color'          => '#667eea',
+            'border_radius'        => '16',
+            'shadow'               => 'glow',
             'hover_effect'         => true,
             'focus_effect'         => 'glow',
-            'font_family'          => 'inter',
-            'font_size'            => '15',
-            'font_weight'          => '400',
+            'font_family'          => 'poppins',
+            'font_size'            => '16',
+            'font_weight'          => '500',
             'placeholder_color'    => '#94a3b8',
             'placeholder_italic'   => true,
             'button_style'         => true,
-            'button_accent'        => '#10b981',
-            'entrance_animation'   => 'fadein',
+            'button_accent'        => '#f093fb',
+            'entrance_animation'   => 'bounce',
             'transition_speed'     => 'normal',
         );
     }

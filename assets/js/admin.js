@@ -736,22 +736,22 @@
          * Apply power beautify values
          */
         applyPowerBeautify: function() {
-            $('input[name="stylish[primary_color]"]').wpColorPicker('color', '#4f46e5');
-            $('input[name="stylish[background_color]"]').wpColorPicker('color', '#f8fafc');
-            $('input[name="stylish[text_color]"]').wpColorPicker('color', '#1e293b');
-            $('input[name="stylish[label_color]"]').wpColorPicker('color', '#334155');
-            $('input[name="stylish[border_radius]"]').val(12).trigger('input');
-            $('select[name="stylish[shadow]"]').val('medium');
+            $('input[name="stylish[primary_color]"]').wpColorPicker('color', '#667eea');
+            $('input[name="stylish[background_color]"]').wpColorPicker('color', '#ffffff');
+            $('input[name="stylish[text_color]"]').wpColorPicker('color', '#1a202c');
+            $('input[name="stylish[label_color]"]').wpColorPicker('color', '#667eea');
+            $('input[name="stylish[border_radius]"]').val(16).trigger('input');
+            $('select[name="stylish[shadow]"]').val('glow');
             $('input[name="stylish[hover_effect]"]').prop('checked', true);
             $('select[name="stylish[focus_effect]"]').val('glow');
-            $('select[name="stylish[font_family]"]').val('inter');
-            $('input[name="stylish[font_size]"]').val(15).trigger('input');
-            $('select[name="stylish[font_weight]"]').val('400');
+            $('select[name="stylish[font_family]"]').val('poppins');
+            $('input[name="stylish[font_size]"]').val(16).trigger('input');
+            $('select[name="stylish[font_weight]"]').val('500');
             $('input[name="stylish[placeholder_color]"]').wpColorPicker('color', '#94a3b8');
             $('input[name="stylish[placeholder_italic]"]').prop('checked', true);
             $('input[name="stylish[button_style]"]').prop('checked', true);
-            $('input[name="stylish[button_accent]"]').wpColorPicker('color', '#10b981');
-            $('select[name="stylish[entrance_animation]"]').val('fadein');
+            $('input[name="stylish[button_accent]"]').wpColorPicker('color', '#f093fb');
+            $('select[name="stylish[entrance_animation]"]').val('bounce');
             $('select[name="stylish[transition_speed]"]').val('normal');
         },
         
