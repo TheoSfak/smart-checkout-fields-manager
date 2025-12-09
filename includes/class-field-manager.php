@@ -51,8 +51,11 @@ class SCFM_Field_Manager {
         $custom_fields = self::get_fields( $section );
         $default_fields = self::get_default_woocommerce_fields( $section );
         
-        // Merge custom fields with defaults
-        $all_fields = array_merge( $default_fields, $custom_fields );
+        // Get actual checkout fields (including from other plugins)
+        $actual_fields = self::get_actual_checkout_fields( $section );
+        
+        // Merge: actual fields from checkout, then defaults, then custom overrides
+        $all_fields = array_merge( $actual_fields, $default_fields, $custom_fields );
         
         // Sort by priority
         uasort( $all_fields, function( $a, $b ) {
@@ -62,6 +65,65 @@ class SCFM_Field_Manager {
         });
         
         return $all_fields;
+    }
+    
+    /**
+     * Get actual checkout fields from WooCommerce (including third-party plugin fields).
+     *
+     * @param string $section Section name (billing, shipping, order).
+     * @return array
+     */
+    public static function get_actual_checkout_fields( $section ) {
+        // Get WooCommerce checkout fields (this includes fields from other plugins)
+        $wc_fields = WC()->countries->get_address_fields( '', $section . '_' );
+        
+        // For order section, get it differently
+        if ( $section === 'order' ) {
+            // Apply the same filter that WooCommerce uses for checkout fields
+            $all_checkout_fields = apply_filters( 'woocommerce_checkout_fields', array(
+                'billing'  => array(),
+                'shipping' => array(),
+                'order'    => array(),
+            ) );
+            
+            $wc_fields = isset( $all_checkout_fields['order'] ) ? $all_checkout_fields['order'] : array();
+        }
+        
+        // Convert to our format
+        $fields = array();
+        foreach ( $wc_fields as $field_key => $field_config ) {
+            // Skip if we already have this as a default field
+            $default_fields = self::get_default_woocommerce_fields( $section );
+            if ( isset( $default_fields[ $field_key ] ) ) {
+                continue;
+            }
+            
+            // Convert to our format
+            $fields[ $field_key ] = array(
+                'type'        => isset( $field_config['type'] ) ? $field_config['type'] : 'text',
+                'label'       => isset( $field_config['label'] ) ? $field_config['label'] : $field_key,
+                'placeholder' => isset( $field_config['placeholder'] ) ? $field_config['placeholder'] : '',
+                'required'    => isset( $field_config['required'] ) ? $field_config['required'] : false,
+                'enabled'     => true,
+                'priority'    => isset( $field_config['priority'] ) ? $field_config['priority'] : 100,
+                'class'       => isset( $field_config['class'] ) ? $field_config['class'] : array( 'form-row-wide' ),
+                'custom'      => false,
+                'default_wc'  => false,
+                'third_party' => true, // Mark as coming from another plugin
+            );
+            
+            // Add options for select fields
+            if ( isset( $field_config['options'] ) ) {
+                $fields[ $field_key ]['options'] = $field_config['options'];
+            }
+            
+            // Add validation
+            if ( isset( $field_config['validate'] ) ) {
+                $fields[ $field_key ]['validate'] = $field_config['validate'];
+            }
+        }
+        
+        return $fields;
     }
     
     /**

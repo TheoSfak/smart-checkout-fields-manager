@@ -149,8 +149,9 @@
         renderFieldRow: function(fieldId, field) {
             var isCustom = field.custom !== false;
             var isDefaultWC = field.default_wc === true;
+            var isThirdParty = field.third_party === true;
             var typeLabel = field.type || 'text';
-            var typeBadgeClass = isCustom ? 'scfm-custom' : 'scfm-default';
+            var typeBadgeClass = isCustom ? 'scfm-custom' : (isThirdParty ? 'scfm-third-party' : 'scfm-default');
             var requiredIcon = field.required ? '<span class="dashicons dashicons-yes" style="color: #46b450;"></span>' : '-';
             var enabledChecked = field.enabled ? 'checked' : '';
             

@@ -4,6 +4,18 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Fixed (Tab Switching)
+- Fixed fields not loading when switching to Shipping or Additional Fields tabs
+- Added automatic field loading on tab change
+
+### Added (Third-Party Plugin Support)
+- Automatically detects and displays fields from other plugins
+- Shows fields from plugins like "Ελληνικά Τιμολόγια" (Greek Invoices)
+- Visual indicator (yellow badge) for third-party plugin fields
+- Can enable/disable third-party plugin fields
+- Proper integration with WooCommerce checkout fields filter
+- Support for all field types added by external plugins
+
 ### Fixed (WooCommerce Compatibility)
 - Added HPOS (High-Performance Order Storage) compatibility declaration
 - Declared compatibility with custom_order_tables feature

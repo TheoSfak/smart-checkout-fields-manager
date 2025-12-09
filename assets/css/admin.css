@@ -98,6 +98,11 @@
     color: #0c5460;
 }
 
+.scfm-field-type.scfm-third-party {
+    background: #fff3cd;
+    color: #856404;
+}
+
 /* Toggle switch */
 .scfm-toggle {
     position: relative;
