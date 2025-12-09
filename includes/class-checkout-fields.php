@@ -81,17 +81,17 @@ class SCFM_Checkout_Fields {
         $shipping_fields = SCFM_Field_Manager::get_all_fields( 'shipping' );
         $order_fields = SCFM_Field_Manager::get_all_fields( 'order' );
         
-        // Apply billing fields
+        // Apply billing fields (merge with existing)
         if ( ! empty( $billing_fields ) ) {
             $fields['billing'] = $this->apply_custom_fields( $fields['billing'], $billing_fields );
         }
         
-        // Apply shipping fields
+        // Apply shipping fields (merge with existing)
         if ( ! empty( $shipping_fields ) ) {
             $fields['shipping'] = $this->apply_custom_fields( $fields['shipping'], $shipping_fields );
         }
         
-        // Apply order fields
+        // Apply order fields (merge with existing)
         if ( ! empty( $order_fields ) ) {
             $fields['order'] = $this->apply_custom_fields( $fields['order'], $order_fields );
         }
@@ -109,9 +109,27 @@ class SCFM_Checkout_Fields {
     private function apply_custom_fields( $default_fields, $custom_fields ) {
         $result = array();
         
+        // First, add all default/third-party fields that are NOT managed by us
+        foreach ( $default_fields as $field_id => $field_config ) {
+            // If this field is not in our custom fields array, keep it (third-party field)
+            if ( ! isset( $custom_fields[ $field_id ] ) ) {
+                $result[ $field_id ] = $field_config;
+            }
+        }
+        
+        // Then, add/override with our custom fields
         foreach ( $custom_fields as $field_id => $field ) {
             // Skip disabled fields
             if ( isset( $field['enabled'] ) && ! $field['enabled'] ) {
+                continue;
+            }
+            
+            // Skip third-party fields (they're already added above)
+            if ( isset( $field['third_party'] ) && $field['third_party'] ) {
+                // But keep the original field config from WooCommerce
+                if ( isset( $default_fields[ $field_id ] ) ) {
+                    $result[ $field_id ] = $default_fields[ $field_id ];
+                }
                 continue;
             }
             
