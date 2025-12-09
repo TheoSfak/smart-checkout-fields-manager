@@ -65,8 +65,7 @@ class SCFM_Field_Validator {
      * @param WP_Error $errors WP_Error object.
      */
     public function validate_custom_fields( $data, $errors ) {
-        $field_manager = SCFM_Field_Manager::instance();
-        $all_fields    = $field_manager->get_all_fields();
+        $all_fields = SCFM_Field_Manager::get_fields();
         
         foreach ( $all_fields as $section => $fields ) {
             foreach ( $fields as $field_id => $field ) {
