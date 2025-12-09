@@ -119,6 +119,11 @@ class Smart_Checkout_Fields_Manager {
         // Include required files
         $this->includes();
         
+        // Check for migrations
+        if ( SCFM_Field_Manager::needs_migration() ) {
+            SCFM_Field_Manager::migrate();
+        }
+        
         // Initialize components
         $this->init_components();
         

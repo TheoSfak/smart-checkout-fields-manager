@@ -109,16 +109,58 @@
             
             if (Object.keys(fields).length === 0) {
                 $tbody.html('<tr><td colspan="7" class="scfm-no-fields">' + 
-                    'No custom fields yet. Click "Add Custom Field" to create one.' + 
+                    'No fields yet. Default WooCommerce fields will be used.' + 
                     '</td></tr>');
                 return;
             }
             
-            // TODO: Render actual fields in Phase 2
-            // For now, just show empty state
-            $tbody.html('<tr><td colspan="7" class="scfm-no-fields">' + 
-                'No custom fields yet. Click "Add Custom Field" to create one.' + 
-                '</td></tr>');
+            // Render each field
+            $.each(fields, function(fieldId, field) {
+                var row = SCFM_Admin.renderFieldRow(fieldId, field);
+                $tbody.append(row);
+            });
+        },
+        
+        /**
+         * Render a single field row
+         */
+        renderFieldRow: function(fieldId, field) {
+            var isCustom = field.custom !== false;
+            var isDefaultWC = field.default_wc === true;
+            var typeLabel = field.type || 'text';
+            var typeBadgeClass = isCustom ? 'scfm-custom' : 'scfm-default';
+            var requiredIcon = field.required ? '<span class="dashicons dashicons-yes" style="color: #46b450;"></span>' : '-';
+            var enabledChecked = field.enabled ? 'checked' : '';
+            
+            var deleteBtn = '';
+            if (isCustom && !isDefaultWC) {
+                deleteBtn = '<button type="button" class="scfm-btn-icon scfm-btn-delete" data-field-id="' + fieldId + '" title="Delete">' +
+                           '<span class="dashicons dashicons-trash"></span></button>';
+            }
+            
+            var row = '<tr data-field-id="' + fieldId + '">' +
+                '<td class="scfm-drag-handle"></td>' +
+                '<td><code>' + fieldId + '</code></td>' +
+                '<td><span class="scfm-field-type ' + typeBadgeClass + '">' + typeLabel + '</span></td>' +
+                '<td>' + field.label + '</td>' +
+                '<td class="scfm-text-center">' + requiredIcon + '</td>' +
+                '<td class="scfm-text-center">' +
+                    '<label class="scfm-toggle" data-field-id="' + fieldId + '">' +
+                        '<input type="checkbox" ' + enabledChecked + '>' +
+                        '<span class="scfm-toggle-slider"></span>' +
+                    '</label>' +
+                '</td>' +
+                '<td class="scfm-text-center">' +
+                    '<div class="scfm-action-buttons">' +
+                        '<button type="button" class="scfm-btn-icon scfm-btn-edit" data-field-id="' + fieldId + '" title="Edit">' +
+                            '<span class="dashicons dashicons-edit"></span>' +
+                        '</button>' +
+                        deleteBtn +
+                    '</div>' +
+                '</td>' +
+            '</tr>';
+            
+            return row;
         },
         
         /**

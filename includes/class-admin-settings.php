@@ -58,8 +58,7 @@ class SCFM_Admin_Settings {
         
         $section = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : 'billing';
         
-        // TODO: Implement in Phase 2
-        $fields = array();
+        $fields = SCFM_Field_Manager::get_all_fields( $section );
         
         wp_send_json_success( array( 'fields' => $fields ) );
     }
@@ -74,9 +73,34 @@ class SCFM_Admin_Settings {
             wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
         }
         
-        // TODO: Implement in Phase 2
+        $section   = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
+        $field_id  = isset( $_POST['field_id'] ) ? sanitize_key( $_POST['field_id'] ) : '';
+        $field_data = isset( $_POST['field_data'] ) ? $_POST['field_data'] : array();
         
-        wp_send_json_success( array( 'message' => __( 'Field saved successfully.', 'smart-checkout-fields' ) ) );
+        if ( empty( $section ) || empty( $field_data ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid field data.', 'smart-checkout-fields' ) ) );
+        }
+        
+        // Sanitize field data
+        $sanitized_data = $this->sanitize_field_data( $field_data );
+        
+        // Generate field ID if not provided (new field)
+        if ( empty( $field_id ) ) {
+            $field_id = SCFM_Field_Manager::generate_field_id( $section, $sanitized_data['label'] );
+        }
+        
+        // Save field
+        $result = SCFM_Field_Manager::save_field( $section, $field_id, $sanitized_data );
+        
+        if ( $result ) {
+            wp_send_json_success( array( 
+                'message' => __( 'Field saved successfully.', 'smart-checkout-fields' ),
+                'field_id' => $field_id,
+                'field_data' => $sanitized_data
+            ) );
+        } else {
+            wp_send_json_error( array( 'message' => __( 'Failed to save field.', 'smart-checkout-fields' ) ) );
+        }
     }
     
     /**
@@ -89,9 +113,28 @@ class SCFM_Admin_Settings {
             wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
         }
         
-        // TODO: Implement in Phase 2
+        $section  = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
+        $field_id = isset( $_POST['field_id'] ) ? sanitize_key( $_POST['field_id'] ) : '';
         
-        wp_send_json_success( array( 'message' => __( 'Field deleted successfully.', 'smart-checkout-fields' ) ) );
+        if ( empty( $section ) || empty( $field_id ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'smart-checkout-fields' ) ) );
+        }
+        
+        // Check if it's a default WooCommerce field
+        $field = SCFM_Field_Manager::get_field( $section, $field_id );
+        if ( isset( $field['default_wc'] ) && $field['default_wc'] ) {
+            wp_send_json_error( array( 'message' => __( 'Cannot delete default WooCommerce fields.', 'smart-checkout-fields' ) ) );
+        }
+        
+        // Delete field
+        $result = SCFM_Field_Manager::delete_field( $section, $field_id );
+        
+        if ( $result ) {
+            do_action( 'scfm_field_deleted', $section, $field_id );
+            wp_send_json_success( array( 'message' => __( 'Field deleted successfully.', 'smart-checkout-fields' ) ) );
+        } else {
+            wp_send_json_error( array( 'message' => __( 'Failed to delete field.', 'smart-checkout-fields' ) ) );
+        }
     }
     
     /**
@@ -104,9 +147,29 @@ class SCFM_Admin_Settings {
             wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
         }
         
-        // TODO: Implement in Phase 2
+        $section  = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
+        $field_id = isset( $_POST['field_id'] ) ? sanitize_key( $_POST['field_id'] ) : '';
+        $enabled  = isset( $_POST['enabled'] ) && $_POST['enabled'] === 'true';
         
-        wp_send_json_success( array( 'message' => __( 'Field status updated.', 'smart-checkout-fields' ) ) );
+        if ( empty( $section ) || empty( $field_id ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'smart-checkout-fields' ) ) );
+        }
+        
+        // Get field
+        $field = SCFM_Field_Manager::get_field( $section, $field_id );
+        if ( ! $field ) {
+            wp_send_json_error( array( 'message' => __( 'Field not found.', 'smart-checkout-fields' ) ) );
+        }
+        
+        // Update enabled status
+        $field['enabled'] = $enabled;
+        $result = SCFM_Field_Manager::save_field( $section, $field_id, $field );
+        
+        if ( $result ) {
+            wp_send_json_success( array( 'message' => __( 'Field status updated.', 'smart-checkout-fields' ) ) );
+        } else {
+            wp_send_json_error( array( 'message' => __( 'Failed to update field status.', 'smart-checkout-fields' ) ) );
+        }
     }
     
     /**
@@ -119,7 +182,24 @@ class SCFM_Admin_Settings {
             wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
         }
         
-        // TODO: Implement in Phase 2
+        $section   = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
+        $positions = isset( $_POST['positions'] ) ? $_POST['positions'] : array();
+        
+        if ( empty( $section ) || empty( $positions ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid position data.', 'smart-checkout-fields' ) ) );
+        }
+        
+        // Update priorities based on positions
+        foreach ( $positions as $position_data ) {
+            $field_id = sanitize_key( $position_data['field_id'] );
+            $priority = intval( $position_data['position'] ) * 10 + 10;
+            
+            $field = SCFM_Field_Manager::get_field( $section, $field_id );
+            if ( $field ) {
+                $field['priority'] = $priority;
+                SCFM_Field_Manager::save_field( $section, $field_id, $field );
+            }
+        }
         
         wp_send_json_success( array( 'message' => __( 'Field positions updated.', 'smart-checkout-fields' ) ) );
     }
@@ -134,8 +214,79 @@ class SCFM_Admin_Settings {
             wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
         }
         
-        // TODO: Implement in Phase 2
+        $section = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         
-        wp_send_json_success( array( 'message' => __( 'Fields reset to defaults successfully.', 'smart-checkout-fields' ) ) );
+        if ( empty( $section ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid section.', 'smart-checkout-fields' ) ) );
+        }
+        
+        // Reset fields
+        $result = SCFM_Field_Manager::reset_fields( $section );
+        
+        if ( $result ) {
+            wp_send_json_success( array( 'message' => __( 'Fields reset to defaults successfully.', 'smart-checkout-fields' ) ) );
+        } else {
+            wp_send_json_error( array( 'message' => __( 'Failed to reset fields.', 'smart-checkout-fields' ) ) );
+        }
+    }
+    
+    /**
+     * Sanitize field data.
+     *
+     * @param array $data Field data.
+     * @return array
+     */
+    private function sanitize_field_data( $data ) {
+        $sanitized = SCFM_Field_Manager::get_default_field_structure();
+        
+        if ( isset( $data['type'] ) ) {
+            $sanitized['type'] = sanitize_key( $data['type'] );
+        }
+        
+        if ( isset( $data['label'] ) ) {
+            $sanitized['label'] = sanitize_text_field( $data['label'] );
+        }
+        
+        if ( isset( $data['placeholder'] ) ) {
+            $sanitized['placeholder'] = sanitize_text_field( $data['placeholder'] );
+        }
+        
+        if ( isset( $data['default'] ) ) {
+            $sanitized['default'] = sanitize_text_field( $data['default'] );
+        }
+        
+        if ( isset( $data['required'] ) ) {
+            $sanitized['required'] = (bool) $data['required'];
+        }
+        
+        if ( isset( $data['enabled'] ) ) {
+            $sanitized['enabled'] = (bool) $data['enabled'];
+        }
+        
+        if ( isset( $data['class'] ) && is_array( $data['class'] ) ) {
+            $sanitized['class'] = array_map( 'sanitize_html_class', $data['class'] );
+        }
+        
+        if ( isset( $data['validate'] ) && is_array( $data['validate'] ) ) {
+            $sanitized['validate'] = array_map( 'sanitize_key', $data['validate'] );
+        }
+        
+        if ( isset( $data['priority'] ) ) {
+            $sanitized['priority'] = intval( $data['priority'] );
+        }
+        
+        if ( isset( $data['options'] ) && is_array( $data['options'] ) ) {
+            $sanitized['options'] = array_map( 'sanitize_text_field', $data['options'] );
+        }
+        
+        if ( isset( $data['visibility'] ) && is_array( $data['visibility'] ) ) {
+            $sanitized['visibility'] = array(
+                'order_details'   => isset( $data['visibility']['order_details'] ) ? (bool) $data['visibility']['order_details'] : true,
+                'admin_emails'    => isset( $data['visibility']['admin_emails'] ) ? (bool) $data['visibility']['admin_emails'] : true,
+                'customer_emails' => isset( $data['visibility']['customer_emails'] ) ? (bool) $data['visibility']['customer_emails'] : true,
+            );
+        }
+        
+        return apply_filters( 'scfm_sanitize_field_data', $sanitized, $data );
     }
 }
