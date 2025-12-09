@@ -4,6 +4,25 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Added (Block Rendering - Advanced Features)
+- Conditional logic support for Block Checkout fields
+- Dynamic field visibility based on other field values
+- Real-time field show/hide with smooth animations
+- Advanced field rendering with custom classes and attributes
+- Field state monitoring and automatic updates
+- Conditional logic evaluation (equals, not_equals, contains, empty, etc.)
+- Support for AND/OR operators in conditional rules
+- Field dependency tracking and validation
+- Enhanced CSS animations (fadeIn, slideIn, spin)
+- Loading states for conditional fields
+- Custom field markers and visual indicators
+- Half-width field support in Block Checkout
+- Dark mode support for block fields
+- Responsive design improvements
+- Field data passed to JavaScript via wp_localize_script
+- MutationObserver for dynamic content updates
+- Form data collection and evaluation system
+
 ### Added (Block Visibility Controls)
 - Granular visibility control for Block Checkout fields
 - "Show in Block Checkout" toggle for each field

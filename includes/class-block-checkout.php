@@ -56,8 +56,17 @@ class SCFM_Block_Checkout {
         // Register field locations
         add_filter( 'woocommerce_blocks_checkout_fields_locations', array( $this, 'add_field_locations' ), 10, 2 );
         
+        // Filter field values before rendering
+        add_filter( 'woocommerce_blocks_checkout_fields', array( $this, 'modify_block_field_properties' ), 10, 3 );
+        
+        // Add conditional logic support
+        add_filter( 'woocommerce_blocks_checkout_update_order_from_request', array( $this, 'handle_conditional_fields' ), 10, 2 );
+        
         // Enqueue block scripts
         add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after', array( $this, 'enqueue_block_scripts' ) );
+        
+        // Add inline script data
+        add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after', array( $this, 'add_inline_script_data' ) );
     }
     
     /**
@@ -318,5 +327,172 @@ class SCFM_Block_Checkout {
      */
     public function is_type_supported( $type ) {
         return in_array( $type, $this->get_supported_types(), true );
+    }
+    
+    /**
+     * Modify block field properties before rendering.
+     *
+     * @param array  $fields   Checkout fields.
+     * @param string $context  Context (checkout, editor).
+     * @param object $instance Block instance.
+     * @return array
+     */
+    public function modify_block_field_properties( $fields, $context, $instance ) {
+        $sections = array( 'billing', 'shipping', 'order' );
+        
+        foreach ( $sections as $section ) {
+            $custom_fields = SCFM_Field_Manager::get_fields( $section );
+            
+            foreach ( $custom_fields as $field_id => $field_config ) {
+                if ( isset( $fields[ $field_id ] ) ) {
+                    // Add custom classes
+                    if ( ! empty( $field_config['class'] ) ) {
+                        $fields[ $field_id ]['class'] = $field_config['class'];
+                    }
+                    
+                    // Add custom attributes
+                    if ( ! empty( $field_config['custom_attributes'] ) ) {
+                        $fields[ $field_id ]['custom_attributes'] = $field_config['custom_attributes'];
+                    }
+                    
+                    // Apply conditional logic
+                    if ( ! empty( $field_config['conditional_logic'] ) ) {
+                        $fields[ $field_id ]['conditional_logic'] = $field_config['conditional_logic'];
+                    }
+                }
+            }
+        }
+        
+        return apply_filters( 'scfm_block_checkout_fields', $fields, $context );
+    }
+    
+    /**
+     * Handle conditional fields in order processing.
+     *
+     * @param WC_Order $order   Order object.
+     * @param array    $request Request data.
+     * @return WC_Order
+     */
+    public function handle_conditional_fields( $order, $request ) {
+        // Process conditional field logic
+        $sections = array( 'billing', 'shipping', 'order' );
+        
+        foreach ( $sections as $section ) {
+            $fields = SCFM_Field_Manager::get_fields( $section );
+            
+            foreach ( $fields as $field_id => $field_config ) {
+                // Check if field has conditional logic
+                if ( ! empty( $field_config['conditional_logic'] ) ) {
+                    $should_process = $this->evaluate_conditional_logic(
+                        $field_config['conditional_logic'],
+                        $request
+                    );
+                    
+                    // If condition not met, remove field data
+                    if ( ! $should_process && isset( $request[ $field_id ] ) ) {
+                        $order->delete_meta_data( $field_id );
+                    }
+                }
+            }
+        }
+        
+        return $order;
+    }
+    
+    /**
+     * Evaluate conditional logic for a field.
+     *
+     * @param array $logic   Conditional logic rules.
+     * @param array $request Request data.
+     * @return bool
+     */
+    private function evaluate_conditional_logic( $logic, $request ) {
+        if ( empty( $logic ) || ! is_array( $logic ) ) {
+            return true;
+        }
+        
+        $operator = isset( $logic['operator'] ) ? $logic['operator'] : 'and';
+        $rules = isset( $logic['rules'] ) ? $logic['rules'] : array();
+        
+        $results = array();
+        
+        foreach ( $rules as $rule ) {
+            $field = isset( $rule['field'] ) ? $rule['field'] : '';
+            $condition = isset( $rule['condition'] ) ? $rule['condition'] : 'equals';
+            $value = isset( $rule['value'] ) ? $rule['value'] : '';
+            
+            $field_value = isset( $request[ $field ] ) ? $request[ $field ] : '';
+            
+            switch ( $condition ) {
+                case 'equals':
+                    $results[] = ( $field_value == $value );
+                    break;
+                case 'not_equals':
+                    $results[] = ( $field_value != $value );
+                    break;
+                case 'contains':
+                    $results[] = ( strpos( $field_value, $value ) !== false );
+                    break;
+                case 'not_contains':
+                    $results[] = ( strpos( $field_value, $value ) === false );
+                    break;
+                case 'empty':
+                    $results[] = empty( $field_value );
+                    break;
+                case 'not_empty':
+                    $results[] = ! empty( $field_value );
+                    break;
+                default:
+                    $results[] = true;
+            }
+        }
+        
+        // Evaluate based on operator
+        if ( $operator === 'and' ) {
+            return ! in_array( false, $results, true );
+        } else {
+            return in_array( true, $results, true );
+        }
+    }
+    
+    /**
+     * Add inline script data for block checkout.
+     */
+    public function add_inline_script_data() {
+        $sections = array( 'billing', 'shipping', 'order' );
+        $fields_data = array();
+        
+        foreach ( $sections as $section ) {
+            $fields = SCFM_Field_Manager::get_fields( $section );
+            
+            foreach ( $fields as $field_id => $field_config ) {
+                // Only include block-supported fields
+                if ( ! $this->is_type_supported( $field_config['type'] ) ) {
+                    continue;
+                }
+                
+                // Skip if not visible in block checkout
+                if ( ! $this->is_visible_in_block_checkout( $field_config ) ) {
+                    continue;
+                }
+                
+                $fields_data[ $field_id ] = array(
+                    'type' => $field_config['type'],
+                    'label' => $field_config['label'],
+                    'conditional_logic' => ! empty( $field_config['conditional_logic'] ) ? $field_config['conditional_logic'] : null,
+                    'custom_classes' => ! empty( $field_config['class'] ) ? $field_config['class'] : array(),
+                );
+            }
+        }
+        
+        wp_localize_script(
+            'scfm-block-checkout',
+            'scfmBlockCheckout',
+            array(
+                'fields' => $fields_data,
+                'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                'nonce' => wp_create_nonce( 'scfm_block_checkout' ),
+            )
+        );
     }
 }

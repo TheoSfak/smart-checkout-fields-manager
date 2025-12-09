@@ -1,5 +1,5 @@
 /**
- * Block Checkout Styles
+ * Block Checkout Styles - Advanced Rendering
  *
  * @package Smart_Checkout_Fields_Manager
  */
@@ -15,6 +15,36 @@
 .wc-block-components-checkbox,
 .wc-block-components-combobox {
     margin-bottom: 1rem;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+/* Hidden fields with conditional logic */
+.wc-block-components-text-input.scfm-hidden,
+.wc-block-components-textarea.scfm-hidden,
+.wc-block-components-checkbox.scfm-hidden,
+.wc-block-components-combobox.scfm-hidden {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* Custom field markers */
+.scfm-custom-field {
+    position: relative;
+}
+
+.scfm-custom-field::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #46b450 0%, #46b450 100%);
+    opacity: 0.3;
+    border-radius: 2px;
 }
 
 /* Custom text inputs */
@@ -25,7 +55,7 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .wc-block-components-text-input input[type="text"]:focus,
@@ -53,6 +83,11 @@
     width: 18px;
     height: 18px;
     cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.wc-block-components-checkbox input[type="checkbox"]:hover {
+    transform: scale(1.1);
 }
 
 .wc-block-components-checkbox label {
@@ -69,7 +104,7 @@
     font-size: 1rem;
     background-color: #fff;
     cursor: pointer;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .wc-block-components-combobox select:focus {
@@ -83,6 +118,18 @@
     color: #d63638;
     font-size: 0.875rem;
     margin-top: 0.25rem;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Label styling */
@@ -102,6 +149,7 @@
 .wc-block-components-combobox label abbr {
     color: #d63638;
     text-decoration: none;
+    font-weight: bold;
 }
 
 /* Field descriptions */
@@ -125,9 +173,73 @@
     box-shadow: 0 0 0 1px #d63638;
 }
 
+/* Loading state for conditional fields */
+.scfm-custom-field.scfm-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.scfm-custom-field.scfm-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #ccc;
+    border-top-color: #007cba;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
 /* Custom field groups */
 .wc-block-components-checkout-step__content .scfm-custom-field {
     margin-bottom: 1.5rem;
+}
+
+/* Field animations */
+.scfm-custom-field {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Conditional field transitions */
+.wc-block-components-text-input,
+.wc-block-components-textarea,
+.wc-block-components-checkbox,
+.wc-block-components-combobox {
+    transition: all 0.3s ease;
+}
+
+/* Half-width fields */
+.wc-block-components-text-input.form-row-first,
+.wc-block-components-combobox.form-row-first {
+    width: calc(50% - 0.5rem);
+    display: inline-block;
+    margin-right: 1rem;
+    vertical-align: top;
+}
+
+.wc-block-components-text-input.form-row-last,
+.wc-block-components-combobox.form-row-last {
+    width: calc(50% - 0.5rem);
+    display: inline-block;
+    vertical-align: top;
 }
 
 /* Responsive adjustments */
@@ -136,5 +248,36 @@
     .wc-block-components-textarea textarea,
     .wc-block-components-combobox select {
         font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .wc-block-components-text-input.form-row-first,
+    .wc-block-components-text-input.form-row-last,
+    .wc-block-components-combobox.form-row-first,
+    .wc-block-components-combobox.form-row-last {
+        width: 100%;
+        display: block;
+        margin-right: 0;
+    }
+    
+    .scfm-custom-field::before {
+        display: none;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .wc-block-components-text-input input[type="text"],
+    .wc-block-components-textarea textarea,
+    .wc-block-components-combobox select {
+        background-color: #1e1e1e;
+        color: #fff;
+        border-color: #3a3a3a;
+    }
+    
+    .wc-block-components-text-input label,
+    .wc-block-components-textarea label,
+    .wc-block-components-checkbox label,
+    .wc-block-components-combobox label {
+        color: #fff;
     }
 }
