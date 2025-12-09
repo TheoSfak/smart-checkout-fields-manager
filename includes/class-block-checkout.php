@@ -1,0 +1,275 @@
+<?php
+/**
+ * Block Checkout Integration - Handles WooCommerce Block Checkout fields
+ *
+ * @package Smart_Checkout_Fields_Manager
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+/**
+ * Block Checkout class.
+ */
+class SCFM_Block_Checkout {
+    
+    /**
+     * Single instance of the class.
+     *
+     * @var SCFM_Block_Checkout
+     */
+    private static $instance = null;
+    
+    /**
+     * Supported block field types.
+     *
+     * @var array
+     */
+    private $supported_types = array( 'text', 'textarea', 'checkbox', 'select' );
+    
+    /**
+     * Get single instance of the class.
+     *
+     * @return SCFM_Block_Checkout
+     */
+    public static function instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+    
+    /**
+     * Constructor.
+     */
+    private function __construct() {
+        // Check if block checkout is available
+        if ( ! $this->is_block_checkout_available() ) {
+            return;
+        }
+        
+        // Register additional checkout fields for blocks
+        add_action( 'woocommerce_blocks_checkout_block_registration', array( $this, 'register_block_fields' ) );
+        
+        // Register field locations
+        add_filter( 'woocommerce_blocks_checkout_fields_locations', array( $this, 'add_field_locations' ), 10, 2 );
+        
+        // Enqueue block scripts
+        add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_after', array( $this, 'enqueue_block_scripts' ) );
+    }
+    
+    /**
+     * Check if WooCommerce Block Checkout is available.
+     *
+     * @return bool
+     */
+    private function is_block_checkout_available() {
+        return class_exists( 'Automattic\WooCommerce\Blocks\Package' ) &&
+               version_compare( \Automattic\WooCommerce\Blocks\Package::get_version(), '11.0.0', '>=' );
+    }
+    
+    /**
+     * Register block checkout fields.
+     */
+    public function register_block_fields() {
+        // Get custom fields from all sections
+        $sections = array( 'billing', 'shipping', 'order' );
+        
+        foreach ( $sections as $section ) {
+            $fields = SCFM_Field_Manager::get_fields( $section );
+            
+            foreach ( $fields as $field_id => $field_config ) {
+                // Skip if disabled
+                if ( isset( $field_config['enabled'] ) && ! $field_config['enabled'] ) {
+                    continue;
+                }
+                
+                // Skip if not a supported block type
+                if ( ! in_array( $field_config['type'], $this->supported_types, true ) ) {
+                    continue;
+                }
+                
+                // Register the field
+                $this->register_single_field( $field_id, $field_config, $section );
+            }
+        }
+    }
+    
+    /**
+     * Register a single checkout field for blocks.
+     *
+     * @param string $field_id     Field ID.
+     * @param array  $field_config Field configuration.
+     * @param string $section      Section name.
+     */
+    private function register_single_field( $field_id, $field_config, $section ) {
+        // Determine location based on section
+        $location = $this->get_field_location( $section );
+        
+        // Prepare field arguments
+        $args = array(
+            'label'    => isset( $field_config['label'] ) ? $field_config['label'] : '',
+            'required' => isset( $field_config['required'] ) ? $field_config['required'] : false,
+            'hidden'   => false,
+        );
+        
+        // Add field-type specific attributes
+        switch ( $field_config['type'] ) {
+            case 'text':
+                $args['type'] = 'text';
+                if ( ! empty( $field_config['placeholder'] ) ) {
+                    $args['placeholder'] = $field_config['placeholder'];
+                }
+                break;
+                
+            case 'textarea':
+                $args['type'] = 'textarea';
+                if ( ! empty( $field_config['placeholder'] ) ) {
+                    $args['placeholder'] = $field_config['placeholder'];
+                }
+                break;
+                
+            case 'checkbox':
+                $args['type'] = 'checkbox';
+                $args['checked'] = isset( $field_config['default'] ) && $field_config['default'];
+                break;
+                
+            case 'select':
+                $args['type'] = 'select';
+                if ( isset( $field_config['options'] ) && is_array( $field_config['options'] ) ) {
+                    $args['options'] = $this->format_select_options( $field_config['options'] );
+                }
+                break;
+        }
+        
+        // Register with WooCommerce Blocks
+        woocommerce_register_additional_checkout_field(
+            array(
+                'id'       => $field_id,
+                'location' => $location,
+                'type'     => $args['type'],
+                'label'    => $args['label'],
+                'required' => $args['required'],
+                'attributes' => $args,
+            )
+        );
+    }
+    
+    /**
+     * Get field location for blocks based on section.
+     *
+     * @param string $section Section name.
+     * @return string
+     */
+    private function get_field_location( $section ) {
+        $locations = array(
+            'billing'  => 'contact',
+            'shipping' => 'address',
+            'order'    => 'order',
+        );
+        
+        return isset( $locations[ $section ] ) ? $locations[ $section ] : 'contact';
+    }
+    
+    /**
+     * Format select options for blocks.
+     *
+     * @param array $options Options array.
+     * @return array
+     */
+    private function format_select_options( $options ) {
+        $formatted = array();
+        
+        foreach ( $options as $value => $label ) {
+            $formatted[] = array(
+                'value' => $value,
+                'label' => $label,
+            );
+        }
+        
+        return $formatted;
+    }
+    
+    /**
+     * Add custom field locations.
+     *
+     * @param array  $locations Current locations.
+     * @param string $field_id  Field ID.
+     * @return array
+     */
+    public function add_field_locations( $locations, $field_id ) {
+        // Get all custom fields
+        $all_fields = array_merge(
+            SCFM_Field_Manager::get_fields( 'billing' ),
+            SCFM_Field_Manager::get_fields( 'shipping' ),
+            SCFM_Field_Manager::get_fields( 'order' )
+        );
+        
+        // Check if this is one of our fields
+        if ( isset( $all_fields[ $field_id ] ) ) {
+            $field_config = $all_fields[ $field_id ];
+            
+            // Determine section from field ID prefix
+            $section = 'order';
+            if ( strpos( $field_id, 'billing_' ) === 0 ) {
+                $section = 'billing';
+            } elseif ( strpos( $field_id, 'shipping_' ) === 0 ) {
+                $section = 'shipping';
+            }
+            
+            $location = $this->get_field_location( $section );
+            $locations[ $field_id ] = $location;
+        }
+        
+        return $locations;
+    }
+    
+    /**
+     * Enqueue block checkout scripts.
+     */
+    public function enqueue_block_scripts() {
+        // Check if custom CSS file exists
+        $css_file = SCFM_PLUGIN_DIR . 'assets/css/block-checkout.css';
+        if ( file_exists( $css_file ) ) {
+            wp_enqueue_style(
+                'scfm-block-checkout',
+                SCFM_PLUGIN_URL . 'assets/css/block-checkout.css',
+                array(),
+                SCFM_VERSION
+            );
+        }
+        
+        // Check if custom JS file exists
+        $js_file = SCFM_PLUGIN_DIR . 'assets/js/block-checkout.js';
+        if ( file_exists( $js_file ) ) {
+            wp_enqueue_script(
+                'scfm-block-checkout',
+                SCFM_PLUGIN_URL . 'assets/js/block-checkout.js',
+                array( 'wc-blocks-checkout' ),
+                SCFM_VERSION,
+                true
+            );
+        }
+    }
+    
+    /**
+     * Get supported field types for blocks.
+     *
+     * @return array
+     */
+    public function get_supported_types() {
+        return apply_filters( 'scfm_block_supported_types', $this->supported_types );
+    }
+    
+    /**
+     * Check if a field type is supported in block checkout.
+     *
+     * @param string $type Field type.
+     * @return bool
+     */
+    public function is_type_supported( $type ) {
+        return in_array( $type, $this->get_supported_types(), true );
+    }
+}

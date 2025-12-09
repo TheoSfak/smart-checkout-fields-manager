@@ -4,6 +4,22 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Added (Phase 9 - Block Checkout Support)
+- WooCommerce Block Checkout integration
+- Support for 4 field types in Block Checkout:
+  * Text fields
+  * Textarea fields
+  * Checkbox fields
+  * Select/dropdown fields
+- Automatic field registration for Block Checkout
+- Custom styling for block checkout fields
+- Field location mapping (contact, address, order sections)
+- Block checkout validation support
+- Visual indicator (● blue dot) for block-compatible field types in admin
+- Seamless integration with WooCommerce Blocks 11.0+
+- Custom CSS and JavaScript for enhanced block checkout experience
+- Responsive design for mobile block checkout
+
 ### Fixed (Tab Switching)
 - Fixed fields not loading when switching to Shipping or Additional Fields tabs
 - Added automatic field loading on tab change
@@ -15,6 +31,11 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 - Can enable/disable third-party plugin fields
 - Proper integration with WooCommerce checkout fields filter
 - Support for all field types added by external plugins
+
+### Fixed (Recursion Prevention)
+- Fixed infinite recursion when loading order/additional fields
+- Added static flag to prevent circular dependency
+- Temporarily removes filter when detecting third-party fields
 
 ### Fixed (WooCommerce Compatibility)
 - Added HPOS (High-Performance Order Storage) compatibility declaration

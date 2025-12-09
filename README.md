@@ -45,6 +45,22 @@ A complete solution for customizing WooCommerce checkout fields. Add, edit, remo
 19. **Heading** - Display-only section heading (H3)
 20. **Paragraph** - Display-only paragraph text
 
+### ✅ Block Checkout Support (4 Field Types)
+**WooCommerce Block Checkout Compatible:**
+1. **Text** ● - Single-line text input
+2. **Textarea** ● - Multi-line text area
+3. **Checkbox** ● - Single checkbox
+4. **Select** ● - Dropdown select menu
+
+**Features:**
+- Automatic registration with WooCommerce Blocks API
+- Field location mapping (contact, address, order sections)
+- Custom styling for block checkout fields
+- Validation support
+- Requires WooCommerce Blocks 11.0+
+- Seamless integration with both Classic and Block checkout
+- Visual indicator (● blue dot) in admin for block-compatible fields
+
 ### ✅ Comprehensive Field Validation
 **Built-in Type Validation:**
 - **Number**: Numeric-only input

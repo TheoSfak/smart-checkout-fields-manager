@@ -176,6 +176,7 @@ class Smart_Checkout_Fields_Manager {
         
         // Frontend
         require_once SCFM_PLUGIN_DIR . 'includes/class-checkout-fields.php';
+        require_once SCFM_PLUGIN_DIR . 'includes/class-block-checkout.php';
     }
     
     /**
@@ -191,6 +192,7 @@ class Smart_Checkout_Fields_Manager {
         
         // Frontend components
         SCFM_Checkout_Fields::instance();
+        SCFM_Block_Checkout::instance();
         SCFM_Order_Meta::instance();
         SCFM_Field_Validator::instance();
     }

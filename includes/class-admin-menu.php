@@ -221,11 +221,20 @@ class SCFM_Admin_Menu {
                                 </th>
                                 <td>
                                     <select id="scfm-field-type" name="field_data[type]" class="regular-text" required>
-                                        <?php foreach ( $field_types as $type => $label ) : ?>
-                                            <option value="<?php echo esc_attr( $type ); ?>"><?php echo esc_html( $label ); ?></option>
+                                        <?php 
+                                        $block_supported = array( 'text', 'textarea', 'checkbox', 'select' );
+                                        foreach ( $field_types as $type => $label ) : 
+                                            $is_block_supported = in_array( $type, $block_supported, true );
+                                            $badge = $is_block_supported ? ' <span style="color: #2271b1; font-size: 0.85em;">●</span>' : '';
+                                        ?>
+                                            <option value="<?php echo esc_attr( $type ); ?>"><?php echo esc_html( $label ) . $badge; ?></option>
                                         <?php endforeach; ?>
                                     </select>
-                                    <p class="description"><?php esc_html_e( 'Select the type of field to add.', 'smart-checkout-fields' ); ?></p>
+                                    <p class="description">
+                                        <?php esc_html_e( 'Select the type of field to add.', 'smart-checkout-fields' ); ?>
+                                        <br>
+                                        <span style="color: #2271b1;">● = <?php esc_html_e( 'Block Checkout Compatible', 'smart-checkout-fields' ); ?></span>
+                                    </p>
                                 </td>
                             </tr>
                             
