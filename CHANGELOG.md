@@ -4,6 +4,27 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Added (Phase 8 - Import/Export System)
+- Complete Import/Export functionality for field configurations
+- Export fields as JSON with metadata (version, timestamp, field count)
+- Import fields with automatic validation and backup
+- Section-specific export (billing, shipping, additional)
+- JSON structure validation on import
+- Automatic backup creation before import
+- Backup restoration on import failure
+- Section mismatch detection and warning
+- Custom field filtering (exclude unmodified default fields)
+- Filename generation with site name and timestamp
+- Export/Import buttons in admin interface with icons
+- File type validation (JSON only)
+- Confirmation dialogs for import operations
+- Success/error notifications for import/export
+- Developer-friendly JSON format
+- SCFM_Import_Export class (300+ lines)
+- AJAX endpoints: scfm_export_fields, scfm_import_fields
+- Client-side file handling with FileReader API
+- Blob creation and download for exports
+
 ### Added (Phase 7 - Frontend Enhancements)
 - Complete frontend CSS stylesheet (frontend.css) with 200+ lines
 - Custom styling for heading and paragraph field types

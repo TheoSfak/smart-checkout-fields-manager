@@ -154,6 +154,16 @@ class SCFM_Admin_Menu {
                     <?php esc_html_e( 'Add Custom Field', 'smart-checkout-fields' ); ?>
                 </button>
                 
+                <button type="button" class="button scfm-export-fields" data-section="<?php echo esc_attr( $section ); ?>">
+                    <span class="dashicons dashicons-download" style="margin-top: 3px;"></span>
+                    <?php esc_html_e( 'Export', 'smart-checkout-fields' ); ?>
+                </button>
+                
+                <button type="button" class="button scfm-import-fields" data-section="<?php echo esc_attr( $section ); ?>">
+                    <span class="dashicons dashicons-upload" style="margin-top: 3px;"></span>
+                    <?php esc_html_e( 'Import', 'smart-checkout-fields' ); ?>
+                </button>
+                
                 <button type="button" class="button scfm-reset-fields" data-section="<?php echo esc_attr( $section ); ?>">
                     <?php esc_html_e( 'Reset to Defaults', 'smart-checkout-fields' ); ?>
                 </button>

@@ -150,6 +150,7 @@ class Smart_Checkout_Fields_Manager {
         
         // Data handling
         require_once SCFM_PLUGIN_DIR . 'includes/class-order-meta.php';
+        require_once SCFM_PLUGIN_DIR . 'includes/class-import-export.php';
         
         // Frontend
         require_once SCFM_PLUGIN_DIR . 'includes/class-checkout-fields.php';
@@ -163,6 +164,7 @@ class Smart_Checkout_Fields_Manager {
         if ( is_admin() ) {
             SCFM_Admin_Menu::instance();
             SCFM_Admin_Settings::instance();
+            SCFM_Import_Export::instance();
         }
         
         // Frontend components

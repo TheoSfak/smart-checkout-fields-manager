@@ -28,6 +28,10 @@
             // Add field button
             $('.scfm-add-field').on('click', this.addField);
             
+            // Import/Export buttons
+            $('.scfm-export-fields').on('click', this.exportFields);
+            $('.scfm-import-fields').on('click', this.importFields);
+            
             // Reset fields button
             $('.scfm-reset-fields').on('click', this.resetFields);
             
@@ -540,6 +544,107 @@
             } else {
                 $('#scfm-field-options-row').hide();
             }
+        },
+        
+        /**
+         * Export fields
+         */
+        exportFields: function(e) {
+            e.preventDefault();
+            var section = $(this).data('section');
+            
+            $.ajax({
+                url: scfmAdmin.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'scfm_export_fields',
+                    nonce: scfmAdmin.nonce,
+                    section: section
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Create download
+                        var dataStr = JSON.stringify(response.data.data, null, 2);
+                        var dataBlob = new Blob([dataStr], {type: 'application/json'});
+                        var url = URL.createObjectURL(dataBlob);
+                        
+                        // Create download link
+                        var link = document.createElement('a');
+                        link.download = response.data.filename;
+                        link.href = url;
+                        link.click();
+                        
+                        SCFM_Admin.showNotice('Fields exported successfully', 'success');
+                    }
+                },
+                error: function() {
+                    SCFM_Admin.showNotice(scfmAdmin.strings.error, 'error');
+                }
+            });
+        },
+        
+        /**
+         * Import fields
+         */
+        importFields: function(e) {
+            e.preventDefault();
+            var section = $(this).data('section');
+            
+            // Create file input
+            var fileInput = $('<input type="file" accept=".json">');
+            
+            fileInput.on('change', function(e) {
+                var file = e.target.files[0];
+                
+                if (!file) {
+                    return;
+                }
+                
+                // Validate file type
+                if (file.type !== 'application/json') {
+                    alert('Please select a valid JSON file.');
+                    return;
+                }
+                
+                // Confirm import
+                if (!confirm('This will import fields and may overwrite existing custom fields. A backup will be created automatically. Continue?')) {
+                    return;
+                }
+                
+                // Read file
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var importData = e.target.result;
+                    
+                    // Send to server
+                    $.ajax({
+                        url: scfmAdmin.ajax_url,
+                        type: 'POST',
+                        data: {
+                            action: 'scfm_import_fields',
+                            nonce: scfmAdmin.nonce,
+                            section: section,
+                            import_data: importData
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                SCFM_Admin.loadFields();
+                                SCFM_Admin.showNotice(response.data.message, 'success');
+                            } else {
+                                SCFM_Admin.showNotice(response.data.message || scfmAdmin.strings.error, 'error');
+                            }
+                        },
+                        error: function() {
+                            SCFM_Admin.showNotice('Import failed. Please check the file format.', 'error');
+                        }
+                    });
+                };
+                
+                reader.readAsText(file);
+            });
+            
+            // Trigger file selection
+            fileInput.click();
         }
     };
     
