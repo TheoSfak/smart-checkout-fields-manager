@@ -26,6 +26,13 @@ class SCFM_Field_Manager {
     const VERSION_OPTION = 'scfm_version';
     
     /**
+     * Flag to prevent recursion when getting actual checkout fields.
+     *
+     * @var bool
+     */
+    private static $getting_actual_fields = false;
+    
+    /**
      * Get all custom fields for a section.
      *
      * @param string $section Section name (billing, shipping, order).
@@ -74,17 +81,33 @@ class SCFM_Field_Manager {
      * @return array
      */
     public static function get_actual_checkout_fields( $section ) {
-        // Get WooCommerce checkout fields (this includes fields from other plugins)
-        $wc_fields = WC()->countries->get_address_fields( '', $section . '_' );
+        // Prevent recursion
+        if ( self::$getting_actual_fields ) {
+            return array();
+        }
         
-        // For order section, get it differently
-        if ( $section === 'order' ) {
-            // Apply the same filter that WooCommerce uses for checkout fields
+        self::$getting_actual_fields = true;
+        
+        $wc_fields = array();
+        
+        // For billing and shipping, use WooCommerce's address fields
+        if ( $section === 'billing' || $section === 'shipping' ) {
+            $wc_fields = WC()->countries->get_address_fields( '', $section . '_' );
+        } 
+        // For order section, get fields from the checkout fields filter
+        elseif ( $section === 'order' ) {
+            // Remove our own filter temporarily to avoid recursion
+            remove_filter( 'woocommerce_checkout_fields', array( SCFM_Checkout_Fields::instance(), 'customize_checkout_fields' ), 20 );
+            
+            // Get checkout fields with other plugins' modifications
             $all_checkout_fields = apply_filters( 'woocommerce_checkout_fields', array(
                 'billing'  => array(),
                 'shipping' => array(),
                 'order'    => array(),
             ) );
+            
+            // Re-add our filter
+            add_filter( 'woocommerce_checkout_fields', array( SCFM_Checkout_Fields::instance(), 'customize_checkout_fields' ), 20 );
             
             $wc_fields = isset( $all_checkout_fields['order'] ) ? $all_checkout_fields['order'] : array();
         }
@@ -122,6 +145,8 @@ class SCFM_Field_Manager {
                 $fields[ $field_key ]['validate'] = $field_config['validate'];
             }
         }
+        
+        self::$getting_actual_fields = false;
         
         return $fields;
     }
