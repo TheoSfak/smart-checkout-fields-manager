@@ -50,16 +50,18 @@ class SCFM_Checkout_Fields {
      */
     public function enqueue_scripts() {
         if ( is_checkout() || is_account_page() ) {
+            // Enqueue frontend CSS
             wp_enqueue_style(
-                'scfm-checkout',
-                SCFM_PLUGIN_URL . 'assets/css/checkout.css',
+                'scfm-frontend',
+                SCFM_PLUGIN_URL . 'assets/css/frontend.css',
                 array(),
                 SCFM_VERSION
             );
             
+            // Enqueue frontend JavaScript
             wp_enqueue_script(
-                'scfm-checkout',
-                SCFM_PLUGIN_URL . 'assets/js/checkout.js',
+                'scfm-frontend',
+                SCFM_PLUGIN_URL . 'assets/js/frontend.js',
                 array( 'jquery' ),
                 SCFM_VERSION,
                 true

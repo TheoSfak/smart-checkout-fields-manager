@@ -1,0 +1,219 @@
+/**
+ * Frontend Checkout Styles
+ * Smart Checkout Fields Manager
+ */
+
+/* Custom Field Headings */
+.woocommerce-checkout .scfm-heading {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 20px 0 10px 0;
+    padding: 10px 0;
+    border-bottom: 2px solid #e0e0e0;
+    color: #333;
+}
+
+/* Custom Field Paragraphs */
+.woocommerce-checkout .scfm-paragraph {
+    margin: 10px 0 15px 0;
+    padding: 10px;
+    background: #f9f9f9;
+    border-left: 3px solid #0073aa;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Checkbox Group Styling */
+.woocommerce-checkout .scfm-checkbox-group {
+    padding: 5px 0;
+}
+
+.woocommerce-checkout .scfm-checkbox-group label {
+    display: block;
+    margin: 8px 0;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.woocommerce-checkout .scfm-checkbox-group input[type="checkbox"] {
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Multi-select Enhancement */
+.woocommerce-checkout select[multiple].scfm-multiselect {
+    min-height: 120px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.woocommerce-checkout select[multiple].scfm-multiselect option {
+    padding: 6px 8px;
+    margin: 2px 0;
+    border-radius: 2px;
+}
+
+.woocommerce-checkout select[multiple].scfm-multiselect option:checked {
+    background: #0073aa;
+    color: #fff;
+}
+
+/* Date/Time Input Styling */
+.woocommerce-checkout input[type="date"],
+.woocommerce-checkout input[type="datetime-local"],
+.woocommerce-checkout input[type="time"],
+.woocommerce-checkout input[type="month"],
+.woocommerce-checkout input[type="week"] {
+    padding: 8px 12px;
+    min-height: 40px;
+}
+
+/* Number Input Styling */
+.woocommerce-checkout input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.woocommerce-checkout input[type="number"]::-webkit-outer-spin-button,
+.woocommerce-checkout input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Validation Feedback */
+.woocommerce-checkout .scfm-field-valid {
+    border-color: #46b450 !important;
+}
+
+.woocommerce-checkout .scfm-field-invalid {
+    border-color: #dc3232 !important;
+}
+
+.woocommerce-checkout .scfm-validation-message {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #dc3232;
+}
+
+.woocommerce-checkout .scfm-validation-message.scfm-success {
+    color: #46b450;
+}
+
+/* Required Field Indicator */
+.woocommerce-checkout .scfm-required-indicator {
+    color: #dc3232;
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+/* Radio Button Group */
+.woocommerce-checkout .scfm-radio-group label {
+    display: block;
+    margin: 8px 0;
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+.woocommerce-checkout .scfm-radio-group input[type="radio"] {
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Textarea Enhancement */
+.woocommerce-checkout textarea.scfm-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Loading State */
+.woocommerce-checkout .scfm-field-loading {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.woocommerce-checkout .scfm-field-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: scfm-spin 1s linear infinite;
+}
+
+@keyframes scfm-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .woocommerce-checkout .scfm-heading {
+        font-size: 1.1em;
+        margin: 15px 0 8px 0;
+    }
+    
+    .woocommerce-checkout .scfm-paragraph {
+        font-size: 0.95em;
+        padding: 8px;
+    }
+    
+    .woocommerce-checkout select[multiple].scfm-multiselect {
+        min-height: 100px;
+    }
+}
+
+/* WooCommerce Theme Compatibility */
+.woocommerce-checkout .woocommerce-input-wrapper .scfm-heading,
+.woocommerce-checkout .woocommerce-input-wrapper .scfm-paragraph {
+    width: 100%;
+}
+
+/* Focus States */
+.woocommerce-checkout input:focus,
+.woocommerce-checkout select:focus,
+.woocommerce-checkout textarea:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px #0073aa;
+}
+
+/* Disabled State */
+.woocommerce-checkout input:disabled,
+.woocommerce-checkout select:disabled,
+.woocommerce-checkout textarea:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Custom Field Wrapper */
+.woocommerce-checkout .scfm-custom-field {
+    margin-bottom: 15px;
+}
+
+/* Help Text */
+.woocommerce-checkout .scfm-help-text {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+    font-style: italic;
+}
+
+/* Error Shake Animation */
+@keyframes scfm-shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.woocommerce-checkout .scfm-field-error {
+    animation: scfm-shake 0.5s;
+}
