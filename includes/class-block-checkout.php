@@ -86,6 +86,11 @@ class SCFM_Block_Checkout {
                     continue;
                 }
                 
+                // Check block checkout visibility
+                if ( ! $this->is_visible_in_block_checkout( $field_config ) ) {
+                    continue;
+                }
+                
                 // Skip if not a supported block type
                 if ( ! in_array( $field_config['type'], $this->supported_types, true ) ) {
                     continue;
@@ -98,6 +103,22 @@ class SCFM_Block_Checkout {
     }
     
     /**
+     * Check if field should be visible in block checkout.
+     *
+     * @param array $field_config Field configuration.
+     * @return bool
+     */
+    private function is_visible_in_block_checkout( $field_config ) {
+        // If block_checkout_visible setting exists, respect it
+        if ( isset( $field_config['block_checkout_visible'] ) ) {
+            return (bool) $field_config['block_checkout_visible'];
+        }
+        
+        // Default: show in block checkout if enabled
+        return true;
+    }
+    
+    /**
      * Register a single checkout field for blocks.
      *
      * @param string $field_id     Field ID.
@@ -105,14 +126,17 @@ class SCFM_Block_Checkout {
      * @param string $section      Section name.
      */
     private function register_single_field( $field_id, $field_config, $section ) {
-        // Determine location based on section
-        $location = $this->get_field_location( $section );
+        // Determine location based on section and custom settings
+        $location = $this->get_field_location( $section, $field_config );
+        
+        // Check if field should be hidden based on visibility rules
+        $is_hidden = $this->should_hide_field( $field_config );
         
         // Prepare field arguments
         $args = array(
             'label'    => isset( $field_config['label'] ) ? $field_config['label'] : '',
             'required' => isset( $field_config['required'] ) ? $field_config['required'] : false,
-            'hidden'   => false,
+            'hidden'   => $is_hidden,
         );
         
         // Add field-type specific attributes
@@ -147,23 +171,46 @@ class SCFM_Block_Checkout {
         // Register with WooCommerce Blocks
         woocommerce_register_additional_checkout_field(
             array(
-                'id'       => $field_id,
-                'location' => $location,
-                'type'     => $args['type'],
-                'label'    => $args['label'],
-                'required' => $args['required'],
+                'id'         => $field_id,
+                'location'   => $location,
+                'type'       => $args['type'],
+                'label'      => $args['label'],
+                'required'   => $args['required'],
+                'hidden'     => $args['hidden'],
                 'attributes' => $args,
             )
         );
     }
     
     /**
+     * Check if field should be hidden in block checkout.
+     *
+     * @param array $field_config Field configuration.
+     * @return bool
+     */
+    private function should_hide_field( $field_config ) {
+        // Check if explicitly set to hidden in block checkout
+        if ( isset( $field_config['block_checkout_hidden'] ) ) {
+            return (bool) $field_config['block_checkout_hidden'];
+        }
+        
+        return false;
+    }
+    
+    /**
      * Get field location for blocks based on section.
      *
-     * @param string $section Section name.
+     * @param string $section      Section name.
+     * @param array  $field_config Field configuration (optional).
      * @return string
      */
-    private function get_field_location( $section ) {
+    private function get_field_location( $section, $field_config = array() ) {
+        // Check if custom location is specified
+        if ( isset( $field_config['block_checkout_location'] ) && ! empty( $field_config['block_checkout_location'] ) ) {
+            return $field_config['block_checkout_location'];
+        }
+        
+        // Default location mapping
         $locations = array(
             'billing'  => 'contact',
             'shipping' => 'address',

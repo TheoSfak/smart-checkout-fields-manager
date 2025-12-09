@@ -287,6 +287,19 @@ class SCFM_Admin_Settings {
             );
         }
         
+        // Block checkout visibility settings
+        if ( isset( $data['block_checkout_visible'] ) ) {
+            $sanitized['block_checkout_visible'] = (bool) $data['block_checkout_visible'];
+        }
+        
+        if ( isset( $data['block_checkout_location'] ) ) {
+            $valid_locations = array( 'contact', 'address', 'order' );
+            $location = sanitize_key( $data['block_checkout_location'] );
+            if ( in_array( $location, $valid_locations, true ) || empty( $location ) ) {
+                $sanitized['block_checkout_location'] = $location;
+            }
+        }
+        
         return apply_filters( 'scfm_sanitize_field_data', $sanitized, $data );
     }
 }

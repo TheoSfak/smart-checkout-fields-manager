@@ -4,6 +4,16 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Added (Block Visibility Controls)
+- Granular visibility control for Block Checkout fields
+- "Show in Block Checkout" toggle for each field
+- Custom location selector for Block Checkout (Contact, Address, Additional Info)
+- Auto-location based on field section
+- Block checkout visibility settings saved per field
+- UI controls in field editor modal
+- Validation for block checkout locations
+- Respects field visibility settings in block registration
+
 ### Added (Phase 9 - Block Checkout Support)
 - WooCommerce Block Checkout integration
 - Support for 4 field types in Block Checkout:

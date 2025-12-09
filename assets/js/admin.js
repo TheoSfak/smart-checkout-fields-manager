@@ -297,6 +297,10 @@
                 $('input[name="field_data[visibility][customer_emails]"]').prop('checked', field.visibility.customer_emails !== false);
             }
             
+            // Set block checkout visibility
+            $('#scfm-field-block-visible').prop('checked', field.block_checkout_visible !== false);
+            $('#scfm-field-block-location').val(field.block_checkout_location || '');
+            
             // Toggle options row visibility
             SCFM_Admin.toggleOptionsRow($('#scfm-field-type').val());
             

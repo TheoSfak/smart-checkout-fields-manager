@@ -354,6 +354,28 @@ class SCFM_Admin_Menu {
                                     </label>
                                 </td>
                             </tr>
+                            
+                            <tr>
+                                <th scope="row"><?php esc_html_e( 'Block Checkout', 'smart-checkout-fields' ); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" id="scfm-field-block-visible" name="field_data[block_checkout_visible]" value="1" checked>
+                                        <?php esc_html_e( 'Show in Block Checkout', 'smart-checkout-fields' ); ?>
+                                    </label>
+                                    <p class="description">
+                                        <?php esc_html_e( 'Only text, textarea, checkbox, and select fields are supported in Block Checkout.', 'smart-checkout-fields' ); ?>
+                                    </p>
+                                    <br>
+                                    <label for="scfm-field-block-location"><?php esc_html_e( 'Block Location:', 'smart-checkout-fields' ); ?></label>
+                                    <select id="scfm-field-block-location" name="field_data[block_checkout_location]" class="regular-text">
+                                        <option value=""><?php esc_html_e( 'Auto (based on section)', 'smart-checkout-fields' ); ?></option>
+                                        <option value="contact"><?php esc_html_e( 'Contact Information', 'smart-checkout-fields' ); ?></option>
+                                        <option value="address"><?php esc_html_e( 'Address', 'smart-checkout-fields' ); ?></option>
+                                        <option value="order"><?php esc_html_e( 'Additional Information', 'smart-checkout-fields' ); ?></option>
+                                    </select>
+                                    <p class="description"><?php esc_html_e( 'Where to display this field in Block Checkout.', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
                         </table>
                     </form>
                 </div>
