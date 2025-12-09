@@ -38,8 +38,8 @@ class SCFM_Checkout_Fields {
      * Constructor.
      */
     private function __construct() {
-        // Modify checkout fields
-        add_filter( 'woocommerce_checkout_fields', array( $this, 'customize_checkout_fields' ), 20 );
+        // Modify checkout fields - Use very high priority to run after all other plugins
+        add_filter( 'woocommerce_checkout_fields', array( $this, 'customize_checkout_fields' ), 999 );
         
         // Enqueue scripts
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -109,31 +109,33 @@ class SCFM_Checkout_Fields {
     private function apply_custom_fields( $default_fields, $custom_fields ) {
         $result = array();
         
-        // First, add all default/third-party fields that are NOT managed by us
+        // STEP 1: First, preserve all third-party plugin fields (like Greek VAT)
+        // These fields exist in WooCommerce but are NOT in our custom fields array
         foreach ( $default_fields as $field_id => $field_config ) {
-            // If this field is not in our custom fields array, keep it (third-party field)
+            // If this field is not in our custom fields array, it's from another plugin - keep it!
             if ( ! isset( $custom_fields[ $field_id ] ) ) {
                 $result[ $field_id ] = $field_config;
             }
         }
         
-        // Then, add/override with our custom fields
+        // STEP 2: Then, add/override with our managed fields
         foreach ( $custom_fields as $field_id => $field ) {
             // Skip disabled fields
             if ( isset( $field['enabled'] ) && ! $field['enabled'] ) {
                 continue;
             }
             
-            // Skip third-party fields (they're already added above)
+            // Skip third-party fields - keep their original configuration
+            // Third-party fields were already added in STEP 1
             if ( isset( $field['third_party'] ) && $field['third_party'] ) {
-                // But keep the original field config from WooCommerce
+                // Preserve the original field config from the third-party plugin
                 if ( isset( $default_fields[ $field_id ] ) ) {
                     $result[ $field_id ] = $default_fields[ $field_id ];
                 }
                 continue;
             }
             
-            // Convert field to WooCommerce format
+            // Convert our custom field to WooCommerce format
             $wc_field = $this->convert_to_wc_field( $field );
             
             // Apply filter for custom modifications
