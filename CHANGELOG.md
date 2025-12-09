@@ -4,6 +4,22 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Added (Phase 5 - Validation & Default Fields)
+- Comprehensive field validation system with WooCommerce integration
+- Server-side validation via `woocommerce_after_checkout_validation` hook
+- Type-based validation: email, number, url, tel (phone)
+- Custom validation rules: postcode, state, phone (strict)
+- Field-level validation with custom error messages
+- Support for multiple validation rules per field
+- Developer hook: `scfm_validate_field` for custom validation
+- Validation rules UI in field editor modal (6 rule checkboxes)
+- Default WooCommerce fields management system
+- Edit capabilities for all default fields (label, placeholder, required, enabled, priority)
+- Protection against deleting required default WooCommerce fields
+- Visual distinction in modal when editing default fields (disabled type selector)
+- Field type change prevention for default WooCommerce fields
+- Enhanced admin.js to handle validation rule checkboxes in modal
+
 ### Added (Phase 4)
 - Frontend checkout field rendering with WooCommerce integration
 - Order meta saving for custom fields on checkout

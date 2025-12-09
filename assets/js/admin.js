@@ -232,7 +232,17 @@
             // Set form values
             $('#scfm-field-id').val(fieldId);
             $('#scfm-field-section').val(section);
-            $('#scfm-modal-title').text('Edit Field');
+            
+            // Check if it's a default WC field
+            var isDefaultWC = field.default_wc === true;
+            if (isDefaultWC) {
+                $('#scfm-modal-title').text('Edit Default WooCommerce Field');
+                // Disable field type change for default fields
+                $('#scfm-field-type').prop('disabled', true);
+            } else {
+                $('#scfm-modal-title').text('Edit Field');
+                $('#scfm-field-type').prop('disabled', false);
+            }
             
             $('#scfm-field-type').val(field.type || 'text');
             $('#scfm-field-label').val(field.label || '');
@@ -261,6 +271,15 @@
                     });
                 }
                 $('#scfm-field-options').val(optionsText.trim());
+            }
+            
+            // Set validation rules
+            $('input[name="field_data[validation][]"]').prop('checked', false);
+            if (field.validation) {
+                var validationArray = Array.isArray(field.validation) ? field.validation : [field.validation];
+                validationArray.forEach(function(rule) {
+                    $('input[name="field_data[validation][]"][value="' + rule + '"]').prop('checked', true);
+                });
             }
             
             // Set visibility
@@ -466,6 +485,15 @@
                     }
                 });
                 formData.field_data.options = optionsObj;
+            }
+            
+            // Get validation rules
+            var validationRules = [];
+            $('input[name="field_data[validation][]"]:checked').each(function() {
+                validationRules.push($(this).val());
+            });
+            if (validationRules.length > 0) {
+                formData.field_data.validation = validationRules;
             }
             
             // Get visibility

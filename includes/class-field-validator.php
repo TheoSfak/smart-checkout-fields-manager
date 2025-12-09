@@ -38,7 +38,8 @@ class SCFM_Field_Validator {
      * Constructor.
      */
     private function __construct() {
-        // TODO: Add validation hooks in later phases
+        // Hook into WooCommerce checkout validation
+        add_action( 'woocommerce_after_checkout_validation', array( $this, 'validate_custom_fields' ), 10, 2 );
     }
     
     /**
@@ -55,5 +56,223 @@ class SCFM_Field_Validator {
             'postcode' => __( 'Postcode Format', 'smart-checkout-fields' ),
             'state'    => __( 'Valid State', 'smart-checkout-fields' ),
         );
+    }
+    
+    /**
+     * Validate custom fields during checkout.
+     *
+     * @param array    $data   Posted checkout data.
+     * @param WP_Error $errors WP_Error object.
+     */
+    public function validate_custom_fields( $data, $errors ) {
+        $field_manager = SCFM_Field_Manager::instance();
+        $all_fields    = $field_manager->get_all_fields();
+        
+        foreach ( $all_fields as $section => $fields ) {
+            foreach ( $fields as $field_id => $field ) {
+                // Skip disabled fields
+                if ( ! isset( $field['enabled'] ) || ! $field['enabled'] ) {
+                    continue;
+                }
+                
+                // Skip default WC fields (they have their own validation)
+                if ( isset( $field['default_wc'] ) && $field['default_wc'] ) {
+                    continue;
+                }
+                
+                $value = isset( $data[ $field_id ] ) ? $data[ $field_id ] : '';
+                
+                // Validate based on field type and validation rules
+                $this->validate_field( $field_id, $field, $value, $errors );
+            }
+        }
+    }
+    
+    /**
+     * Validate individual field.
+     *
+     * @param string   $field_id Field ID.
+     * @param array    $field    Field configuration.
+     * @param mixed    $value    Field value.
+     * @param WP_Error $errors   WP_Error object.
+     */
+    private function validate_field( $field_id, $field, $value, $errors ) {
+        $field_label = isset( $field['label'] ) ? $field['label'] : $field_id;
+        
+        // Required field validation
+        if ( ! empty( $field['required'] ) && empty( $value ) ) {
+            $errors->add(
+                $field_id,
+                sprintf(
+                    /* translators: %s: field label */
+                    __( '%s is a required field.', 'smart-checkout-fields' ),
+                    '<strong>' . esc_html( $field_label ) . '</strong>'
+                )
+            );
+            return;
+        }
+        
+        // Skip validation if field is empty and not required
+        if ( empty( $value ) ) {
+            return;
+        }
+        
+        // Type-based validation
+        $field_type = isset( $field['type'] ) ? $field['type'] : 'text';
+        
+        switch ( $field_type ) {
+            case 'email':
+                if ( ! is_email( $value ) ) {
+                    $errors->add(
+                        $field_id,
+                        sprintf(
+                            /* translators: %s: field label */
+                            __( '%s must be a valid email address.', 'smart-checkout-fields' ),
+                            '<strong>' . esc_html( $field_label ) . '</strong>'
+                        )
+                    );
+                }
+                break;
+                
+            case 'number':
+                if ( ! is_numeric( $value ) ) {
+                    $errors->add(
+                        $field_id,
+                        sprintf(
+                            /* translators: %s: field label */
+                            __( '%s must be a valid number.', 'smart-checkout-fields' ),
+                            '<strong>' . esc_html( $field_label ) . '</strong>'
+                        )
+                    );
+                }
+                break;
+                
+            case 'url':
+                if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+                    $errors->add(
+                        $field_id,
+                        sprintf(
+                            /* translators: %s: field label */
+                            __( '%s must be a valid URL.', 'smart-checkout-fields' ),
+                            '<strong>' . esc_html( $field_label ) . '</strong>'
+                        )
+                    );
+                }
+                break;
+                
+            case 'tel':
+                // Basic phone validation - at least 7 digits
+                $clean_phone = preg_replace( '/[^0-9]/', '', $value );
+                if ( strlen( $clean_phone ) < 7 ) {
+                    $errors->add(
+                        $field_id,
+                        sprintf(
+                            /* translators: %s: field label */
+                            __( '%s must be a valid phone number.', 'smart-checkout-fields' ),
+                            '<strong>' . esc_html( $field_label ) . '</strong>'
+                        )
+                    );
+                }
+                break;
+        }
+        
+        // Custom validation rules
+        if ( ! empty( $field['validation'] ) ) {
+            $this->apply_custom_validation( $field_id, $field, $value, $errors );
+        }
+        
+        // Allow developers to add custom validation
+        do_action( 'scfm_validate_field', $field_id, $field, $value, $errors );
+    }
+    
+    /**
+     * Apply custom validation rules.
+     *
+     * @param string   $field_id Field ID.
+     * @param array    $field    Field configuration.
+     * @param mixed    $value    Field value.
+     * @param WP_Error $errors   WP_Error object.
+     */
+    private function apply_custom_validation( $field_id, $field, $value, $errors ) {
+        $validation_rules = is_array( $field['validation'] ) ? $field['validation'] : array( $field['validation'] );
+        $field_label      = isset( $field['label'] ) ? $field['label'] : $field_id;
+        
+        foreach ( $validation_rules as $rule ) {
+            switch ( $rule ) {
+                case 'postcode':
+                    // Basic postcode validation
+                    if ( ! preg_match( '/^[A-Za-z0-9\s\-]{3,10}$/', $value ) ) {
+                        $errors->add(
+                            $field_id,
+                            sprintf(
+                                /* translators: %s: field label */
+                                __( '%s must be a valid postcode.', 'smart-checkout-fields' ),
+                                '<strong>' . esc_html( $field_label ) . '</strong>'
+                            )
+                        );
+                    }
+                    break;
+                    
+                case 'state':
+                    // Validate against WooCommerce states
+                    $countries = WC()->countries->get_states();
+                    $valid     = false;
+                    
+                    foreach ( $countries as $states ) {
+                        if ( isset( $states[ $value ] ) ) {
+                            $valid = true;
+                            break;
+                        }
+                    }
+                    
+                    if ( ! $valid ) {
+                        $errors->add(
+                            $field_id,
+                            sprintf(
+                                /* translators: %s: field label */
+                                __( '%s must be a valid state.', 'smart-checkout-fields' ),
+                                '<strong>' . esc_html( $field_label ) . '</strong>'
+                            )
+                        );
+                    }
+                    break;
+                    
+                case 'phone':
+                    // More strict phone validation
+                    $clean_phone = preg_replace( '/[^0-9+]/', '', $value );
+                    if ( ! preg_match( '/^[\+]?[0-9]{7,15}$/', $clean_phone ) ) {
+                        $errors->add(
+                            $field_id,
+                            sprintf(
+                                /* translators: %s: field label */
+                                __( '%s must be a valid phone number (7-15 digits).', 'smart-checkout-fields' ),
+                                '<strong>' . esc_html( $field_label ) . '</strong>'
+                            )
+                        );
+                    }
+                    break;
+            }
+        }
+    }
+    
+    /**
+     * Validate field value (used for AJAX/programmatic validation).
+     *
+     * @param string $field_id Field ID.
+     * @param array  $field    Field configuration.
+     * @param mixed  $value    Field value.
+     * @return true|string True if valid, error message if invalid.
+     */
+    public function validate_field_value( $field_id, $field, $value ) {
+        require_once ABSPATH . 'wp-includes/class-wp-error.php';
+        
+        $errors = new WP_Error();
+        $this->validate_field( $field_id, $field, $value, $errors );
+        
+        if ( $errors->has_errors() ) {
+            return $errors->get_error_message();
+        }
+        
+        return true;
     }
 }

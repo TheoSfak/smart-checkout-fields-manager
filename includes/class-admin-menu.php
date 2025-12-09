@@ -284,6 +284,24 @@ class SCFM_Admin_Menu {
                             </tr>
                             
                             <tr>
+                                <th scope="row">
+                                    <label for="scfm-field-validation"><?php esc_html_e( 'Validation Rules', 'smart-checkout-fields' ); ?></label>
+                                </th>
+                                <td>
+                                    <?php
+                                    $validation_rules = SCFM_Field_Validator::get_validation_rules();
+                                    foreach ( $validation_rules as $rule => $label ) :
+                                        ?>
+                                        <label style="display: block; margin-bottom: 5px;">
+                                            <input type="checkbox" name="field_data[validation][]" value="<?php echo esc_attr( $rule ); ?>">
+                                            <?php echo esc_html( $label ); ?>
+                                        </label>
+                                    <?php endforeach; ?>
+                                    <p class="description"><?php esc_html_e( 'Additional validation rules to apply to this field.', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
                                 <th scope="row"><?php esc_html_e( 'Options', 'smart-checkout-fields' ); ?></th>
                                 <td>
                                     <label>
