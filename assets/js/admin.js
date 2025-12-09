@@ -39,6 +39,21 @@
             
             // Toggle field status (delegated)
             $(document).on('change', '.scfm-toggle input', this.toggleField);
+            
+            // Modal events
+            $('.scfm-modal-close').on('click', this.closeModal);
+            $('.scfm-modal-overlay').on('click', this.closeModal);
+            $('#scfm-save-field').on('click', this.saveField);
+            
+            // Field type change
+            $('#scfm-field-type').on('change', function() {
+                SCFM_Admin.toggleOptionsRow($(this).val());
+            });
+            
+            // Prevent modal close on content click
+            $('.scfm-modal-content').on('click', function(e) {
+                e.stopPropagation();
+            });
         },
         
         /**
@@ -170,8 +185,19 @@
             e.preventDefault();
             var section = $(this).data('section');
             
-            // TODO: Open modal in Phase 2
-            alert('Add field modal will be implemented in Phase 2');
+            // Reset form
+            $('#scfm-field-form')[0].reset();
+            $('#scfm-field-id').val('');
+            $('#scfm-field-section').val(section);
+            $('#scfm-modal-title').text('Add Custom Field');
+            $('#scfm-field-enabled').prop('checked', true);
+            $('input[name="field_data[visibility][order_details]"]').prop('checked', true);
+            $('input[name="field_data[visibility][admin_emails]"]').prop('checked', true);
+            $('input[name="field_data[visibility][customer_emails]"]').prop('checked', true);
+            
+            // Show modal
+            $('#scfm-field-modal').fadeIn(200);
+            $('#scfm-field-label').focus();
         },
         
         /**
@@ -180,9 +206,75 @@
         editField: function(e) {
             e.preventDefault();
             var fieldId = $(this).data('field-id');
+            var section = $(this).closest('.scfm-sortable-fields').data('section');
             
-            // TODO: Open edit modal in Phase 2
-            alert('Edit field modal will be implemented in Phase 2');
+            // Get field data from server
+            $.ajax({
+                url: scfmAdmin.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'scfm_get_fields',
+                    nonce: scfmAdmin.nonce,
+                    section: section
+                },
+                success: function(response) {
+                    if (response.success && response.data.fields[fieldId]) {
+                        SCFM_Admin.openEditModal(section, fieldId, response.data.fields[fieldId]);
+                    }
+                }
+            });
+        },
+        
+        /**
+         * Open edit modal with field data
+         */
+        openEditModal: function(section, fieldId, field) {
+            // Set form values
+            $('#scfm-field-id').val(fieldId);
+            $('#scfm-field-section').val(section);
+            $('#scfm-modal-title').text('Edit Field');
+            
+            $('#scfm-field-type').val(field.type || 'text');
+            $('#scfm-field-label').val(field.label || '');
+            $('#scfm-field-placeholder').val(field.placeholder || '');
+            $('#scfm-field-default').val(field.default || '');
+            $('#scfm-field-priority').val(field.priority || 100);
+            $('#scfm-field-required').prop('checked', field.required || false);
+            $('#scfm-field-enabled').prop('checked', field.enabled !== false);
+            
+            // Set class
+            if (field.class && Array.isArray(field.class)) {
+                var mainClass = field.class.find(function(c) {
+                    return c.indexOf('form-row') === 0;
+                });
+                if (mainClass) {
+                    $('#scfm-field-class').val(mainClass);
+                }
+            }
+            
+            // Set options if field type has options
+            if (field.options) {
+                var optionsText = '';
+                if (typeof field.options === 'object') {
+                    $.each(field.options, function(key, value) {
+                        optionsText += key + '|' + value + '\n';
+                    });
+                }
+                $('#scfm-field-options').val(optionsText.trim());
+            }
+            
+            // Set visibility
+            if (field.visibility) {
+                $('input[name="field_data[visibility][order_details]"]').prop('checked', field.visibility.order_details !== false);
+                $('input[name="field_data[visibility][admin_emails]"]').prop('checked', field.visibility.admin_emails !== false);
+                $('input[name="field_data[visibility][customer_emails]"]').prop('checked', field.visibility.customer_emails !== false);
+            }
+            
+            // Toggle options row visibility
+            SCFM_Admin.toggleOptionsRow($('#scfm-field-type').val());
+            
+            // Show modal
+            $('#scfm-field-modal').fadeIn(200);
         },
         
         /**
@@ -313,6 +405,113 @@
             setTimeout(function() {
                 $notice.slideUp();
             }, 5000);
+        },
+        
+        /**
+         * Close modal
+         */
+        closeModal: function(e) {
+            e.preventDefault();
+            $('#scfm-field-modal').fadeOut(200);
+        },
+        
+        /**
+         * Save field from modal
+         */
+        saveField: function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            if (!$('#scfm-field-label').val()) {
+                alert('Please enter a field label.');
+                $('#scfm-field-label').focus();
+                return;
+            }
+            
+            // Serialize form data
+            var formData = {
+                action: 'scfm_save_field',
+                nonce: scfmAdmin.nonce,
+                section: $('#scfm-field-section').val(),
+                field_id: $('#scfm-field-id').val(),
+                field_data: {}
+            };
+            
+            // Get form values
+            formData.field_data.type = $('#scfm-field-type').val();
+            formData.field_data.label = $('#scfm-field-label').val();
+            formData.field_data.placeholder = $('#scfm-field-placeholder').val();
+            formData.field_data.default = $('#scfm-field-default').val();
+            formData.field_data.priority = parseInt($('#scfm-field-priority').val()) || 100;
+            formData.field_data.required = $('#scfm-field-required').is(':checked');
+            formData.field_data.enabled = $('#scfm-field-enabled').is(':checked');
+            
+            // Get class
+            var selectedClass = $('#scfm-field-class').val();
+            formData.field_data.class = [selectedClass];
+            
+            // Get options if applicable
+            var optionsText = $('#scfm-field-options').val();
+            if (optionsText) {
+                var optionsArray = optionsText.split('\n').filter(function(line) {
+                    return line.trim() !== '';
+                });
+                var optionsObj = {};
+                optionsArray.forEach(function(line) {
+                    var parts = line.split('|');
+                    if (parts.length === 2) {
+                        optionsObj[parts[0].trim()] = parts[1].trim();
+                    } else {
+                        optionsObj[line.trim()] = line.trim();
+                    }
+                });
+                formData.field_data.options = optionsObj;
+            }
+            
+            // Get visibility
+            formData.field_data.visibility = {
+                order_details: $('input[name="field_data[visibility][order_details]"]').is(':checked'),
+                admin_emails: $('input[name="field_data[visibility][admin_emails]"]').is(':checked'),
+                customer_emails: $('input[name="field_data[visibility][customer_emails]"]').is(':checked')
+            };
+            
+            // Disable save button
+            var $saveBtn = $('#scfm-save-field');
+            $saveBtn.prop('disabled', true).text(scfmAdmin.strings.saving);
+            
+            // Send AJAX request
+            $.ajax({
+                url: scfmAdmin.ajax_url,
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        SCFM_Admin.closeModal({preventDefault: function(){}});
+                        SCFM_Admin.loadFields();
+                        SCFM_Admin.showNotice(response.data.message, 'success');
+                    } else {
+                        alert(response.data.message || scfmAdmin.strings.error);
+                    }
+                },
+                error: function() {
+                    alert(scfmAdmin.strings.error);
+                },
+                complete: function() {
+                    $saveBtn.prop('disabled', false).text('Save Field');
+                }
+            });
+        },
+        
+        /**
+         * Toggle options row visibility based on field type
+         */
+        toggleOptionsRow: function(fieldType) {
+            var typesWithOptions = ['select', 'multiselect', 'radio', 'checkboxgroup'];
+            if (typesWithOptions.indexOf(fieldType) !== -1) {
+                $('#scfm-field-options-row').show();
+            } else {
+                $('#scfm-field-options-row').hide();
+            }
         }
     };
     

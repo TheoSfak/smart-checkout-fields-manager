@@ -135,6 +135,8 @@ class SCFM_Admin_Menu {
             <div class="scfm-tab-content" id="additional-fields" style="display: none;">
                 <?php $this->render_fields_table( 'order' ); ?>
             </div>
+            
+            <?php $this->render_field_modal(); ?>
         </div>
         <?php
     }
@@ -177,6 +179,153 @@ class SCFM_Admin_Menu {
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <?php
+    }
+    
+    /**
+     * Render field editor modal.
+     */
+    private function render_field_modal() {
+        $field_types = SCFM_Field_Renderer::get_field_types();
+        ?>
+        <div id="scfm-field-modal" class="scfm-modal" style="display: none;">
+            <div class="scfm-modal-overlay"></div>
+            <div class="scfm-modal-content">
+                <div class="scfm-modal-header">
+                    <h2 id="scfm-modal-title"><?php esc_html_e( 'Add Custom Field', 'smart-checkout-fields' ); ?></h2>
+                    <button type="button" class="scfm-modal-close">
+                        <span class="dashicons dashicons-no-alt"></span>
+                    </button>
+                </div>
+                
+                <div class="scfm-modal-body">
+                    <form id="scfm-field-form">
+                        <input type="hidden" id="scfm-field-id" name="field_id" value="">
+                        <input type="hidden" id="scfm-field-section" name="section" value="">
+                        
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row">
+                                    <label for="scfm-field-type"><?php esc_html_e( 'Field Type', 'smart-checkout-fields' ); ?> <span class="required">*</span></label>
+                                </th>
+                                <td>
+                                    <select id="scfm-field-type" name="field_data[type]" class="regular-text" required>
+                                        <?php foreach ( $field_types as $type => $label ) : ?>
+                                            <option value="<?php echo esc_attr( $type ); ?>"><?php echo esc_html( $label ); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <p class="description"><?php esc_html_e( 'Select the type of field to add.', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th scope="row">
+                                    <label for="scfm-field-label"><?php esc_html_e( 'Label', 'smart-checkout-fields' ); ?> <span class="required">*</span></label>
+                                </th>
+                                <td>
+                                    <input type="text" id="scfm-field-label" name="field_data[label]" class="regular-text" required>
+                                    <p class="description"><?php esc_html_e( 'The label displayed on the checkout page.', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th scope="row">
+                                    <label for="scfm-field-placeholder"><?php esc_html_e( 'Placeholder', 'smart-checkout-fields' ); ?></label>
+                                </th>
+                                <td>
+                                    <input type="text" id="scfm-field-placeholder" name="field_data[placeholder]" class="regular-text">
+                                    <p class="description"><?php esc_html_e( 'Optional placeholder text shown in the field.', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th scope="row">
+                                    <label for="scfm-field-default"><?php esc_html_e( 'Default Value', 'smart-checkout-fields' ); ?></label>
+                                </th>
+                                <td>
+                                    <input type="text" id="scfm-field-default" name="field_data[default]" class="regular-text">
+                                    <p class="description"><?php esc_html_e( 'Default value for this field.', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
+                            
+                            <tr id="scfm-field-options-row" style="display: none;">
+                                <th scope="row">
+                                    <label for="scfm-field-options"><?php esc_html_e( 'Options', 'smart-checkout-fields' ); ?></label>
+                                </th>
+                                <td>
+                                    <textarea id="scfm-field-options" name="field_data[options]" class="large-text" rows="4"></textarea>
+                                    <p class="description"><?php esc_html_e( 'Enter each option on a new line. Format: value|Label or just value', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th scope="row">
+                                    <label for="scfm-field-class"><?php esc_html_e( 'CSS Class', 'smart-checkout-fields' ); ?></label>
+                                </th>
+                                <td>
+                                    <select id="scfm-field-class" name="field_data[class]" class="regular-text">
+                                        <option value="form-row-wide"><?php esc_html_e( 'Full Width', 'smart-checkout-fields' ); ?></option>
+                                        <option value="form-row-first"><?php esc_html_e( 'Half Width (First)', 'smart-checkout-fields' ); ?></option>
+                                        <option value="form-row-last"><?php esc_html_e( 'Half Width (Last)', 'smart-checkout-fields' ); ?></option>
+                                    </select>
+                                    <p class="description"><?php esc_html_e( 'Field width on checkout page.', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th scope="row">
+                                    <label for="scfm-field-priority"><?php esc_html_e( 'Priority', 'smart-checkout-fields' ); ?></label>
+                                </th>
+                                <td>
+                                    <input type="number" id="scfm-field-priority" name="field_data[priority]" class="small-text" value="100" min="0" step="10">
+                                    <p class="description"><?php esc_html_e( 'Lower numbers appear first. Default fields use multiples of 10.', 'smart-checkout-fields' ); ?></p>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th scope="row"><?php esc_html_e( 'Options', 'smart-checkout-fields' ); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" id="scfm-field-required" name="field_data[required]" value="1">
+                                        <?php esc_html_e( 'Required field', 'smart-checkout-fields' ); ?>
+                                    </label>
+                                    <br>
+                                    <label>
+                                        <input type="checkbox" id="scfm-field-enabled" name="field_data[enabled]" value="1" checked>
+                                        <?php esc_html_e( 'Enabled', 'smart-checkout-fields' ); ?>
+                                    </label>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th scope="row"><?php esc_html_e( 'Visibility', 'smart-checkout-fields' ); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="field_data[visibility][order_details]" value="1" checked>
+                                        <?php esc_html_e( 'Show in Order Details', 'smart-checkout-fields' ); ?>
+                                    </label>
+                                    <br>
+                                    <label>
+                                        <input type="checkbox" name="field_data[visibility][admin_emails]" value="1" checked>
+                                        <?php esc_html_e( 'Show in Admin Emails', 'smart-checkout-fields' ); ?>
+                                    </label>
+                                    <br>
+                                    <label>
+                                        <input type="checkbox" name="field_data[visibility][customer_emails]" value="1" checked>
+                                        <?php esc_html_e( 'Show in Customer Emails', 'smart-checkout-fields' ); ?>
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                
+                <div class="scfm-modal-footer">
+                    <button type="button" class="button scfm-modal-close"><?php esc_html_e( 'Cancel', 'smart-checkout-fields' ); ?></button>
+                    <button type="button" class="button button-primary" id="scfm-save-field"><?php esc_html_e( 'Save Field', 'smart-checkout-fields' ); ?></button>
+                </div>
+            </div>
         </div>
         <?php
     }
