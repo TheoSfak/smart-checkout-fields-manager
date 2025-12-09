@@ -76,6 +76,9 @@
             // Show corresponding content
             $('.scfm-tab-content').hide();
             $('#' + tabId).show();
+            
+            // Load fields for the newly visible tab
+            SCFM_Admin.loadFields();
         },
         
         /**
