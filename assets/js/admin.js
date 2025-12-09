@@ -54,6 +54,16 @@
                 SCFM_Admin.toggleOptionsRow($(this).val());
             });
             
+            // Field section change - show/hide address format row
+            $('#scfm-field-section').on('change', function() {
+                var section = $(this).val();
+                if (section === 'billing' || section === 'shipping') {
+                    $('#scfm-address-format-row').show();
+                } else {
+                    $('#scfm-address-format-row').hide();
+                }
+            });
+            
             // Prevent modal close on content click
             $('.scfm-modal-content').on('click', function(e) {
                 e.stopPropagation();
@@ -241,6 +251,13 @@
             $('#scfm-field-id').val(fieldId);
             $('#scfm-field-section').val(section);
             
+            // Show/hide address format row based on section
+            if (section === 'billing' || section === 'shipping') {
+                $('#scfm-address-format-row').show();
+            } else {
+                $('#scfm-address-format-row').hide();
+            }
+            
             // Check if it's a default WC field
             var isDefaultWC = field.default_wc === true;
             if (isDefaultWC) {
@@ -300,6 +317,10 @@
             // Set block checkout visibility
             $('#scfm-field-block-visible').prop('checked', field.block_checkout_visible !== false);
             $('#scfm-field-block-location').val(field.block_checkout_location || '');
+            
+            // Set address format settings
+            $('#scfm-field-show-in-address').prop('checked', field.show_in_address_format || false);
+            $('#scfm-field-address-position').val(field.address_format_position || 0);
             
             // Toggle options row visibility
             SCFM_Admin.toggleOptionsRow($('#scfm-field-type').val());

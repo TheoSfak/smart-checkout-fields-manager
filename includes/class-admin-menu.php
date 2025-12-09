@@ -376,6 +376,25 @@ class SCFM_Admin_Menu {
                                     <p class="description"><?php esc_html_e( 'Where to display this field in Block Checkout.', 'smart-checkout-fields' ); ?></p>
                                 </td>
                             </tr>
+                            
+                            <tr id="scfm-address-format-row" style="display: none;">
+                                <th scope="row"><?php esc_html_e( 'Address Format', 'smart-checkout-fields' ); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" id="scfm-field-show-in-address" name="field_data[show_in_address_format]" value="1">
+                                        <?php esc_html_e( 'Show in Address Format', 'smart-checkout-fields' ); ?>
+                                    </label>
+                                    <p class="description">
+                                        <?php esc_html_e( 'Include this field when displaying formatted addresses (orders, invoices, emails).', 'smart-checkout-fields' ); ?>
+                                    </p>
+                                    <br>
+                                    <label for="scfm-field-address-position"><?php esc_html_e( 'Position in Address:', 'smart-checkout-fields' ); ?></label>
+                                    <input type="number" id="scfm-field-address-position" name="field_data[address_format_position]" class="small-text" value="0" min="0" step="1">
+                                    <p class="description">
+                                        <?php esc_html_e( 'Line number where this field appears (0 = first line, 1 = second line, etc.).', 'smart-checkout-fields' ); ?>
+                                    </p>
+                                </td>
+                            </tr>
                         </table>
                     </form>
                 </div>

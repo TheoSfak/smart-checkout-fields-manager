@@ -4,6 +4,21 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+### Added (Address Format Override)
+- Custom address format integration for billing and shipping fields
+- "Show in Address Format" toggle for billing/shipping fields
+- Position control for custom fields in address format
+- Custom field placeholders in WooCommerce address templates
+- Support for order details, My Account, and email address display
+- Country-specific address format compatibility
+- Automatic field insertion based on position
+- Address format preview in field editor
+- Filters: woocommerce_localisation_address_formats, woocommerce_formatted_address_replacements
+- Filters: woocommerce_order_formatted_billing_address, woocommerce_order_formatted_shipping_address
+- Filters: woocommerce_my_account_my_address_formatted_address
+- Utility methods for address formatting and placeholder retrieval
+- SCFM_Address_Formatter class with full address management
+
 ### Added (Block Rendering - Advanced Features)
 - Conditional logic support for Block Checkout fields
 - Dynamic field visibility based on other field values

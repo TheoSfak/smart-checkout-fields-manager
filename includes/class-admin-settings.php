@@ -300,6 +300,15 @@ class SCFM_Admin_Settings {
             }
         }
         
+        // Address format settings
+        if ( isset( $data['show_in_address_format'] ) ) {
+            $sanitized['show_in_address_format'] = (bool) $data['show_in_address_format'];
+        }
+        
+        if ( isset( $data['address_format_position'] ) ) {
+            $sanitized['address_format_position'] = max( 0, intval( $data['address_format_position'] ) );
+        }
+        
         return apply_filters( 'scfm_sanitize_field_data', $sanitized, $data );
     }
 }
