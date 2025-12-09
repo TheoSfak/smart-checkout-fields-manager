@@ -2,6 +2,21 @@
 
 All notable changes to Smart Checkout Fields Manager will be documented in this file.
 
+## [Unreleased]
+
+### Added (Phase 4)
+- Frontend checkout field rendering with WooCommerce integration
+- Order meta saving for custom fields on checkout
+- Custom field display in admin order page (billing & shipping sections)
+- Custom field display in customer order details page
+- Custom field display in WooCommerce emails (admin and customer)
+- Support for all 20 field types on checkout page
+- Custom field type renderers (heading, paragraph, checkbox group)
+- Field value sanitization based on type
+- Field visibility controls implementation
+- Proper value formatting for display (arrays, dates, URLs, etc.)
+- WooCommerce hooks integration for seamless field injection
+
 ## [1.0.0] - 2025-12-08
 
 ### Added
