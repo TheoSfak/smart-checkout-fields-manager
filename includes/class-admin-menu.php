@@ -1298,11 +1298,12 @@ class SCFM_Admin_Menu {
             wp_send_json_error( array( 'message' => __( 'Plugin directory not found.', 'smart-checkout-fields-manager' ) ) );
         }
         
-        // Delete current plugin files (keep the folder)
+        // Delete current plugin files (keep the folder and .git)
         $plugin_files = $wp_filesystem->dirlist( $plugin_path );
         if ( is_array( $plugin_files ) ) {
             foreach ( $plugin_files as $file => $details ) {
-                if ( $file !== '.' && $file !== '..' ) {
+                // Skip special folders and .git directory
+                if ( $file !== '.' && $file !== '..' && $file !== '.git' ) {
                     $delete_result = $wp_filesystem->delete( $plugin_path . '/' . $file, true );
                     if ( ! $delete_result ) {
                         $wp_filesystem->delete( $temp_dir, true );
