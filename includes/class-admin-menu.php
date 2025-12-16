@@ -713,13 +713,45 @@ class SCFM_Admin_Menu {
         $error_position = get_option( 'scfm_error_position', 'below' );
         $custom_css = get_option( 'scfm_custom_css', '' );
         ?>
+        <style>
+            .scfm-settings-layout {
+                display: flex;
+                gap: 30px;
+                margin-top: 20px;
+            }
+            .scfm-settings-left {
+                flex: 1;
+                min-width: 0;
+            }
+            .scfm-settings-right {
+                flex: 0 0 400px;
+                position: sticky;
+                top: 32px;
+                align-self: flex-start;
+                max-height: calc(100vh - 100px);
+                overflow-y: auto;
+            }
+            @media (max-width: 1280px) {
+                .scfm-settings-layout {
+                    flex-direction: column;
+                }
+                .scfm-settings-right {
+                    flex: 1;
+                    position: static;
+                    max-height: none;
+                }
+            }
+        </style>
         <div class="scfm-settings-container">
             <h2><?php esc_html_e( 'General Settings', 'smart-checkout-fields-manager' ); ?></h2>
             
-            <form method="post" action="" class="scfm-settings-form">
-                <?php wp_nonce_field( 'scfm_save_settings', 'scfm_settings_nonce' ); ?>
-                
-                <!-- Display & Styling Section -->
+            <div class="scfm-settings-layout">
+                <!-- Left Column: Settings Form -->
+                <div class="scfm-settings-left">
+                    <form method="post" action="" class="scfm-settings-form">
+                        <?php wp_nonce_field( 'scfm_save_settings', 'scfm_settings_nonce' ); ?>
+                        
+                        <!-- Display & Styling Section -->
                 <h3><?php esc_html_e( 'Display & Styling', 'smart-checkout-fields-manager' ); ?></h3>
                 <table class="form-table">
                     <tr>
@@ -838,17 +870,19 @@ class SCFM_Admin_Menu {
                     </tr>
                 </table>
                 
-                <p class="submit">
-                    <button type="submit" name="scfm_save_settings" class="button button-primary">
-                        <?php esc_html_e( 'Save Settings', 'smart-checkout-fields-manager' ); ?>
-                    </button>
-                </p>
-            </form>
-            
-            <!-- Live Preview Section -->
-            <div class="scfm-settings-preview" style="margin-top: 40px; padding: 20px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
-                <h3><?php esc_html_e( 'Live Preview', 'smart-checkout-fields-manager' ); ?></h3>
-                <p class="description"><?php esc_html_e( 'Preview how your settings will look on the checkout page. Changes are applied after saving.', 'smart-checkout-fields-manager' ); ?></p>
+                        <p class="submit">
+                            <button type="submit" name="scfm_save_settings" class="button button-primary">
+                                <?php esc_html_e( 'Save Settings', 'smart-checkout-fields-manager' ); ?>
+                            </button>
+                        </p>
+                    </form>
+                </div>
+                
+                <!-- Right Column: Live Preview -->
+                <div class="scfm-settings-right">
+                    <div class="scfm-settings-preview" style="padding: 20px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
+                        <h3 style="margin-top: 0;"><?php esc_html_e( 'Live Preview', 'smart-checkout-fields-manager' ); ?></h3>
+                        <p class="description"><?php esc_html_e( 'Preview updates in real-time as you change settings.', 'smart-checkout-fields-manager' ); ?></p>
                 
                 <div class="scfm-preview-wrapper" style="margin-top: 20px; padding: 20px; background: white; border: 1px solid #ddd;">
                     <div class="scfm-preview-field-row" style="margin-bottom: 20px;">
@@ -871,14 +905,14 @@ class SCFM_Admin_Menu {
                     </div>
                     
                     <div style="padding: 15px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; margin-top: 20px;">
-                        <strong><?php esc_html_e( 'Note:', 'smart-checkout-fields-manager' ); ?></strong>
+                        <strong><?php esc_html_e( 'Current Settings:', 'smart-checkout-fields-manager' ); ?></strong>
                         <ul style="margin: 10px 0 0 20px;">
-                            <li><strong><?php esc_html_e( 'Required Indicator:', 'smart-checkout-fields-manager' ); ?></strong> <?php printf( esc_html__( 'Currently set to "%s"', 'smart-checkout-fields-manager' ), esc_html( $required_indicator ) ); ?></li>
-                            <li><strong><?php esc_html_e( 'Label Position:', 'smart-checkout-fields-manager' ); ?></strong> <?php echo esc_html( ucfirst( $label_position ) ); ?></li>
-                            <li><strong><?php esc_html_e( 'Error Position:', 'smart-checkout-fields-manager' ); ?></strong> <?php echo esc_html( ucfirst( $error_position ) ); ?></li>
+                            <li><strong><?php esc_html_e( 'Required Indicator:', 'smart-checkout-fields-manager' ); ?></strong> <span id="preview-note-indicator"><?php echo esc_html( $required_indicator ); ?></span></li>
+                            <li><strong><?php esc_html_e( 'Label Position:', 'smart-checkout-fields-manager' ); ?></strong> <span id="preview-note-label"><?php echo esc_html( ucfirst( $label_position ) ); ?></span></li>
+                            <li><strong><?php esc_html_e( 'Error Position:', 'smart-checkout-fields-manager' ); ?></strong> <span id="preview-note-error"><?php echo esc_html( ucfirst( $error_position ) ); ?></span></li>
                         </ul>
                         <p style="margin-top: 10px; margin-bottom: 0;">
-                            <button type="button" class="button" id="scfm-toggle-error-preview">
+                            <button type="button" class="button button-small" id="scfm-toggle-error-preview">
                                 <?php esc_html_e( 'Toggle Error Example', 'smart-checkout-fields-manager' ); ?>
                             </button>
                         </p>
@@ -977,11 +1011,146 @@ class SCFM_Admin_Menu {
                 
                 <script>
                 jQuery(document).ready(function($) {
+                    // Toggle error preview button
                     $('#scfm-toggle-error-preview').on('click', function() {
                         $('.scfm-preview-error').first().toggle();
                     });
+                    
+                    // Real-time preview updates
+                    function updatePreview() {
+                        var requiredIndicator = $('#scfm_required_indicator').val() || '*';
+                        var labelPosition = $('#scfm_label_position').val();
+                        var errorPosition = $('#scfm_error_position').val();
+                        
+                        // Update required indicator
+                        $('.scfm-preview-field-row .required').text(requiredIndicator);
+                        
+                        // Update label position note
+                        $('.scfm-preview-field-row').removeClass('label-inline label-floating label-hidden label-above');
+                        $('.scfm-preview-field-row label').css({
+                            'display': '',
+                            'position': '',
+                            'flex': '',
+                            'margin-bottom': '',
+                            'top': '',
+                            'left': '',
+                            'background': '',
+                            'padding': '',
+                            'font-size': '',
+                            'color': '',
+                            'width': '',
+                            'height': '',
+                            'overflow': '',
+                            'clip': '',
+                            'border': ''
+                        });
+                        $('.scfm-preview-field-row').css({
+                            'display': '',
+                            'align-items': '',
+                            'gap': '',
+                            'position': '',
+                            'padding-top': ''
+                        });
+                        $('.scfm-preview-field-row input').css('flex', '');
+                        
+                        if (labelPosition === 'inline') {
+                            $('.scfm-preview-field-row').css({
+                                'display': 'flex',
+                                'align-items': 'center',
+                                'gap': '15px'
+                            });
+                            $('.scfm-preview-field-row label').css({
+                                'flex': '0 0 150px',
+                                'margin-bottom': '0'
+                            });
+                            $('.scfm-preview-field-row input').css('flex', '1');
+                        } else if (labelPosition === 'floating') {
+                            $('.scfm-preview-field-row').css({
+                                'position': 'relative',
+                                'padding-top': '10px'
+                            });
+                            $('.scfm-preview-field-row label').css({
+                                'position': 'absolute',
+                                'top': '18px',
+                                'left': '10px',
+                                'background': 'white',
+                                'padding': '0 5px',
+                                'color': '#666',
+                                'font-size': '14px'
+                            });
+                        } else if (labelPosition === 'hidden') {
+                            $('.scfm-preview-field-row label').css({
+                                'position': 'absolute',
+                                'width': '1px',
+                                'height': '1px',
+                                'margin': '-1px',
+                                'padding': '0',
+                                'overflow': 'hidden',
+                                'clip': 'rect(0,0,0,0)',
+                                'border': '0'
+                            });
+                        }
+                        
+                        // Update error position note
+                        $('.scfm-preview-error').css({
+                            'display': '',
+                            'order': '',
+                            'margin-bottom': '',
+                            'margin-top': '',
+                            'position': '',
+                            'background': '',
+                            'color': '',
+                            'padding': '',
+                            'border-radius': '',
+                            'top': '',
+                            'left': '',
+                            'box-shadow': '',
+                            'white-space': '',
+                            'z-index': ''
+                        });
+                        $('.scfm-preview-error::after').remove();
+                        
+                        if (errorPosition === 'above') {
+                            $('.scfm-preview-field-row').css({
+                                'display': 'flex',
+                                'flex-direction': 'column'
+                            });
+                            $('.scfm-preview-error').css({
+                                'order': '-1',
+                                'margin-bottom': '5px',
+                                'margin-top': '0'
+                            });
+                        } else if (errorPosition === 'tooltip') {
+                            $('.scfm-preview-field-row').css('position', 'relative');
+                            $('.scfm-preview-error').css({
+                                'position': 'absolute',
+                                'background': '#d63638',
+                                'color': 'white',
+                                'padding': '8px 12px',
+                                'border-radius': '4px',
+                                'top': '-45px',
+                                'left': '0',
+                                'box-shadow': '0 2px 8px rgba(0,0,0,0.2)',
+                                'white-space': 'nowrap',
+                                'z-index': '1000'
+                            });
+                        }
+                        
+                        // Update note section
+                        $('#preview-note-indicator').text(requiredIndicator);
+                        $('#preview-note-label').text(labelPosition.charAt(0).toUpperCase() + labelPosition.slice(1));
+                        $('#preview-note-error').text(errorPosition.charAt(0).toUpperCase() + errorPosition.slice(1));
+                    }
+                    
+                    // Bind change events
+                    $('#scfm_required_indicator, #scfm_label_position, #scfm_error_position').on('change keyup', updatePreview);
+                    
+                    // Initial update
+                    updatePreview();
                 });
                 </script>
+                    </div>
+                </div>
             </div>
         </div>
         <?php
