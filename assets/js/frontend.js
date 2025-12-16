@@ -14,7 +14,6 @@
         init: function() {
             this.bindEvents();
             this.initDatePickers();
-            this.initMultiSelect();
             this.initPhoneMasking();
             this.initRealTimeValidation();
         },
@@ -23,13 +22,6 @@
          * Bind events
          */
         bindEvents: function() {
-            // Handle multiselect help text
-            $(document).on('focus', 'select[multiple].scfm-multiselect', function() {
-                if (!$(this).next('.scfm-help-text').length) {
-                    $(this).after('<span class="scfm-help-text">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</span>');
-                }
-            });
-            
             // Handle checkbox group
             $(document).on('change', '.scfm-checkbox-group input[type="checkbox"]', function() {
                 SCFM_Checkout.updateCheckboxGroupValue($(this).closest('.scfm-checkbox-group'));
@@ -81,38 +73,6 @@
                         $input.attr('placeholder', placeholder);
                     }
                 }
-            });
-        },
-        
-        /**
-         * Initialize multi-select enhancement
-         */
-        initMultiSelect: function() {
-            // Find all multiselect fields
-            $('.scfm-multiselect-control').each(function() {
-                var $select = $(this);
-                
-                // Force fixed height to prevent expansion
-                $select.css({
-                    'height': '150px',
-                    'max-height': '150px',
-                    'min-height': '150px',
-                    'overflow-y': 'scroll',
-                    'overflow-x': 'hidden',
-                    'display': 'block'
-                });
-                
-                // Add help text if not already present
-                if (!$select.parent().find('.scfm-help-text').length) {
-                    $select.parent().append('<span class="scfm-help-text" style="display: block; margin-top: 5px; font-size: 0.9em; color: #666;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple</span>');
-                }
-            });
-            
-            // Re-apply after AJAX updates
-            $(document.body).on('updated_checkout', function() {
-                setTimeout(function() {
-                    SCFM_Checkout.initMultiSelect();
-                }, 100);
             });
         },
         

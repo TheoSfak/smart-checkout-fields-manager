@@ -126,7 +126,6 @@ class SCFM_Order_Meta {
             case 'textarea':
                 return sanitize_textarea_field( $value );
                 
-            case 'multiselect':
             case 'checkboxgroup':
                 return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : array();
                 
@@ -319,7 +318,6 @@ class SCFM_Order_Meta {
      */
     private function format_field_value( $value, $type ) {
         switch ( $type ) {
-            case 'multiselect':
             case 'checkboxgroup':
                 if ( is_array( $value ) ) {
                     return implode( ', ', array_map( 'esc_html', $value ) );
