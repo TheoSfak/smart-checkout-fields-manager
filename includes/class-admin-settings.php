@@ -191,13 +191,17 @@ class SCFM_Admin_Settings {
             wp_send_json_error( array( 'message' => __( 'Invalid position data.', 'smart-checkout-fields-manager' ) ) );
         }
         
+        // Get all fields including defaults
+        $all_fields = SCFM_Field_Manager::get_all_fields( $section );
+        
         // Update priorities based on positions
         foreach ( $positions as $position_data ) {
             $field_id = sanitize_key( $position_data['field_id'] );
             $priority = intval( $position_data['position'] ) * 10 + 10;
             
-            $field = SCFM_Field_Manager::get_field( $section, $field_id );
-            if ( $field ) {
+            // Check if field exists in all fields
+            if ( isset( $all_fields[ $field_id ] ) ) {
+                $field = $all_fields[ $field_id ];
                 $field['priority'] = $priority;
                 SCFM_Field_Manager::save_field( $section, $field_id, $field );
             }
