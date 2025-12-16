@@ -6,7 +6,7 @@
  * Version: 1.0.0
  * Author: Theo Sfakianakis
  * Author URI: https://github.com/TheoSfak
- * Text Domain: smart-checkout-fields
+ * Text Domain: smart-checkout-fields-manager
  * Domain Path: /languages
  * Requires at least: 5.8
  * Requires PHP: 7.4
@@ -116,7 +116,7 @@ class Smart_Checkout_Fields_Manager {
                 echo wp_kses_post(
                     sprintf(
                         /* translators: 1: plugin name, 2: WooCommerce link */
-                        __( '<strong>%1$s</strong> requires <a href="%2$s" target="_blank">WooCommerce</a> to be installed and activated.', 'smart-checkout-fields' ),
+                        __( '<strong>%1$s</strong> requires <a href="%2$s" target="_blank">WooCommerce</a> to be installed and activated.', 'smart-checkout-fields-manager' ),
                         'Smart Checkout Fields Manager',
                         'https://wordpress.org/plugins/woocommerce/'
                     )
@@ -131,7 +131,7 @@ class Smart_Checkout_Fields_Manager {
      * Load plugin textdomain.
      */
     public function load_textdomain() {
-        load_plugin_textdomain( 'smart-checkout-fields', false, dirname( SCFM_PLUGIN_BASENAME ) . '/languages' );
+        load_plugin_textdomain( 'smart-checkout-fields-manager', false, dirname( SCFM_PLUGIN_BASENAME ) . '/languages' );
     }
     
     /**

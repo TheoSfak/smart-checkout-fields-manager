@@ -287,16 +287,16 @@ class SCFM_Address_Formatter {
      */
     public function get_available_placeholders() {
         $placeholders = array(
-            '{name}'       => __( 'Full Name', 'smart-checkout-fields' ),
-            '{first_name}' => __( 'First Name', 'smart-checkout-fields' ),
-            '{last_name}'  => __( 'Last Name', 'smart-checkout-fields' ),
-            '{company}'    => __( 'Company', 'smart-checkout-fields' ),
-            '{address_1}'  => __( 'Address Line 1', 'smart-checkout-fields' ),
-            '{address_2}'  => __( 'Address Line 2', 'smart-checkout-fields' ),
-            '{city}'       => __( 'City', 'smart-checkout-fields' ),
-            '{state}'      => __( 'State/County', 'smart-checkout-fields' ),
-            '{postcode}'   => __( 'Postcode/ZIP', 'smart-checkout-fields' ),
-            '{country}'    => __( 'Country', 'smart-checkout-fields' ),
+            '{name}'       => __( 'Full Name', 'smart-checkout-fields-manager' ),
+            '{first_name}' => __( 'First Name', 'smart-checkout-fields-manager' ),
+            '{last_name}'  => __( 'Last Name', 'smart-checkout-fields-manager' ),
+            '{company}'    => __( 'Company', 'smart-checkout-fields-manager' ),
+            '{address_1}'  => __( 'Address Line 1', 'smart-checkout-fields-manager' ),
+            '{address_2}'  => __( 'Address Line 2', 'smart-checkout-fields-manager' ),
+            '{city}'       => __( 'City', 'smart-checkout-fields-manager' ),
+            '{state}'      => __( 'State/County', 'smart-checkout-fields-manager' ),
+            '{postcode}'   => __( 'Postcode/ZIP', 'smart-checkout-fields-manager' ),
+            '{country}'    => __( 'Country', 'smart-checkout-fields-manager' ),
         );
         
         // Add custom fields

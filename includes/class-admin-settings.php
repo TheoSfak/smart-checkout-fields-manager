@@ -55,7 +55,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
         $section = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : 'billing';
@@ -72,7 +72,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
         $section   = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
@@ -80,7 +80,7 @@ class SCFM_Admin_Settings {
         $field_data = isset( $_POST['field_data'] ) ? $_POST['field_data'] : array();
         
         if ( empty( $section ) || empty( $field_data ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid field data.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid field data.', 'smart-checkout-fields-manager' ) ) );
         }
         
         // Sanitize field data
@@ -96,12 +96,12 @@ class SCFM_Admin_Settings {
         
         if ( $result ) {
             wp_send_json_success( array( 
-                'message' => __( 'Field saved successfully.', 'smart-checkout-fields' ),
+                'message' => __( 'Field saved successfully.', 'smart-checkout-fields-manager' ),
                 'field_id' => $field_id,
                 'field_data' => $sanitized_data
             ) );
         } else {
-            wp_send_json_error( array( 'message' => __( 'Failed to save field.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Failed to save field.', 'smart-checkout-fields-manager' ) ) );
         }
     }
     
@@ -112,20 +112,20 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
         $section  = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         $field_id = isset( $_POST['field_id'] ) ? sanitize_key( $_POST['field_id'] ) : '';
         
         if ( empty( $section ) || empty( $field_id ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'smart-checkout-fields-manager' ) ) );
         }
         
         // Check if it's a default WooCommerce field
         $field = SCFM_Field_Manager::get_field( $section, $field_id );
         if ( isset( $field['default_wc'] ) && $field['default_wc'] ) {
-            wp_send_json_error( array( 'message' => __( 'Cannot delete default WooCommerce fields.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Cannot delete default WooCommerce fields.', 'smart-checkout-fields-manager' ) ) );
         }
         
         // Delete field
@@ -133,9 +133,9 @@ class SCFM_Admin_Settings {
         
         if ( $result ) {
             do_action( 'scfm_field_deleted', $section, $field_id );
-            wp_send_json_success( array( 'message' => __( 'Field deleted successfully.', 'smart-checkout-fields' ) ) );
+            wp_send_json_success( array( 'message' => __( 'Field deleted successfully.', 'smart-checkout-fields-manager' ) ) );
         } else {
-            wp_send_json_error( array( 'message' => __( 'Failed to delete field.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Failed to delete field.', 'smart-checkout-fields-manager' ) ) );
         }
     }
     
@@ -146,7 +146,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
         $section  = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
@@ -154,13 +154,13 @@ class SCFM_Admin_Settings {
         $enabled  = isset( $_POST['enabled'] ) && $_POST['enabled'] === 'true';
         
         if ( empty( $section ) || empty( $field_id ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'smart-checkout-fields-manager' ) ) );
         }
         
         // Get field
         $field = SCFM_Field_Manager::get_field( $section, $field_id );
         if ( ! $field ) {
-            wp_send_json_error( array( 'message' => __( 'Field not found.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Field not found.', 'smart-checkout-fields-manager' ) ) );
         }
         
         // Update enabled status
@@ -168,9 +168,9 @@ class SCFM_Admin_Settings {
         $result = SCFM_Field_Manager::save_field( $section, $field_id, $field );
         
         if ( $result ) {
-            wp_send_json_success( array( 'message' => __( 'Field status updated.', 'smart-checkout-fields' ) ) );
+            wp_send_json_success( array( 'message' => __( 'Field status updated.', 'smart-checkout-fields-manager' ) ) );
         } else {
-            wp_send_json_error( array( 'message' => __( 'Failed to update field status.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Failed to update field status.', 'smart-checkout-fields-manager' ) ) );
         }
     }
     
@@ -181,14 +181,14 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
         $section   = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         $positions = isset( $_POST['positions'] ) ? $_POST['positions'] : array();
         
         if ( empty( $section ) || empty( $positions ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid position data.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid position data.', 'smart-checkout-fields-manager' ) ) );
         }
         
         // Update priorities based on positions
@@ -203,7 +203,7 @@ class SCFM_Admin_Settings {
             }
         }
         
-        wp_send_json_success( array( 'message' => __( 'Field positions updated.', 'smart-checkout-fields' ) ) );
+        wp_send_json_success( array( 'message' => __( 'Field positions updated.', 'smart-checkout-fields-manager' ) ) );
     }
     
     /**
@@ -213,22 +213,22 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
         $section = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         
         if ( empty( $section ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid section.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid section.', 'smart-checkout-fields-manager' ) ) );
         }
         
         // Reset fields
         $result = SCFM_Field_Manager::reset_fields( $section );
         
         if ( $result ) {
-            wp_send_json_success( array( 'message' => __( 'Fields reset to defaults successfully.', 'smart-checkout-fields' ) ) );
+            wp_send_json_success( array( 'message' => __( 'Fields reset to defaults successfully.', 'smart-checkout-fields-manager' ) ) );
         } else {
-            wp_send_json_error( array( 'message' => __( 'Failed to reset fields.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Failed to reset fields.', 'smart-checkout-fields-manager' ) ) );
         }
     }
     
@@ -321,7 +321,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
         $options = isset( $_POST['options'] ) ? $_POST['options'] : array();
@@ -350,7 +350,7 @@ class SCFM_Admin_Settings {
         
         update_option( 'scfm_stylish_options', $sanitized_options );
         
-        wp_send_json_success( array( 'message' => __( 'Stylish settings saved successfully!', 'smart-checkout-fields' ) ) );
+        wp_send_json_success( array( 'message' => __( 'Stylish settings saved successfully!', 'smart-checkout-fields-manager' ) ) );
     }
     
     /**
@@ -360,11 +360,11 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
         delete_option( 'scfm_stylish_options' );
         
-        wp_send_json_success( array( 'message' => __( 'Stylish settings reset to defaults.', 'smart-checkout-fields' ) ) );
+        wp_send_json_success( array( 'message' => __( 'Stylish settings reset to defaults.', 'smart-checkout-fields-manager' ) ) );
     }
 }

@@ -49,12 +49,12 @@ class SCFM_Field_Validator {
      */
     public static function get_validation_rules() {
         return array(
-            'email'    => __( 'Email Format', 'smart-checkout-fields' ),
-            'phone'    => __( 'Phone Format', 'smart-checkout-fields' ),
-            'number'   => __( 'Numeric Only', 'smart-checkout-fields' ),
-            'url'      => __( 'URL Format', 'smart-checkout-fields' ),
-            'postcode' => __( 'Postcode Format', 'smart-checkout-fields' ),
-            'state'    => __( 'Valid State', 'smart-checkout-fields' ),
+            'email'    => __( 'Email Format', 'smart-checkout-fields-manager' ),
+            'phone'    => __( 'Phone Format', 'smart-checkout-fields-manager' ),
+            'number'   => __( 'Numeric Only', 'smart-checkout-fields-manager' ),
+            'url'      => __( 'URL Format', 'smart-checkout-fields-manager' ),
+            'postcode' => __( 'Postcode Format', 'smart-checkout-fields-manager' ),
+            'state'    => __( 'Valid State', 'smart-checkout-fields-manager' ),
         );
     }
     
@@ -104,7 +104,7 @@ class SCFM_Field_Validator {
                 $field_id,
                 sprintf(
                     /* translators: %s: field label */
-                    __( '%s is a required field.', 'smart-checkout-fields' ),
+                    __( '%s is a required field.', 'smart-checkout-fields-manager' ),
                     '<strong>' . esc_html( $field_label ) . '</strong>'
                 )
             );
@@ -126,7 +126,7 @@ class SCFM_Field_Validator {
                         $field_id,
                         sprintf(
                             /* translators: %s: field label */
-                            __( '%s must be a valid email address.', 'smart-checkout-fields' ),
+                            __( '%s must be a valid email address.', 'smart-checkout-fields-manager' ),
                             '<strong>' . esc_html( $field_label ) . '</strong>'
                         )
                     );
@@ -139,7 +139,7 @@ class SCFM_Field_Validator {
                         $field_id,
                         sprintf(
                             /* translators: %s: field label */
-                            __( '%s must be a valid number.', 'smart-checkout-fields' ),
+                            __( '%s must be a valid number.', 'smart-checkout-fields-manager' ),
                             '<strong>' . esc_html( $field_label ) . '</strong>'
                         )
                     );
@@ -152,7 +152,7 @@ class SCFM_Field_Validator {
                         $field_id,
                         sprintf(
                             /* translators: %s: field label */
-                            __( '%s must be a valid URL.', 'smart-checkout-fields' ),
+                            __( '%s must be a valid URL.', 'smart-checkout-fields-manager' ),
                             '<strong>' . esc_html( $field_label ) . '</strong>'
                         )
                     );
@@ -167,7 +167,7 @@ class SCFM_Field_Validator {
                         $field_id,
                         sprintf(
                             /* translators: %s: field label */
-                            __( '%s must be a valid phone number.', 'smart-checkout-fields' ),
+                            __( '%s must be a valid phone number.', 'smart-checkout-fields-manager' ),
                             '<strong>' . esc_html( $field_label ) . '</strong>'
                         )
                     );
@@ -205,7 +205,7 @@ class SCFM_Field_Validator {
                             $field_id,
                             sprintf(
                                 /* translators: %s: field label */
-                                __( '%s must be a valid postcode.', 'smart-checkout-fields' ),
+                                __( '%s must be a valid postcode.', 'smart-checkout-fields-manager' ),
                                 '<strong>' . esc_html( $field_label ) . '</strong>'
                             )
                         );
@@ -229,7 +229,7 @@ class SCFM_Field_Validator {
                             $field_id,
                             sprintf(
                                 /* translators: %s: field label */
-                                __( '%s must be a valid state.', 'smart-checkout-fields' ),
+                                __( '%s must be a valid state.', 'smart-checkout-fields-manager' ),
                                 '<strong>' . esc_html( $field_label ) . '</strong>'
                             )
                         );
@@ -244,7 +244,7 @@ class SCFM_Field_Validator {
                             $field_id,
                             sprintf(
                                 /* translators: %s: field label */
-                                __( '%s must be a valid phone number (7-15 digits).', 'smart-checkout-fields' ),
+                                __( '%s must be a valid phone number (7-15 digits).', 'smart-checkout-fields-manager' ),
                                 '<strong>' . esc_html( $field_label ) . '</strong>'
                             )
                         );
