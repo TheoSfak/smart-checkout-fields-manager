@@ -575,9 +575,37 @@ class SCFM_Field_Manager {
      * @return string
      */
     public static function generate_field_id( $section, $label ) {
-        // Create base ID from label
-        $base_id = sanitize_title( $label );
+        // Transliterate Greek characters to Latin equivalents
+        $greek_latin = array(
+            'Α' => 'A', 'α' => 'a', 'Β' => 'B', 'β' => 'b', 'Γ' => 'G', 'γ' => 'g',
+            'Δ' => 'D', 'δ' => 'd', 'Ε' => 'E', 'ε' => 'e', 'Ζ' => 'Z', 'ζ' => 'z',
+            'Η' => 'I', 'η' => 'i', 'Θ' => 'Th', 'θ' => 'th', 'Ι' => 'I', 'ι' => 'i',
+            'Κ' => 'K', 'κ' => 'k', 'Λ' => 'L', 'λ' => 'l', 'Μ' => 'M', 'μ' => 'm',
+            'Ν' => 'N', 'ν' => 'n', 'Ξ' => 'X', 'ξ' => 'x', 'Ο' => 'O', 'ο' => 'o',
+            'Π' => 'P', 'π' => 'p', 'Ρ' => 'R', 'ρ' => 'r', 'Σ' => 'S', 'σ' => 's', 'ς' => 's',
+            'Τ' => 'T', 'τ' => 't', 'Υ' => 'Y', 'υ' => 'y', 'Φ' => 'F', 'φ' => 'f',
+            'Χ' => 'Ch', 'χ' => 'ch', 'Ψ' => 'Ps', 'ψ' => 'ps', 'Ω' => 'O', 'ω' => 'o',
+            // Greek with diacritics
+            'Ά' => 'A', 'ά' => 'a', 'Έ' => 'E', 'έ' => 'e', 'Ή' => 'I', 'ή' => 'i',
+            'Ί' => 'I', 'ί' => 'i', 'Ό' => 'O', 'ό' => 'o', 'Ύ' => 'Y', 'ύ' => 'y',
+            'Ώ' => 'O', 'ώ' => 'o', 'Ϊ' => 'I', 'ϊ' => 'i', 'ΐ' => 'i', 'Ϋ' => 'Y',
+            'ϋ' => 'y', 'ΰ' => 'y'
+        );
+        
+        // Transliterate Greek characters first
+        $base_id = strtr( $label, $greek_latin );
+        
+        // Then handle other accents
+        $base_id = remove_accents( $base_id );
+        
+        // Sanitize to create valid field ID
+        $base_id = sanitize_title( $base_id );
         $base_id = str_replace( '-', '_', $base_id );
+        
+        // If after sanitization we have an empty string, use a generic name
+        if ( empty( $base_id ) ) {
+            $base_id = 'custom_field';
+        }
         
         // Add section prefix
         $field_id = $section . '_' . $base_id;
