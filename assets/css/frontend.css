@@ -42,10 +42,16 @@
 
 /* Multi-select Enhancement */
 .woocommerce-checkout select[multiple].scfm-multiselect {
-    min-height: 120px;
+    min-height: 80px;
+    max-height: 150px;
+    height: auto !important;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    overflow-y: auto;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .woocommerce-checkout select[multiple].scfm-multiselect option {
