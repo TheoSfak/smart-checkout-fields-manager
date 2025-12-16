@@ -41,17 +41,21 @@
 }
 
 /* Multi-select Enhancement */
-.woocommerce-checkout select[multiple].scfm-multiselect {
-    min-height: 80px;
-    max-height: 150px;
-    height: auto !important;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow-y: auto;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
+.woocommerce-checkout select[multiple].scfm-multiselect,
+.woocommerce-checkout select[multiple],
+form.checkout select[multiple],
+select[multiple].scfm-multiselect {
+    height: 120px !important;
+    max-height: 120px !important;
+    min-height: 120px !important;
+    padding: 8px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .woocommerce-checkout select[multiple].scfm-multiselect option {

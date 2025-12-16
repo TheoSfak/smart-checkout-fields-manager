@@ -164,7 +164,8 @@ class SCFM_Field_Renderer {
         }
         
         $field .= '<span class="woocommerce-input-wrapper">';
-        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" multiple="multiple" size="5" style="height: auto !important; max-height: 150px; min-height: 100px;" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
+        $field .= '<div style="max-height: 150px; overflow: hidden; display: block;">';
+        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" multiple="multiple" size="5" style="height: 120px !important; max-height: 120px !important; overflow-y: auto !important; display: block !important; width: 100% !important; box-sizing: border-box !important;" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
         
         if ( ! empty( $args['options'] ) ) {
             foreach ( $args['options'] as $option_key => $option_text ) {
@@ -173,6 +174,7 @@ class SCFM_Field_Renderer {
         }
         
         $field .= '</select>';
+        $field .= '</div>';
         
         if ( $args['description'] ) {
             $field .= '<span class="description">' . wp_kses_post( $args['description'] ) . '</span>';
