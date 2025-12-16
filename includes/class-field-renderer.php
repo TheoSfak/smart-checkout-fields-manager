@@ -157,18 +157,14 @@ class SCFM_Field_Renderer {
             $required = '';
         }
         
-        // Calculate size based on number of options (min 4, max 8)
-        $option_count = ! empty( $args['options'] ) ? count( $args['options'] ) : 4;
-        $size = min( max( $option_count, 4 ), 8 );
-        
-        $field  = '<p class="form-row scfm-multiselect-field ' . esc_attr( implode( ' ', $args['class'] ) ) . '" id="' . esc_attr( $key ) . '_field" data-priority="' . esc_attr( $args['priority'] ) . '" style="overflow: visible !important;">';
+        $field  = '<p class="form-row ' . esc_attr( implode( ' ', $args['class'] ) ) . '" id="' . esc_attr( $key ) . '_field" data-priority="' . esc_attr( $args['priority'] ) . '">';
         
         if ( $args['label'] ) {
             $field .= '<label for="' . esc_attr( $key ) . '" class="' . esc_attr( implode( ' ', $args['label_class'] ) ) . '">' . wp_kses_post( $args['label'] ) . $required . '</label>';
         }
         
-        $field .= '<span class="woocommerce-input-wrapper" style="display: block !important; overflow: visible !important;">';
-        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select scfm-multiselect-control ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" multiple="multiple" size="' . esc_attr( $size ) . '" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
+        $field .= '<span class="woocommerce-input-wrapper">';
+        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select scfm-multiselect-control" multiple="multiple" size="6" style="height: 150px !important; max-height: 150px !important; overflow-y: scroll !important; display: block !important; width: 100% !important;" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
         
         if ( ! empty( $args['options'] ) ) {
             foreach ( $args['options'] as $option_key => $option_text ) {

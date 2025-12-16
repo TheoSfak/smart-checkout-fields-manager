@@ -89,31 +89,30 @@
          */
         initMultiSelect: function() {
             // Find all multiselect fields
-            $('.scfm-multiselect-control, select[multiple]').each(function() {
+            $('.scfm-multiselect-control').each(function() {
                 var $select = $(this);
                 
-                // Ensure multiple attribute is set
-                if (!$select.attr('multiple')) {
-                    $select.attr('multiple', 'multiple');
-                }
-                
-                // If size is not set or is 1, calculate proper size
-                var currentSize = parseInt($select.attr('size'));
-                if (!currentSize || currentSize < 4) {
-                    var optionCount = $select.find('option').length;
-                    var properSize = Math.min(Math.max(optionCount, 4), 8);
-                    $select.attr('size', properSize);
-                }
+                // Force fixed height to prevent expansion
+                $select.css({
+                    'height': '150px',
+                    'max-height': '150px',
+                    'min-height': '150px',
+                    'overflow-y': 'scroll',
+                    'overflow-x': 'hidden',
+                    'display': 'block'
+                });
                 
                 // Add help text if not already present
                 if (!$select.parent().find('.scfm-help-text').length) {
-                    $select.parent().append('<span class="scfm-help-text" style="display: block; margin-top: 5px; font-size: 0.9em; color: #666;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</span>');
+                    $select.parent().append('<span class="scfm-help-text" style="display: block; margin-top: 5px; font-size: 0.9em; color: #666;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple</span>');
                 }
             });
             
-            // Re-apply after AJAX updates (WooCommerce checkout updates)
+            // Re-apply after AJAX updates
             $(document.body).on('updated_checkout', function() {
-                SCFM_Checkout.initMultiSelect();
+                setTimeout(function() {
+                    SCFM_Checkout.initMultiSelect();
+                }, 100);
             });
         },
         
