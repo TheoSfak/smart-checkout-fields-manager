@@ -266,13 +266,19 @@ class SCFM_Checkout_Fields {
             $wc_field['validate'] = $field['validate'];
         }
         
-        // Add options for select, radio, checkbox group
-        if ( in_array( $field['type'], array( 'select', 'radio', 'checkboxgroup' ) ) && isset( $field['options'] ) ) {
+        // Add options for select, radio, checkbox group, multiselect
+        if ( in_array( $field['type'], array( 'select', 'radio', 'checkboxgroup', 'multiselect' ) ) && isset( $field['options'] ) ) {
             $wc_field['options'] = $field['options'];
         }
         
         // Handle special field types
         switch ( $field['type'] ) {
+            case 'multiselect':
+                // Keep as multiselect, custom renderer will handle it
+                $wc_field['type'] = 'multiselect';
+                $wc_field['class'][] = 'scfm-multiselect-field';
+                break;
+                
             case 'checkboxgroup':
                 // Keep as checkboxgroup, custom renderer will handle it
                 $wc_field['type'] = 'checkboxgroup';
