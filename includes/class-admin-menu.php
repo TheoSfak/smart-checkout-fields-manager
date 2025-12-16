@@ -40,6 +40,7 @@ class SCFM_Admin_Menu {
     private function __construct() {
         add_action( 'admin_menu', array( $this, 'register_menu' ), 60 );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_action( 'wp_ajax_scfm_update_from_github', array( $this, 'update_from_github' ) );
     }
     
     /**
@@ -92,8 +93,11 @@ class SCFM_Admin_Menu {
                 'strings'  => array(
                     'confirm_delete' => __( 'Are you sure you want to delete this field?', 'smart-checkout-fields-manager' ),
                     'confirm_reset'  => __( 'Are you sure you want to reset all fields to defaults? This action cannot be undone.', 'smart-checkout-fields-manager' ),
+                    'confirm_update' => __( 'This will update the plugin from GitHub. Your current settings will be preserved. Continue?', 'smart-checkout-fields-manager' ),
                     'saving'         => __( 'Saving...', 'smart-checkout-fields-manager' ),
                     'saved'          => __( 'Saved successfully!', 'smart-checkout-fields-manager' ),
+                    'updating'       => __( 'Updating from GitHub...', 'smart-checkout-fields-manager' ),
+                    'updated'        => __( 'Plugin updated successfully! Please refresh the page.', 'smart-checkout-fields-manager' ),
                     'error'          => __( 'An error occurred. Please try again.', 'smart-checkout-fields-manager' ),
                 ),
             )
@@ -816,6 +820,24 @@ class SCFM_Admin_Menu {
                     </tr>
                 </table>
                 
+                <h3><?php esc_html_e( 'Plugin Updates', 'smart-checkout-fields-manager' ); ?></h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <?php esc_html_e( 'Update from GitHub', 'smart-checkout-fields-manager' ); ?>
+                        </th>
+                        <td>
+                            <button type="button" id="scfm-update-github" class="button button-secondary">
+                                <?php esc_html_e( 'Update Plugin from GitHub', 'smart-checkout-fields-manager' ); ?>
+                            </button>
+                            <p class="description">
+                                <?php esc_html_e( 'Click to download and install the latest version from GitHub. Your settings will be preserved.', 'smart-checkout-fields-manager' ); ?>
+                            </p>
+                            <div id="scfm-update-status" style="margin-top: 10px;"></div>
+                        </td>
+                    </tr>
+                </table>
+                
                 <p class="submit">
                     <button type="submit" name="scfm_save_settings" class="button button-primary">
                         <?php esc_html_e( 'Save Settings', 'smart-checkout-fields-manager' ); ?>
@@ -963,5 +985,77 @@ class SCFM_Admin_Menu {
             </div>
         </div>
         <?php
+    }
+    
+    /**
+     * Update plugin from GitHub.
+     */
+    public function update_from_github() {
+        // Verify nonce
+        check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
+        
+        // Check permissions
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'smart-checkout-fields-manager' ) ) );
+        }
+        
+        // GitHub repository details
+        $github_user = 'TheoSfak';
+        $github_repo = 'smart-checkout-fields-manager';
+        $zip_url = "https://github.com/{$github_user}/{$github_repo}/archive/refs/heads/master.zip";
+        
+        // Download the zip file
+        $temp_file = download_url( $zip_url );
+        
+        if ( is_wp_error( $temp_file ) ) {
+            wp_send_json_error( array( 'message' => $temp_file->get_error_message() ) );
+        }
+        
+        // Include WordPress filesystem
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        WP_Filesystem();
+        global $wp_filesystem;
+        
+        // Unzip the file
+        $plugin_path = WP_PLUGIN_DIR . '/smart-checkout-fields-manager';
+        $temp_dir = WP_PLUGIN_DIR . '/scfm-temp-' . time();
+        
+        $unzip_result = unzip_file( $temp_file, $temp_dir );
+        
+        // Clean up temp zip
+        @unlink( $temp_file );
+        
+        if ( is_wp_error( $unzip_result ) ) {
+            $wp_filesystem->delete( $temp_dir, true );
+            wp_send_json_error( array( 'message' => $unzip_result->get_error_message() ) );
+        }
+        
+        // Move files from extracted folder to plugin directory
+        $extracted_folder = $temp_dir . '/' . $github_repo . '-master';
+        
+        if ( ! $wp_filesystem->exists( $extracted_folder ) ) {
+            $wp_filesystem->delete( $temp_dir, true );
+            wp_send_json_error( array( 'message' => __( 'Extracted folder not found.', 'smart-checkout-fields-manager' ) ) );
+        }
+        
+        // Backup current plugin (optional, for safety)
+        $backup_dir = WP_PLUGIN_DIR . '/scfm-backup-' . time();
+        $wp_filesystem->move( $plugin_path, $backup_dir );
+        
+        // Move new files to plugin directory
+        $move_result = $wp_filesystem->move( $extracted_folder, $plugin_path );
+        
+        if ( ! $move_result ) {
+            // Restore backup if move failed
+            $wp_filesystem->move( $backup_dir, $plugin_path );
+            $wp_filesystem->delete( $temp_dir, true );
+            wp_send_json_error( array( 'message' => __( 'Failed to move new files.', 'smart-checkout-fields-manager' ) ) );
+        }
+        
+        // Clean up
+        $wp_filesystem->delete( $temp_dir, true );
+        $wp_filesystem->delete( $backup_dir, true );
+        
+        wp_send_json_success( array( 'message' => __( 'Plugin updated successfully from GitHub!', 'smart-checkout-fields-manager' ) ) );
     }
 }
