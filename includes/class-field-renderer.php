@@ -65,6 +65,7 @@ class SCFM_Field_Renderer {
         add_filter( 'woocommerce_form_field_paragraph', array( __CLASS__, 'render_paragraph_field' ), 10, 4 );
         add_filter( 'woocommerce_form_field_checkboxgroup', array( __CLASS__, 'render_checkbox_group_field' ), 10, 4 );
         add_filter( 'woocommerce_form_field_multiselect', array( __CLASS__, 'render_multiselect_field' ), 10, 4 );
+        add_filter( 'woocommerce_form_field_select', array( __CLASS__, 'modify_select_field' ), 10, 4 );
     }
     
     /**
@@ -180,6 +181,42 @@ class SCFM_Field_Renderer {
         
         $field .= '</span>';
         $field .= '</p>';
+        
+        return $field;
+    }
+    
+    /**
+     * Modify WooCommerce select field to apply height constraints if it's a multiselect.
+     *
+     * @param string $field      Field HTML.
+     * @param string $key        Field key.
+     * @param array  $args       Field arguments.
+     * @param string $value      Field value.
+     * @return string
+     */
+    public static function modify_select_field( $field, $key, $args, $value ) {
+        // Only modify if this is actually a multiselect (custom attribute or class indicator)
+        $is_multiselect = false;
+        
+        if ( isset( $args['custom_attributes'] ) && isset( $args['custom_attributes']['multiple'] ) ) {
+            $is_multiselect = true;
+        }
+        
+        if ( isset( $args['input_class'] ) && is_array( $args['input_class'] ) && in_array( 'scfm-multiselect', $args['input_class'] ) ) {
+            $is_multiselect = true;
+        }
+        
+        // If not multiselect, return field as-is
+        if ( ! $is_multiselect ) {
+            return $field;
+        }
+        
+        // Replace the select tag to add height constraints
+        $field = str_replace(
+            '<select ',
+            '<select style="height: 150px !important; max-height: 150px !important; overflow-y: scroll !important; display: block !important;" class="scfm-multiselect-control" size="6" ',
+            $field
+        );
         
         return $field;
     }
