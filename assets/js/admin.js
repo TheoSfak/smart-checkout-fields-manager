@@ -151,6 +151,11 @@
                 var row = SCFM_Admin.renderFieldRow(fieldId, field);
                 $tbody.append(row);
             });
+            
+            // Refresh sortable after adding new items
+            if ($tbody.hasClass('ui-sortable')) {
+                $tbody.sortable('refresh');
+            }
         },
         
         /**
