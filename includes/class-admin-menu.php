@@ -866,6 +866,54 @@ class SCFM_Admin_Menu {
                                 <?php esc_html_e( 'Click to download and install the latest version from GitHub. Your settings will be preserved.', 'smart-checkout-fields-manager' ); ?>
                             </p>
                             <div id="scfm-update-status" style="margin-top: 10px;"></div>
+                            
+                            <script>
+                            jQuery(document).ready(function($) {
+                                $('#scfm-update-github').on('click', function(e) {
+                                    e.preventDefault();
+                                    
+                                    if (!confirm('<?php esc_html_e( 'This will update the plugin from GitHub. Your settings will be preserved. Continue?', 'smart-checkout-fields-manager' ); ?>')) {
+                                        return;
+                                    }
+                                    
+                                    var $button = $(this);
+                                    var originalText = $button.html();
+                                    var $status = $('#scfm-update-status');
+                                    
+                                    $button.prop('disabled', true).text('<?php esc_html_e( 'Updating from GitHub...', 'smart-checkout-fields-manager' ); ?>');
+                                    $status.html('<p style="color: #0073aa;">⏳ <?php esc_html_e( 'Updating from GitHub...', 'smart-checkout-fields-manager' ); ?></p>');
+                                    
+                                    $.ajax({
+                                        url: ajaxurl,
+                                        type: 'POST',
+                                        data: {
+                                            action: 'scfm_update_from_github',
+                                            nonce: '<?php echo esc_js( wp_create_nonce( 'scfm_admin_nonce' ) ); ?>'
+                                        },
+                                        success: function(response) {
+                                            if (response.success) {
+                                                var message = '<p style="color: green;">✓ ' + response.data.message;
+                                                if (response.data.commit_message) {
+                                                    message += '<br><strong style="color: #10b981; margin-top: 10px; display: inline-block;">📝 What\'s New:</strong> <span style="color: #10b981;">' + response.data.commit_message + '</span>';
+                                                }
+                                                message += '</p>';
+                                                $status.html(message);
+                                                setTimeout(function() {
+                                                    location.reload();
+                                                }, 3000);
+                                            } else {
+                                                $status.html('<p style="color: #dc3232;">✗ ' + (response.data.message || '<?php esc_html_e( 'An error occurred. Please try again.', 'smart-checkout-fields-manager' ); ?>') + '</p>');
+                                                $button.prop('disabled', false).html(originalText);
+                                            }
+                                        },
+                                        error: function() {
+                                            $status.html('<p style="color: #dc3232;">✗ <?php esc_html_e( 'An error occurred. Please try again.', 'smart-checkout-fields-manager' ); ?></p>');
+                                            $button.prop('disabled', false).html(originalText);
+                                        }
+                                    });
+                                });
+                            });
+                            </script>
                         </td>
                     </tr>
                 </table>
@@ -1183,6 +1231,22 @@ class SCFM_Admin_Menu {
         $github_repo = 'smart-checkout-fields-manager';
         $zip_url = "https://github.com/{$github_user}/{$github_repo}/archive/refs/heads/master.zip";
         
+        // Fetch latest commit info from GitHub API
+        $api_url = "https://api.github.com/repos/{$github_user}/{$github_repo}/commits/master";
+        $commit_response = wp_remote_get( $api_url, array(
+            'headers' => array(
+                'Accept' => 'application/vnd.github.v3+json',
+            ),
+        ) );
+        
+        $commit_message = '';
+        if ( ! is_wp_error( $commit_response ) && wp_remote_retrieve_response_code( $commit_response ) === 200 ) {
+            $commit_data = json_decode( wp_remote_retrieve_body( $commit_response ), true );
+            if ( isset( $commit_data['commit']['message'] ) ) {
+                $commit_message = $commit_data['commit']['message'];
+            }
+        }
+        
         // Include WordPress filesystem
         require_once ABSPATH . 'wp-admin/includes/file.php';
         WP_Filesystem();
@@ -1300,6 +1364,9 @@ class SCFM_Admin_Menu {
             }
         }
         
-        wp_send_json_success( array( 'message' => __( 'Plugin updated successfully from GitHub!', 'smart-checkout-fields-manager' ) ) );
+        wp_send_json_success( array( 
+            'message' => __( 'Plugin updated successfully from GitHub!', 'smart-checkout-fields-manager' ),
+            'commit_message' => $commit_message
+        ) );
     }
 }
