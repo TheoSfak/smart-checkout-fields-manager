@@ -164,7 +164,7 @@ class SCFM_Field_Renderer {
         }
         
         $field .= '<span class="woocommerce-input-wrapper">';
-        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" multiple="multiple" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
+        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" multiple="multiple" size="5" style="height: auto !important; max-height: 150px; min-height: 100px;" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
         
         if ( ! empty( $args['options'] ) ) {
             foreach ( $args['options'] as $option_key => $option_text ) {
