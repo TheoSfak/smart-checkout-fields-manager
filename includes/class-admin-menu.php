@@ -1173,6 +1173,22 @@ class SCFM_Admin_Menu {
         $github_repo = 'smart-checkout-fields-manager';
         $zip_url = "https://github.com/{$github_user}/{$github_repo}/archive/refs/heads/master.zip";
         
+        // Include WordPress filesystem
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        WP_Filesystem();
+        global $wp_filesystem;
+        
+        // Clean up any old temp/backup folders first
+        $plugin_dir = WP_PLUGIN_DIR;
+        $folders = $wp_filesystem->dirlist( $plugin_dir );
+        if ( is_array( $folders ) ) {
+            foreach ( $folders as $folder => $details ) {
+                if ( strpos( $folder, 'scfm-temp-' ) === 0 || strpos( $folder, 'scfm-backup-' ) === 0 ) {
+                    $wp_filesystem->delete( $plugin_dir . '/' . $folder, true );
+                }
+            }
+        }
+        
         // Download the zip file
         $temp_file = download_url( $zip_url );
         
@@ -1180,14 +1196,9 @@ class SCFM_Admin_Menu {
             wp_send_json_error( array( 'message' => $temp_file->get_error_message() ) );
         }
         
-        // Include WordPress filesystem
-        require_once ABSPATH . 'wp-admin/includes/file.php';
-        WP_Filesystem();
-        global $wp_filesystem;
-        
-        // Unzip the file
-        $plugin_path = WP_PLUGIN_DIR . '/smart-checkout-fields-manager';
-        $temp_dir = WP_PLUGIN_DIR . '/scfm-temp-' . time();
+        // Unzip to temp directory
+        $plugin_path = $plugin_dir . '/smart-checkout-fields-manager';
+        $temp_dir = $plugin_dir . '/scfm-temp-update';
         
         $unzip_result = unzip_file( $temp_file, $temp_dir );
         
@@ -1207,23 +1218,31 @@ class SCFM_Admin_Menu {
             wp_send_json_error( array( 'message' => __( 'Extracted folder not found.', 'smart-checkout-fields-manager' ) ) );
         }
         
-        // Backup current plugin (optional, for safety)
-        $backup_dir = WP_PLUGIN_DIR . '/scfm-backup-' . time();
-        $wp_filesystem->move( $plugin_path, $backup_dir );
-        
-        // Move new files to plugin directory
-        $move_result = $wp_filesystem->move( $extracted_folder, $plugin_path );
-        
-        if ( ! $move_result ) {
-            // Restore backup if move failed
-            $wp_filesystem->move( $backup_dir, $plugin_path );
-            $wp_filesystem->delete( $temp_dir, true );
-            wp_send_json_error( array( 'message' => __( 'Failed to move new files.', 'smart-checkout-fields-manager' ) ) );
+        // Delete current plugin files (keep the folder)
+        $plugin_files = $wp_filesystem->dirlist( $plugin_path );
+        if ( is_array( $plugin_files ) ) {
+            foreach ( $plugin_files as $file => $details ) {
+                $wp_filesystem->delete( $plugin_path . '/' . $file, true );
+            }
         }
         
-        // Clean up
+        // Copy new files to plugin directory
+        $new_files = $wp_filesystem->dirlist( $extracted_folder );
+        if ( is_array( $new_files ) ) {
+            foreach ( $new_files as $file => $details ) {
+                $source = $extracted_folder . '/' . $file;
+                $destination = $plugin_path . '/' . $file;
+                
+                if ( $details['type'] === 'd' ) {
+                    copy_dir( $source, $destination );
+                } else {
+                    $wp_filesystem->copy( $source, $destination );
+                }
+            }
+        }
+        
+        // Clean up temp directory
         $wp_filesystem->delete( $temp_dir, true );
-        $wp_filesystem->delete( $backup_dir, true );
         
         wp_send_json_success( array( 'message' => __( 'Plugin updated successfully from GitHub!', 'smart-checkout-fields-manager' ) ) );
     }
