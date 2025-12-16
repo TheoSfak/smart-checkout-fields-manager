@@ -63,8 +63,7 @@ class SCFM_Admin_Menu {
      */
     public function enqueue_scripts( $hook ) {
         // Only load on our admin page
-        $screen = get_current_screen();
-        if ( ! $screen || ( $screen->id !== 'woocommerce_page_smart-checkout-fields' && ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'smart-checkout-fields' ) ) ) {
+        if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'smart-checkout-fields' ) {
             return;
         }
         
