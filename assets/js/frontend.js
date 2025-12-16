@@ -89,16 +89,43 @@
          */
         initMultiSelect: function() {
             // Find all multiselect fields and ensure they have the proper attributes
-            $('.scfm-multiselect').each(function() {
+            $('select[multiple], .scfm-multiselect').each(function() {
                 var $select = $(this);
                 if (!$select.attr('multiple')) {
                     $select.attr('multiple', 'multiple');
                 }
                 
-                // Add help text if not already present
-                if (!$select.next('.scfm-help-text').length) {
-                    $select.after('<span class="scfm-help-text">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</span>');
+                // Force height with JavaScript to override any CSS
+                $select.css({
+                    'height': '130px',
+                    'max-height': '130px',
+                    'min-height': '130px',
+                    'overflow-y': 'auto',
+                    'display': 'block',
+                    'width': '100%',
+                    'box-sizing': 'border-box'
+                });
+                
+                // Ensure wrapper is also constrained
+                var $wrapper = $select.closest('.scfm-multiselect-wrapper');
+                if ($wrapper.length) {
+                    $wrapper.css({
+                        'height': '130px',
+                        'max-height': '130px',
+                        'overflow': 'hidden',
+                        'display': 'block'
+                    });
                 }
+                
+                // Add help text if not already present
+                if (!$select.parent().find('.scfm-help-text').length) {
+                    $select.parent().append('<span class="scfm-help-text">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</span>');
+                }
+            });
+            
+            // Re-apply after AJAX updates (WooCommerce checkout updates)
+            $(document.body).on('updated_checkout', function() {
+                SCFM_Checkout.initMultiSelect();
             });
         },
         

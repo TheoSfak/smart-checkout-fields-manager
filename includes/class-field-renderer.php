@@ -163,9 +163,9 @@ class SCFM_Field_Renderer {
             $field .= '<label for="' . esc_attr( $key ) . '" class="' . esc_attr( implode( ' ', $args['label_class'] ) ) . '">' . wp_kses_post( $args['label'] ) . $required . '</label>';
         }
         
-        $field .= '<span class="woocommerce-input-wrapper">';
-        $field .= '<div style="max-height: 150px; overflow: hidden; display: block;">';
-        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" multiple="multiple" size="5" style="height: 120px !important; max-height: 120px !important; overflow-y: auto !important; display: block !important; width: 100% !important; box-sizing: border-box !important;" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
+        $field .= '<span class="woocommerce-input-wrapper" style="display: block; position: relative;">';
+        $field .= '<div class="scfm-multiselect-wrapper" style="height: 130px !important; max-height: 130px !important; overflow: hidden !important; display: block !important; position: relative !important; border: 1px solid #ddd !important; border-radius: 4px !important;">';
+        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select scfm-multiselect ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" multiple="multiple" size="1" style="height: 100% !important; max-height: 100% !important; overflow-y: auto !important; display: block !important; width: 100% !important; box-sizing: border-box !important; border: none !important; position: absolute !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
         
         if ( ! empty( $args['options'] ) ) {
             foreach ( $args['options'] as $option_key => $option_text ) {
