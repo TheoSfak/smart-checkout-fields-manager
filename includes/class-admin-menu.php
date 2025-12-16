@@ -1218,31 +1218,69 @@ class SCFM_Admin_Menu {
             wp_send_json_error( array( 'message' => __( 'Extracted folder not found.', 'smart-checkout-fields-manager' ) ) );
         }
         
+        // Verify plugin path exists
+        if ( ! $wp_filesystem->exists( $plugin_path ) ) {
+            $wp_filesystem->delete( $temp_dir, true );
+            wp_send_json_error( array( 'message' => __( 'Plugin directory not found.', 'smart-checkout-fields-manager' ) ) );
+        }
+        
         // Delete current plugin files (keep the folder)
         $plugin_files = $wp_filesystem->dirlist( $plugin_path );
         if ( is_array( $plugin_files ) ) {
             foreach ( $plugin_files as $file => $details ) {
-                $wp_filesystem->delete( $plugin_path . '/' . $file, true );
+                if ( $file !== '.' && $file !== '..' ) {
+                    $delete_result = $wp_filesystem->delete( $plugin_path . '/' . $file, true );
+                    if ( ! $delete_result ) {
+                        $wp_filesystem->delete( $temp_dir, true );
+                        wp_send_json_error( array( 'message' => sprintf( __( 'Failed to delete file: %s', 'smart-checkout-fields-manager' ), $file ) ) );
+                    }
+                }
             }
         }
         
         // Copy new files to plugin directory
         $new_files = $wp_filesystem->dirlist( $extracted_folder );
-        if ( is_array( $new_files ) ) {
-            foreach ( $new_files as $file => $details ) {
-                $source = $extracted_folder . '/' . $file;
-                $destination = $plugin_path . '/' . $file;
-                
-                if ( $details['type'] === 'd' ) {
-                    copy_dir( $source, $destination );
-                } else {
-                    $wp_filesystem->copy( $source, $destination );
+        if ( ! is_array( $new_files ) || empty( $new_files ) ) {
+            $wp_filesystem->delete( $temp_dir, true );
+            wp_send_json_error( array( 'message' => __( 'No files found in downloaded package.', 'smart-checkout-fields-manager' ) ) );
+        }
+        
+        $copy_errors = array();
+        foreach ( $new_files as $file => $details ) {
+            if ( $file === '.' || $file === '..' ) {
+                continue;
+            }
+            
+            $source = $extracted_folder . '/' . $file;
+            $destination = $plugin_path . '/' . $file;
+            
+            if ( $details['type'] === 'd' ) {
+                $copy_result = copy_dir( $source, $destination );
+                if ( is_wp_error( $copy_result ) ) {
+                    $copy_errors[] = $file . ': ' . $copy_result->get_error_message();
+                }
+            } else {
+                $copy_result = $wp_filesystem->copy( $source, $destination, true );
+                if ( ! $copy_result ) {
+                    $copy_errors[] = $file;
                 }
             }
         }
         
         // Clean up temp directory
         $wp_filesystem->delete( $temp_dir, true );
+        
+        // Check if there were any copy errors
+        if ( ! empty( $copy_errors ) ) {
+            wp_send_json_error( array( 
+                'message' => __( 'Some files failed to copy: ', 'smart-checkout-fields-manager' ) . implode( ', ', $copy_errors )
+            ) );
+        }
+        
+        // Clear any WordPress caches
+        if ( function_exists( 'wp_cache_flush' ) ) {
+            wp_cache_flush();
+        }
         
         wp_send_json_success( array( 'message' => __( 'Plugin updated successfully from GitHub!', 'smart-checkout-fields-manager' ) ) );
     }
