@@ -43,15 +43,28 @@
 /* Multiselect Field Styling */
 .woocommerce-checkout select.scfm-multiselect {
     height: auto !important;
-    max-height: 150px;
-    min-height: 80px;
-    padding: 8px;
-    overflow-y: auto;
+    max-height: 150px !important;
+    min-height: 80px !important;
+    padding: 8px !important;
+    overflow-y: auto !important;
+    background-color: #fff !important;
+    border: 1px solid #ddd !important;
+    width: 100% !important;
 }
 
 .woocommerce-checkout select.scfm-multiselect option {
-    padding: 5px 8px;
-    line-height: 1.5;
+    padding: 8px !important;
+    line-height: 1.5 !important;
+    color: #333 !important;
+    background-color: #fff !important;
+    min-height: 30px !important;
+    display: block !important;
+}
+
+.woocommerce-checkout select.scfm-multiselect option:hover,
+.woocommerce-checkout select.scfm-multiselect option:focus {
+    background-color: #f0f0f0 !important;
+    color: #000 !important;
 }
 
 /* Date/Time Input Styling */
