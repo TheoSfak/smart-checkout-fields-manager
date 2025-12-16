@@ -151,18 +151,19 @@
                 $tbody.append(row);
             });
             
-            // Initialize or refresh sortable
+            // Destroy existing sortable if it exists
             if ($tbody.hasClass('ui-sortable')) {
-                $tbody.sortable('refresh');
-            } else {
-                $tbody.sortable({
-                    handle: '.scfm-drag-handle',
-                    placeholder: 'scfm-sortable-placeholder',
-                    update: function(event, ui) {
-                        SCFM_Admin.updatePositions($(this));
-                    }
-                });
+                $tbody.sortable('destroy');
             }
+            
+            // Initialize sortable
+            $tbody.sortable({
+                handle: '.scfm-drag-handle',
+                placeholder: 'scfm-sortable-placeholder',
+                update: function(event, ui) {
+                    SCFM_Admin.updatePositions($(this));
+                }
+            });
         },
         
         /**
