@@ -159,10 +159,11 @@ class SCFM_Field_Renderer {
         $field .= '<label for="' . esc_attr( $key ) . '">' . wp_kses_post( $args['label'] ) . '</label>';
         $field .= '<span class="woocommerce-input-wrapper">';
         
-        // Calculate size based on number of options (min 4, max 8)
-        $size = ! empty( $args['options'] ) ? min( max( count( $args['options'] ), 4 ), 8 ) : 5;
+        // Calculate size based on number of options (min 5, max 10 for better visibility)
+        $option_count = ! empty( $args['options'] ) ? count( $args['options'] ) : 5;
+        $size = min( max( $option_count, 5 ), 10 );
         
-        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="input-text scfm-multiselect" multiple="multiple" size="' . esc_attr( $size ) . '">';
+        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="input-text scfm-multiselect" multiple="multiple" size="' . esc_attr( $size ) . '" aria-label="' . esc_attr( $args['label'] ) . '">';
         
         if ( ! empty( $args['options'] ) ) {
             foreach ( $args['options'] as $option_key => $option_text ) {
