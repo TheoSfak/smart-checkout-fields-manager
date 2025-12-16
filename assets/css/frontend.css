@@ -40,7 +40,19 @@
     vertical-align: middle;
 }
 
+/* Multiselect Field Styling */
+.woocommerce-checkout select.scfm-multiselect {
+    height: auto !important;
+    max-height: 150px;
+    min-height: 80px;
+    padding: 8px;
+    overflow-y: auto;
+}
 
+.woocommerce-checkout select.scfm-multiselect option {
+    padding: 5px 8px;
+    line-height: 1.5;
+}
 
 /* Date/Time Input Styling */
 .woocommerce-checkout input[type="date"],

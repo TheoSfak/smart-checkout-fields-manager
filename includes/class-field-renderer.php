@@ -39,6 +39,7 @@ class SCFM_Field_Renderer {
             'time'           => __( 'Time', 'smart-checkout-fields-manager' ),
             'week'           => __( 'Week', 'smart-checkout-fields-manager' ),
             'url'            => __( 'URL', 'smart-checkout-fields-manager' ),
+            'multiselect'    => __( 'Multi Select', 'smart-checkout-fields-manager' ),
             'heading'        => __( 'Heading', 'smart-checkout-fields-manager' ),
             'paragraph'      => __( 'Paragraph', 'smart-checkout-fields-manager' ),
         );
@@ -63,6 +64,7 @@ class SCFM_Field_Renderer {
         add_filter( 'woocommerce_form_field_heading', array( __CLASS__, 'render_heading_field' ), 10, 4 );
         add_filter( 'woocommerce_form_field_paragraph', array( __CLASS__, 'render_paragraph_field' ), 10, 4 );
         add_filter( 'woocommerce_form_field_checkboxgroup', array( __CLASS__, 'render_checkbox_group_field' ), 10, 4 );
+        add_filter( 'woocommerce_form_field_multiselect', array( __CLASS__, 'render_multiselect_field' ), 10, 4 );
     }
     
     /**
@@ -130,6 +132,43 @@ class SCFM_Field_Renderer {
             }
         }
         
+        $field .= '</span>';
+        $field .= '</p>';
+        
+        return $field;
+    }
+    
+    /**
+     * Render multiselect field.
+     *
+     * @param string $field      Field HTML.
+     * @param string $key        Field key.
+     * @param array  $args       Field arguments.
+     * @param string $value      Field value.
+     * @return string
+     */
+    public static function render_multiselect_field( $field, $key, $args, $value ) {
+        $selected = is_array( $value ) ? $value : array();
+        
+        $field  = '<p class="form-row ' . esc_attr( implode( ' ', $args['class'] ) ) . '" id="' . esc_attr( $key ) . '_field">';
+        
+        if ( $args['required'] ) {
+            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'woocommerce' ) . '">*</abbr>';
+        }
+        
+        $field .= '<label for="' . esc_attr( $key ) . '">' . wp_kses_post( $args['label'] ) . '</label>';
+        $field .= '<span class="woocommerce-input-wrapper">';
+        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="input-text scfm-multiselect" multiple="multiple">';
+        
+        if ( ! empty( $args['options'] ) ) {
+            foreach ( $args['options'] as $option_key => $option_text ) {
+                $field .= '<option value="' . esc_attr( $option_key ) . '" ' . selected( in_array( $option_key, $selected ), true, false ) . '>';
+                $field .= esc_html( $option_text );
+                $field .= '</option>';
+            }
+        }
+        
+        $field .= '</select>';
         $field .= '</span>';
         $field .= '</p>';
         

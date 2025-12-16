@@ -822,6 +822,145 @@ class SCFM_Admin_Menu {
                     </button>
                 </p>
             </form>
+            
+            <!-- Live Preview Section -->
+            <div class="scfm-settings-preview" style="margin-top: 40px; padding: 20px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
+                <h3><?php esc_html_e( 'Live Preview', 'smart-checkout-fields-manager' ); ?></h3>
+                <p class="description"><?php esc_html_e( 'Preview how your settings will look on the checkout page. Changes are applied after saving.', 'smart-checkout-fields-manager' ); ?></p>
+                
+                <div class="scfm-preview-wrapper" style="margin-top: 20px; padding: 20px; background: white; border: 1px solid #ddd;">
+                    <div class="scfm-preview-field-row" style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">
+                            <?php esc_html_e( 'First Name', 'smart-checkout-fields-manager' ); ?> 
+                            <abbr class="required" style="color: #d63638; text-decoration: none;" title="required"><?php echo esc_html( $required_indicator ); ?></abbr>
+                        </label>
+                        <input type="text" placeholder="<?php esc_attr_e( 'Enter your first name', 'smart-checkout-fields-manager' ); ?>" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <span class="scfm-preview-error" style="display: none; color: #d63638; font-size: 13px; margin-top: 5px;">
+                            <?php esc_html_e( 'This field is required', 'smart-checkout-fields-manager' ); ?>
+                        </span>
+                    </div>
+                    
+                    <div class="scfm-preview-field-row" style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">
+                            <?php esc_html_e( 'Email Address', 'smart-checkout-fields-manager' ); ?> 
+                            <abbr class="required" style="color: #d63638; text-decoration: none;" title="required"><?php echo esc_html( $required_indicator ); ?></abbr>
+                        </label>
+                        <input type="email" placeholder="<?php esc_attr_e( 'your@email.com', 'smart-checkout-fields-manager' ); ?>" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    
+                    <div style="padding: 15px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; margin-top: 20px;">
+                        <strong><?php esc_html_e( 'Note:', 'smart-checkout-fields-manager' ); ?></strong>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li><strong><?php esc_html_e( 'Required Indicator:', 'smart-checkout-fields-manager' ); ?></strong> <?php printf( esc_html__( 'Currently set to "%s"', 'smart-checkout-fields-manager' ), esc_html( $required_indicator ) ); ?></li>
+                            <li><strong><?php esc_html_e( 'Label Position:', 'smart-checkout-fields-manager' ); ?></strong> <?php echo esc_html( ucfirst( $label_position ) ); ?></li>
+                            <li><strong><?php esc_html_e( 'Error Position:', 'smart-checkout-fields-manager' ); ?></strong> <?php echo esc_html( ucfirst( $error_position ) ); ?></li>
+                        </ul>
+                        <p style="margin-top: 10px; margin-bottom: 0;">
+                            <button type="button" class="button" id="scfm-toggle-error-preview">
+                                <?php esc_html_e( 'Toggle Error Example', 'smart-checkout-fields-manager' ); ?>
+                            </button>
+                        </p>
+                    </div>
+                </div>
+                
+                <style>
+                    /* Preview Label Position Styles */
+                    <?php if ( $label_position === 'inline' ) : ?>
+                    .scfm-preview-field-row {
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                    }
+                    .scfm-preview-field-row label {
+                        flex: 0 0 150px;
+                        margin-bottom: 0 !important;
+                    }
+                    .scfm-preview-field-row input {
+                        flex: 1;
+                    }
+                    <?php elseif ( $label_position === 'floating' ) : ?>
+                    .scfm-preview-field-row {
+                        position: relative;
+                        padding-top: 10px;
+                    }
+                    .scfm-preview-field-row label {
+                        position: absolute;
+                        top: 18px;
+                        left: 10px;
+                        background: white;
+                        padding: 0 5px;
+                        transition: all 0.2s;
+                        color: #666;
+                    }
+                    .scfm-preview-field-row input:focus ~ label,
+                    .scfm-preview-field-row input:not(:placeholder-shown) ~ label {
+                        top: 2px;
+                        font-size: 12px;
+                        color: #2271b1;
+                    }
+                    <?php elseif ( $label_position === 'hidden' ) : ?>
+                    .scfm-preview-field-row label {
+                        position: absolute;
+                        width: 1px;
+                        height: 1px;
+                        margin: -1px;
+                        padding: 0;
+                        overflow: hidden;
+                        clip: rect(0,0,0,0);
+                        border: 0;
+                    }
+                    <?php endif; ?>
+                    
+                    /* Preview Error Position Styles */
+                    <?php if ( $error_position === 'above' ) : ?>
+                    .scfm-preview-error {
+                        display: block;
+                        order: -1;
+                        margin-bottom: 5px !important;
+                        margin-top: 0 !important;
+                    }
+                    .scfm-preview-field-row {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    <?php elseif ( $error_position === 'tooltip' ) : ?>
+                    .scfm-preview-field-row {
+                        position: relative;
+                    }
+                    .scfm-preview-error {
+                        position: absolute;
+                        background: #d63638;
+                        color: white !important;
+                        padding: 8px 12px;
+                        border-radius: 4px;
+                        top: -45px;
+                        left: 0;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                        white-space: nowrap;
+                        z-index: 1000;
+                    }
+                    .scfm-preview-error::after {
+                        content: '';
+                        position: absolute;
+                        bottom: -6px;
+                        left: 20px;
+                        width: 0;
+                        height: 0;
+                        border-left: 6px solid transparent;
+                        border-right: 6px solid transparent;
+                        border-top: 6px solid #d63638;
+                    }
+                    <?php endif; ?>
+                </style>
+                
+                <script>
+                jQuery(document).ready(function($) {
+                    $('#scfm-toggle-error-preview').on('click', function() {
+                        $('.scfm-preview-error').first().toggle();
+                    });
+                });
+                </script>
+            </div>
         </div>
         <?php
     }

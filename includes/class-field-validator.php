@@ -99,9 +99,9 @@ class SCFM_Field_Validator {
         $field_label = isset( $field['label'] ) ? $field['label'] : $field_id;
         $field_type = isset( $field['type'] ) ? $field['type'] : 'text';
         
-        // For checkboxgroup, check if array is empty
+        // For checkboxgroup and multiselect, check if array is empty
         $is_empty = $value;
-        if ( $field_type === 'checkboxgroup' ) {
+        if ( in_array( $field_type, array( 'checkboxgroup', 'multiselect' ), true ) ) {
             $is_empty = empty( $value ) || ( is_array( $value ) && count( $value ) === 0 );
         } else {
             $is_empty = empty( $value );

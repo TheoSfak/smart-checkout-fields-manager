@@ -109,6 +109,11 @@ class SCFM_Order_Meta {
      * @return mixed
      */
     private function sanitize_field_value( $value, $type ) {
+        // Handle array values (checkboxgroup, multiselect)
+        if ( is_array( $value ) ) {
+            return array_map( 'sanitize_text_field', $value );
+        }
+        
         switch ( $type ) {
             case 'email':
                 return sanitize_email( $value );
@@ -319,6 +324,7 @@ class SCFM_Order_Meta {
     private function format_field_value( $value, $type ) {
         switch ( $type ) {
             case 'checkboxgroup':
+            case 'multiselect':
                 if ( is_array( $value ) ) {
                     return implode( ', ', array_map( 'esc_html', $value ) );
                 }
