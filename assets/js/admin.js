@@ -14,7 +14,6 @@
          */
         init: function() {
             this.bindEvents();
-            this.initSortable();
             this.loadFields();
         },
         
@@ -152,9 +151,17 @@
                 $tbody.append(row);
             });
             
-            // Refresh sortable after adding new items
+            // Initialize or refresh sortable
             if ($tbody.hasClass('ui-sortable')) {
                 $tbody.sortable('refresh');
+            } else {
+                $tbody.sortable({
+                    handle: '.scfm-drag-handle',
+                    placeholder: 'scfm-sortable-placeholder',
+                    update: function(event, ui) {
+                        SCFM_Admin.updatePositions($(this));
+                    }
+                });
             }
         },
         
