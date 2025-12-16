@@ -123,6 +123,9 @@ class SCFM_Admin_Menu {
                 <a href="#stylish" class="nav-tab" data-tab="stylish">
                     <span style="color: #ff6b6b;">✨</span> <?php esc_html_e( 'Stylish', 'smart-checkout-fields-manager' ); ?>
                 </a>
+                <a href="#settings" class="nav-tab" data-tab="settings">
+                    <?php esc_html_e( 'Settings', 'smart-checkout-fields-manager' ); ?>
+                </a>
             </h2>
             
             <div class="scfm-tab-content" id="billing-fields" style="display: block;">
@@ -139,6 +142,10 @@ class SCFM_Admin_Menu {
             
             <div class="scfm-tab-content" id="stylish" style="display: none;">
                 <?php $this->render_stylish_settings(); ?>
+            </div>
+            
+            <div class="scfm-tab-content" id="settings" style="display: none;">
+                <?php $this->render_general_settings(); ?>
             </div>
             
             <?php $this->render_field_modal(); ?>
@@ -669,6 +676,58 @@ class SCFM_Admin_Menu {
                     </div>
                 </div>
             </div>
+        </div>
+        <?php
+    }
+    
+    /**
+     * Render general settings page.
+     */
+    private function render_general_settings() {
+        // Handle form submission
+        if ( isset( $_POST['scfm_save_settings'] ) && check_admin_referer( 'scfm_save_settings', 'scfm_settings_nonce' ) ) {
+            $delete_on_uninstall = isset( $_POST['scfm_delete_data_on_uninstall'] ) ? 'yes' : 'no';
+            update_option( 'scfm_delete_data_on_uninstall', $delete_on_uninstall );
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Settings saved successfully.', 'smart-checkout-fields-manager' ) . '</p></div>';
+        }
+        
+        $delete_on_uninstall = get_option( 'scfm_delete_data_on_uninstall', 'no' );
+        ?>
+        <div class="scfm-settings-container">
+            <h2><?php esc_html_e( 'General Settings', 'smart-checkout-fields-manager' ); ?></h2>
+            
+            <form method="post" action="" class="scfm-settings-form">
+                <?php wp_nonce_field( 'scfm_save_settings', 'scfm_settings_nonce' ); ?>
+                
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="scfm_delete_on_uninstall">
+                                <?php esc_html_e( 'Remove Data on Uninstall', 'smart-checkout-fields-manager' ); ?>
+                            </label>
+                        </th>
+                        <td>
+                            <label>
+                                <input type="checkbox" 
+                                       name="scfm_delete_data_on_uninstall" 
+                                       id="scfm_delete_on_uninstall" 
+                                       value="yes" 
+                                       <?php checked( $delete_on_uninstall, 'yes' ); ?>>
+                                <?php esc_html_e( 'Delete all custom fields and plugin data when uninstalling the plugin', 'smart-checkout-fields-manager' ); ?>
+                            </label>
+                            <p class="description">
+                                <?php esc_html_e( 'Warning: If enabled, all your custom checkout fields and settings will be permanently deleted when you delete this plugin from WordPress.', 'smart-checkout-fields-manager' ); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                
+                <p class="submit">
+                    <button type="submit" name="scfm_save_settings" class="button button-primary">
+                        <?php esc_html_e( 'Save Settings', 'smart-checkout-fields-manager' ); ?>
+                    </button>
+                </p>
+            </form>
         </div>
         <?php
     }

@@ -12,10 +12,19 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     exit;
 }
 
+// Check if user wants to delete data on uninstall
+$delete_data = get_option( 'scfm_delete_data_on_uninstall', 'no' );
+
+if ( $delete_data !== 'yes' ) {
+    // User chose to keep the data, exit without deleting
+    exit;
+}
+
 // Delete all plugin options
 delete_option( 'scfm_custom_fields' );
 delete_option( 'scfm_version' );
 delete_option( 'scfm_stylish_options' );
+delete_option( 'scfm_delete_data_on_uninstall' );
 
 // For multisite installations
 if ( is_multisite() ) {
@@ -30,6 +39,7 @@ if ( is_multisite() ) {
         delete_option( 'scfm_custom_fields' );
         delete_option( 'scfm_version' );
         delete_option( 'scfm_stylish_options' );
+        delete_option( 'scfm_delete_data_on_uninstall' );
     }
     
     switch_to_blog( $original_blog_id );
