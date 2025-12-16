@@ -88,38 +88,26 @@
          * Initialize multi-select enhancement
          */
         initMultiSelect: function() {
-            // Find all multiselect fields and ensure they have the proper attributes
-            $('select[multiple], .scfm-multiselect').each(function() {
+            // Find all multiselect fields
+            $('.scfm-multiselect-control, select[multiple]').each(function() {
                 var $select = $(this);
+                
+                // Ensure multiple attribute is set
                 if (!$select.attr('multiple')) {
                     $select.attr('multiple', 'multiple');
                 }
                 
-                // Force height with JavaScript to override any CSS
-                $select.css({
-                    'height': '130px',
-                    'max-height': '130px',
-                    'min-height': '130px',
-                    'overflow-y': 'auto',
-                    'display': 'block',
-                    'width': '100%',
-                    'box-sizing': 'border-box'
-                });
-                
-                // Ensure wrapper is also constrained
-                var $wrapper = $select.closest('.scfm-multiselect-wrapper');
-                if ($wrapper.length) {
-                    $wrapper.css({
-                        'height': '130px',
-                        'max-height': '130px',
-                        'overflow': 'hidden',
-                        'display': 'block'
-                    });
+                // If size is not set or is 1, calculate proper size
+                var currentSize = parseInt($select.attr('size'));
+                if (!currentSize || currentSize < 4) {
+                    var optionCount = $select.find('option').length;
+                    var properSize = Math.min(Math.max(optionCount, 4), 8);
+                    $select.attr('size', properSize);
                 }
                 
                 // Add help text if not already present
                 if (!$select.parent().find('.scfm-help-text').length) {
-                    $select.parent().append('<span class="scfm-help-text">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</span>');
+                    $select.parent().append('<span class="scfm-help-text" style="display: block; margin-top: 5px; font-size: 0.9em; color: #666;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</span>');
                 }
             });
             
