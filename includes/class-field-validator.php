@@ -97,9 +97,18 @@ class SCFM_Field_Validator {
      */
     private function validate_field( $field_id, $field, $value, $errors ) {
         $field_label = isset( $field['label'] ) ? $field['label'] : $field_id;
+        $field_type = isset( $field['type'] ) ? $field['type'] : 'text';
+        
+        // For multiselect and checkboxgroup, check if array is empty
+        $is_empty = $value;
+        if ( in_array( $field_type, array( 'multiselect', 'checkboxgroup' ) ) ) {
+            $is_empty = empty( $value ) || ( is_array( $value ) && count( $value ) === 0 );
+        } else {
+            $is_empty = empty( $value );
+        }
         
         // Required field validation
-        if ( ! empty( $field['required'] ) && empty( $value ) ) {
+        if ( ! empty( $field['required'] ) && $is_empty ) {
             $errors->add(
                 $field_id,
                 sprintf(
@@ -112,12 +121,11 @@ class SCFM_Field_Validator {
         }
         
         // Skip validation if field is empty and not required
-        if ( empty( $value ) ) {
+        if ( $is_empty ) {
             return;
         }
         
         // Type-based validation
-        $field_type = isset( $field['type'] ) ? $field['type'] : 'text';
         
         switch ( $field_type ) {
             case 'email':

@@ -88,7 +88,18 @@
          * Initialize multi-select enhancement
          */
         initMultiSelect: function() {
-            $('select[multiple]').addClass('scfm-multiselect');
+            // Find all multiselect fields and ensure they have the proper attributes
+            $('.scfm-multiselect').each(function() {
+                var $select = $(this);
+                if (!$select.attr('multiple')) {
+                    $select.attr('multiple', 'multiple');
+                }
+                
+                // Add help text if not already present
+                if (!$select.next('.scfm-help-text').length) {
+                    $select.after('<span class="scfm-help-text">Hold Ctrl (Windows) or Cmd (Mac) to select multiple options</span>');
+                }
+            });
         },
         
         /**

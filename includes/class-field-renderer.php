@@ -64,6 +64,7 @@ class SCFM_Field_Renderer {
         add_filter( 'woocommerce_form_field_heading', array( __CLASS__, 'render_heading_field' ), 10, 4 );
         add_filter( 'woocommerce_form_field_paragraph', array( __CLASS__, 'render_paragraph_field' ), 10, 4 );
         add_filter( 'woocommerce_form_field_checkboxgroup', array( __CLASS__, 'render_checkbox_group_field' ), 10, 4 );
+        add_filter( 'woocommerce_form_field_multiselect', array( __CLASS__, 'render_multiselect_field' ), 10, 4 );
     }
     
     /**
@@ -129,6 +130,52 @@ class SCFM_Field_Renderer {
                 $field .= esc_html( $option_text );
                 $field .= '</label>';
             }
+        }
+        
+        $field .= '</span>';
+        $field .= '</p>';
+        
+        return $field;
+    }
+    
+    /**
+     * Render multiselect field.
+     *
+     * @param string $field      Field HTML.
+     * @param string $key        Field key.
+     * @param array  $args       Field arguments.
+     * @param string $value      Field value.
+     * @return string
+     */
+    public static function render_multiselect_field( $field, $key, $args, $value ) {
+        $selected = is_array( $value ) ? $value : ( ! empty( $value ) ? explode( ',', $value ) : array() );
+        
+        if ( $args['required'] ) {
+            $args['class'][] = 'validate-required';
+            $required = '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'woocommerce' ) . '">*</abbr>';
+        } else {
+            $required = '';
+        }
+        
+        $field  = '<p class="form-row ' . esc_attr( implode( ' ', $args['class'] ) ) . '" id="' . esc_attr( $key ) . '_field" data-priority="' . esc_attr( $args['priority'] ) . '">';
+        
+        if ( $args['label'] ) {
+            $field .= '<label for="' . esc_attr( $key ) . '" class="' . esc_attr( implode( ' ', $args['label_class'] ) ) . '">' . wp_kses_post( $args['label'] ) . $required . '</label>';
+        }
+        
+        $field .= '<span class="woocommerce-input-wrapper">';
+        $field .= '<select name="' . esc_attr( $key ) . '[]" id="' . esc_attr( $key ) . '" class="select ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" multiple="multiple" data-placeholder="' . esc_attr( $args['placeholder'] ) . '">';
+        
+        if ( ! empty( $args['options'] ) ) {
+            foreach ( $args['options'] as $option_key => $option_text ) {
+                $field .= '<option value="' . esc_attr( $option_key ) . '" ' . selected( in_array( (string) $option_key, $selected, true ), true, false ) . '>' . esc_html( $option_text ) . '</option>';
+            }
+        }
+        
+        $field .= '</select>';
+        
+        if ( $args['description'] ) {
+            $field .= '<span class="description">' . wp_kses_post( $args['description'] ) . '</span>';
         }
         
         $field .= '</span>';
