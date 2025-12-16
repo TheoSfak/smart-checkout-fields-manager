@@ -12,10 +12,44 @@
          * Initialize
          */
         init: function() {
+            this.applyCustomSettings();
             this.bindEvents();
             this.initDatePickers();
             this.initPhoneMasking();
             this.initRealTimeValidation();
+        },
+        
+        /**
+         * Apply custom settings from admin
+         */
+        applyCustomSettings: function() {
+            if (typeof scfmSettings === 'undefined') {
+                return;
+            }
+            
+            // Replace required indicator
+            if (scfmSettings.requiredIndicator && scfmSettings.requiredIndicator !== '*') {
+                $('.woocommerce-checkout .required').html(scfmSettings.requiredIndicator);
+            }
+            
+            // Handle floating labels
+            if (scfmSettings.labelPosition === 'floating') {
+                $('.woocommerce-checkout .form-row').each(function() {
+                    var $row = $(this);
+                    var $input = $row.find('input, select, textarea').first();
+                    var $label = $row.find('label').first();
+                    
+                    if ($input.length && $label.length && !$input.is('[type="checkbox"]') && !$input.is('[type="radio"]')) {
+                        // Add placeholder attribute if not present
+                        if (!$input.attr('placeholder')) {
+                            $input.attr('placeholder', ' ');
+                        }
+                        
+                        // Move label after input for CSS sibling selector
+                        $label.insertAfter($input);
+                    }
+                });
+            }
         },
         
         /**
@@ -173,8 +207,23 @@
         showValidationError: function($input, message) {
             $input.removeClass('scfm-field-valid').addClass('scfm-field-invalid scfm-field-error');
             
-            if (!$input.siblings('.scfm-validation-message').length) {
-                $input.after('<span class="scfm-validation-message">' + message + '</span>');
+            // Remove existing error messages
+            $input.siblings('.scfm-validation-message').remove();
+            $input.closest('.form-row').find('.scfm-validation-message').remove();
+            
+            var errorPosition = (typeof scfmSettings !== 'undefined') ? scfmSettings.errorPosition : 'below';
+            var $errorMsg = $('<span class="scfm-validation-message">' + message + '</span>');
+            
+            switch (errorPosition) {
+                case 'above':
+                    $input.before($errorMsg);
+                    break;
+                case 'tooltip':
+                    $errorMsg.addClass('scfm-tooltip');
+                    $input.after($errorMsg);
+                    break;
+                default: // below
+                    $input.after($errorMsg);
             }
         },
         

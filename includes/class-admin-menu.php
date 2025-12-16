@@ -688,10 +688,26 @@ class SCFM_Admin_Menu {
         if ( isset( $_POST['scfm_save_settings'] ) && check_admin_referer( 'scfm_save_settings', 'scfm_settings_nonce' ) ) {
             $delete_on_uninstall = isset( $_POST['scfm_delete_data_on_uninstall'] ) ? 'yes' : 'no';
             update_option( 'scfm_delete_data_on_uninstall', $delete_on_uninstall );
+            
+            // Display & Styling settings
+            $required_indicator = sanitize_text_field( $_POST['scfm_required_indicator'] ?? '*' );
+            $label_position = sanitize_text_field( $_POST['scfm_label_position'] ?? 'above' );
+            $error_position = sanitize_text_field( $_POST['scfm_error_position'] ?? 'below' );
+            $custom_css = wp_strip_all_tags( $_POST['scfm_custom_css'] ?? '' );
+            
+            update_option( 'scfm_required_indicator', $required_indicator );
+            update_option( 'scfm_label_position', $label_position );
+            update_option( 'scfm_error_position', $error_position );
+            update_option( 'scfm_custom_css', $custom_css );
+            
             echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Settings saved successfully.', 'smart-checkout-fields-manager' ) . '</p></div>';
         }
         
         $delete_on_uninstall = get_option( 'scfm_delete_data_on_uninstall', 'no' );
+        $required_indicator = get_option( 'scfm_required_indicator', '*' );
+        $label_position = get_option( 'scfm_label_position', 'above' );
+        $error_position = get_option( 'scfm_error_position', 'below' );
+        $custom_css = get_option( 'scfm_custom_css', '' );
         ?>
         <div class="scfm-settings-container">
             <h2><?php esc_html_e( 'General Settings', 'smart-checkout-fields-manager' ); ?></h2>
@@ -699,6 +715,84 @@ class SCFM_Admin_Menu {
             <form method="post" action="" class="scfm-settings-form">
                 <?php wp_nonce_field( 'scfm_save_settings', 'scfm_settings_nonce' ); ?>
                 
+                <!-- Display & Styling Section -->
+                <h3><?php esc_html_e( 'Display & Styling', 'smart-checkout-fields-manager' ); ?></h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="scfm_required_indicator">
+                                <?php esc_html_e( 'Required Field Indicator', 'smart-checkout-fields-manager' ); ?>
+                            </label>
+                        </th>
+                        <td>
+                            <input type="text" 
+                                   name="scfm_required_indicator" 
+                                   id="scfm_required_indicator" 
+                                   value="<?php echo esc_attr( $required_indicator ); ?>" 
+                                   class="regular-text">
+                            <p class="description">
+                                <?php esc_html_e( 'Symbol or text to display for required fields. Default: *', 'smart-checkout-fields-manager' ); ?>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <th scope="row">
+                            <label for="scfm_label_position">
+                                <?php esc_html_e( 'Field Label Position', 'smart-checkout-fields-manager' ); ?>
+                            </label>
+                        </th>
+                        <td>
+                            <select name="scfm_label_position" id="scfm_label_position" class="regular-text">
+                                <option value="above" <?php selected( $label_position, 'above' ); ?>><?php esc_html_e( 'Above Field (Default)', 'smart-checkout-fields-manager' ); ?></option>
+                                <option value="inline" <?php selected( $label_position, 'inline' ); ?>><?php esc_html_e( 'Inline (Left of Field)', 'smart-checkout-fields-manager' ); ?></option>
+                                <option value="floating" <?php selected( $label_position, 'floating' ); ?>><?php esc_html_e( 'Floating (Inside Field)', 'smart-checkout-fields-manager' ); ?></option>
+                                <option value="hidden" <?php selected( $label_position, 'hidden' ); ?>><?php esc_html_e( 'Hidden (Placeholder Only)', 'smart-checkout-fields-manager' ); ?></option>
+                            </select>
+                            <p class="description">
+                                <?php esc_html_e( 'Choose how field labels are displayed.', 'smart-checkout-fields-manager' ); ?>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <th scope="row">
+                            <label for="scfm_error_position">
+                                <?php esc_html_e( 'Error Message Position', 'smart-checkout-fields-manager' ); ?>
+                            </label>
+                        </th>
+                        <td>
+                            <select name="scfm_error_position" id="scfm_error_position" class="regular-text">
+                                <option value="below" <?php selected( $error_position, 'below' ); ?>><?php esc_html_e( 'Below Field (Default)', 'smart-checkout-fields-manager' ); ?></option>
+                                <option value="above" <?php selected( $error_position, 'above' ); ?>><?php esc_html_e( 'Above Field', 'smart-checkout-fields-manager' ); ?></option>
+                                <option value="tooltip" <?php selected( $error_position, 'tooltip' ); ?>><?php esc_html_e( 'As Tooltip', 'smart-checkout-fields-manager' ); ?></option>
+                            </select>
+                            <p class="description">
+                                <?php esc_html_e( 'Choose where validation error messages appear.', 'smart-checkout-fields-manager' ); ?>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <th scope="row">
+                            <label for="scfm_custom_css">
+                                <?php esc_html_e( 'Custom CSS', 'smart-checkout-fields-manager' ); ?>
+                            </label>
+                        </th>
+                        <td>
+                            <textarea name="scfm_custom_css" 
+                                      id="scfm_custom_css" 
+                                      rows="10" 
+                                      class="large-text code"><?php echo esc_textarea( $custom_css ); ?></textarea>
+                            <p class="description">
+                                <?php esc_html_e( 'Add custom CSS styles for checkout fields. Do not include <style> tags.', 'smart-checkout-fields-manager' ); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                
+                <!-- Plugin Management Section -->
+                <h3><?php esc_html_e( 'Plugin Management', 'smart-checkout-fields-manager' ); ?></h3>
                 <table class="form-table">
                     <tr>
                         <th scope="row">

@@ -58,6 +58,19 @@ class SCFM_Checkout_Fields {
                 SCFM_VERSION
             );
             
+            // Add custom CSS from settings
+            $custom_css = get_option( 'scfm_custom_css', '' );
+            if ( ! empty( $custom_css ) ) {
+                wp_add_inline_style( 'scfm-frontend', $custom_css );
+            }
+            
+            // Add label position styles
+            $label_position = get_option( 'scfm_label_position', 'above' );
+            $position_css = $this->get_label_position_css( $label_position );
+            if ( ! empty( $position_css ) ) {
+                wp_add_inline_style( 'scfm-frontend', $position_css );
+            }
+            
             // Enqueue frontend JavaScript
             wp_enqueue_script(
                 'scfm-frontend',
@@ -66,6 +79,13 @@ class SCFM_Checkout_Fields {
                 SCFM_VERSION,
                 true
             );
+            
+            // Pass settings to JavaScript
+            wp_localize_script( 'scfm-frontend', 'scfmSettings', array(
+                'requiredIndicator' => get_option( 'scfm_required_indicator', '*' ),
+                'labelPosition' => $label_position,
+                'errorPosition' => get_option( 'scfm_error_position', 'below' ),
+            ) );
         }
     }
     
@@ -97,6 +117,79 @@ class SCFM_Checkout_Fields {
         }
         
         return apply_filters( 'scfm_checkout_fields', $fields );
+    }
+    
+    /**
+     * Get CSS for label position.
+     *
+     * @param string $position Label position setting.
+     * @return string CSS rules.
+     */
+    private function get_label_position_css( $position ) {
+        $css = '';
+        
+        switch ( $position ) {
+            case 'inline':
+                $css = '
+                    .woocommerce-checkout .form-row {
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                    }
+                    .woocommerce-checkout .form-row label {
+                        flex: 0 0 200px;
+                        margin-bottom: 0;
+                    }
+                    .woocommerce-checkout .form-row .woocommerce-input-wrapper {
+                        flex: 1;
+                    }
+                ';
+                break;
+                
+            case 'floating':
+                $css = '
+                    .woocommerce-checkout .form-row {
+                        position: relative;
+                    }
+                    .woocommerce-checkout .form-row label {
+                        position: absolute;
+                        top: 12px;
+                        left: 12px;
+                        transition: all 0.2s;
+                        pointer-events: none;
+                        background: white;
+                        padding: 0 5px;
+                        color: #666;
+                    }
+                    .woocommerce-checkout .form-row input:focus ~ label,
+                    .woocommerce-checkout .form-row input:not(:placeholder-shown) ~ label,
+                    .woocommerce-checkout .form-row select:focus ~ label,
+                    .woocommerce-checkout .form-row textarea:focus ~ label,
+                    .woocommerce-checkout .form-row textarea:not(:placeholder-shown) ~ label {
+                        top: -8px;
+                        font-size: 12px;
+                        color: #0073aa;
+                    }
+                ';
+                break;
+                
+            case 'hidden':
+                $css = '
+                    .woocommerce-checkout .form-row label:not(.checkbox) {
+                        position: absolute;
+                        width: 1px;
+                        height: 1px;
+                        margin: -1px;
+                        padding: 0;
+                        overflow: hidden;
+                        clip: rect(0,0,0,0);
+                        border: 0;
+                    }
+                ';
+                break;
+        }
+        
+        return $css;
     }
     
     /**

@@ -200,3 +200,34 @@
 .woocommerce-checkout .scfm-field-error {
     animation: scfm-shake 0.5s;
 }
+
+/* Tooltip Error Style */
+.scfm-validation-message.scfm-tooltip {
+    position: absolute;
+    background: #dc3232;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    top: -40px;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    white-space: nowrap;
+}
+
+.scfm-validation-message.scfm-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #dc3232;
+}
+
+.woocommerce-checkout .form-row {
+    position: relative;
+}
