@@ -242,7 +242,7 @@ class SCFM_Admin_Settings {
      * @param array $data Field data.
      * @return array
      */
-    private function sanitize_field_data( $data ) {
+    public static function sanitize_field_data( $data ) {
         $sanitized = SCFM_Field_Manager::get_default_field_structure();
         
         if ( isset( $data['type'] ) ) {

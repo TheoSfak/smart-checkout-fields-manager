@@ -61,7 +61,7 @@ class SCFM_Import_Export {
         $export_data = $this->prepare_export_data( $section );
         
         if ( empty( $export_data['fields'] ) ) {
-            wp_send_json_error( array( 'message' => __( 'No fields to export.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'No custom fields exist to export.', 'smart-checkout-fields-manager' ) ) );
         }
         
         wp_send_json_success( array(
@@ -130,10 +130,8 @@ class SCFM_Import_Export {
      * @return array
      */
     private function prepare_export_data( $section ) {
-        $field_manager = SCFM_Field_Manager::instance();
-        $all_fields    = $field_manager->get_all_fields();
-        
-        $fields = isset( $all_fields[ $section ] ) ? $all_fields[ $section ] : array();
+        // Get all fields for this section (custom + default)
+        $fields = SCFM_Field_Manager::get_all_fields( $section );
         
         // Filter out default WC fields if they haven't been modified
         $custom_fields = array();
@@ -236,13 +234,13 @@ class SCFM_Import_Export {
      * @return array
      */
     private function create_backup( $section ) {
-        $field_manager = SCFM_Field_Manager::instance();
-        $all_fields    = $field_manager->get_all_fields();
+        // Get all fields for this section
+        $fields = SCFM_Field_Manager::get_all_fields( $section );
         
         return array(
             'section'   => $section,
             'timestamp' => current_time( 'mysql' ),
-            'fields'    => isset( $all_fields[ $section ] ) ? $all_fields[ $section ] : array(),
+            'fields'    => $fields,
         );
     }
     
@@ -316,3 +314,4 @@ class SCFM_Import_Export {
         return $export_data;
     }
 }
+

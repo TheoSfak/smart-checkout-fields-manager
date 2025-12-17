@@ -130,6 +130,9 @@ class SCFM_Admin_Menu {
                 <a href="#settings" class="nav-tab" data-tab="settings">
                     <?php esc_html_e( 'Settings', 'smart-checkout-fields-manager' ); ?>
                 </a>
+                <a href="#donate" class="nav-tab" data-tab="donate">
+                    <span style="color: #ff6b6b;">❤️</span> <?php esc_html_e( 'Donate', 'smart-checkout-fields-manager' ); ?>
+                </a>
             </h2>
             
             <div class="scfm-tab-content" id="billing-fields" style="display: block;">
@@ -150,6 +153,10 @@ class SCFM_Admin_Menu {
             
             <div class="scfm-tab-content" id="settings" style="display: none;">
                 <?php $this->render_general_settings(); ?>
+            </div>
+            
+            <div class="scfm-tab-content" id="donate" style="display: none;">
+                <?php $this->render_donate_tab(); ?>
             </div>
             
             <?php $this->render_field_modal(); ?>
@@ -1369,5 +1376,106 @@ class SCFM_Admin_Menu {
             'message' => __( 'Plugin updated successfully from GitHub!', 'smart-checkout-fields-manager' ),
             'commit_message' => $commit_message
         ) );
+    }
+    
+    /**
+     * Render Donate tab.
+     */
+    private function render_donate_tab() {
+        ?>
+        <div class="scfm-donate-container" style="max-width: 800px; margin: 40px auto; text-align: center;">
+            
+            <!-- Beautiful Quote -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px 40px; border-radius: 15px; color: white; margin-bottom: 40px; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);">
+                <div style="font-size: 28px; font-weight: 300; line-height: 1.6; font-style: italic; margin-bottom: 20px;">
+                    "The best way to find yourself is to lose yourself in the service of others."
+                </div>
+                <div style="font-size: 18px; font-weight: 500; opacity: 0.9;">
+                    — Mahatma Gandhi
+                </div>
+            </div>
+            
+            <!-- Author Info -->
+            <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); margin-bottom: 30px;">
+                <h2 style="color: #667eea; margin-top: 0; font-size: 32px;">
+                    ❤️ Support This Plugin
+                </h2>
+                <p style="font-size: 18px; color: #555; line-height: 1.8; margin: 25px 0;">
+                    Hi! I'm <strong>Theodore Sfakianakis</strong>, the developer behind this plugin.<br>
+                    I created <strong>Smart Checkout Fields Manager</strong> to help WooCommerce stores create better checkout experiences.
+                </p>
+                <p style="font-size: 16px; color: #666; line-height: 1.8; margin: 25px 0;">
+                    This plugin is <strong>100% free and open source</strong>. If you find it useful and it helps your business,<br>
+                    please consider supporting its development with a small donation. ☕
+                </p>
+            </div>
+            
+            <!-- Donate Buttons -->
+            <div style="background: #f8f9fa; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+                <h3 style="color: #333; font-size: 24px; margin-top: 0;">Choose Your Donation Amount</h3>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 30px 0;">
+                    
+                    <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display: inline-block;">
+                        <input type="hidden" name="business" value="theodore.sfakianakis@gmail.com" />
+                        <input type="hidden" name="amount" value="5" />
+                        <input type="hidden" name="currency_code" value="EUR" />
+                        <input type="hidden" name="item_name" value="Smart Checkout Fields Manager - Coffee Donation" />
+                        <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 35px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">
+                            ☕ €5 - Buy me a coffee
+                        </button>
+                    </form>
+                    
+                    <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display: inline-block;">
+                        <input type="hidden" name="business" value="theodore.sfakianakis@gmail.com" />
+                        <input type="hidden" name="amount" value="10" />
+                        <input type="hidden" name="currency_code" value="EUR" />
+                        <input type="hidden" name="item_name" value="Smart Checkout Fields Manager - Pizza Donation" />
+                        <button type="submit" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; padding: 15px 35px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4); transition: all 0.3s;">
+                            🍕 €10 - Buy me a pizza
+                        </button>
+                    </form>
+                    
+                    <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display: inline-block;">
+                        <input type="hidden" name="business" value="theodore.sfakianakis@gmail.com" />
+                        <input type="hidden" name="amount" value="25" />
+                        <input type="hidden" name="currency_code" value="EUR" />
+                        <input type="hidden" name="item_name" value="Smart Checkout Fields Manager - Generous Donation" />
+                        <button type="submit" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; border: none; padding: 15px 35px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4); transition: all 0.3s;">
+                            🎉 €25 - Generous support
+                        </button>
+                    </form>
+                    
+                    <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display: inline-block;">
+                        <input type="hidden" name="business" value="theodore.sfakianakis@gmail.com" />
+                        <input type="hidden" name="currency_code" value="EUR" />
+                        <input type="hidden" name="item_name" value="Smart Checkout Fields Manager - Custom Donation" />
+                        <button type="submit" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border: none; padding: 15px 35px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4); transition: all 0.3s;">
+                            💝 Custom Amount
+                        </button>
+                    </form>
+                    
+                </div>
+            </div>
+            
+            <!-- Thank You Message -->
+            <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 30px; border-radius: 15px; color: #333;">
+                <p style="font-size: 18px; font-weight: 600; margin: 0;">
+                    🙏 Thank you for your support!
+                </p>
+                <p style="font-size: 14px; margin: 10px 0 0 0; opacity: 0.8;">
+                    Your contribution helps me maintain and improve this plugin for everyone.
+                </p>
+            </div>
+            
+            <!-- Contact & GitHub -->
+            <div style="margin-top: 30px; padding: 20px; font-size: 14px; color: #666;">
+                <p>
+                    <strong>Contact:</strong> theodore.sfakianakis@gmail.com<br>
+                    <strong>GitHub:</strong> <a href="https://github.com/TheoSfk" target="_blank" style="color: #667eea;">@TheoSfk</a>
+                </p>
+            </div>
+            
+        </div>
+        <?php
     }
 }

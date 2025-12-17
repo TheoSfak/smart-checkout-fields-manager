@@ -597,6 +597,7 @@
         exportFields: function(e) {
             e.preventDefault();
             var section = $(this).data('section');
+            console.log('Export button clicked, section:', section);
             
             $.ajax({
                 url: scfmAdmin.ajax_url,
@@ -607,6 +608,7 @@
                     section: section
                 },
                 success: function(response) {
+                    console.log('Export response:', response);
                     if (response.success) {
                         // Create download
                         var dataStr = JSON.stringify(response.data.data, null, 2);
@@ -620,10 +622,16 @@
                         link.click();
                         
                         SCFM_Admin.showNotice('Fields exported successfully', 'success');
+                    } else {
+                        var errorMsg = response.data && response.data.message ? response.data.message : 'Export failed';
+                        console.error('Export failed:', errorMsg);
+                        alert(errorMsg);
+                        SCFM_Admin.showNotice(errorMsg, 'error');
                     }
                 },
-                error: function() {
-                    SCFM_Admin.showNotice(scfmAdmin.strings.error, 'error');
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', status, error, xhr.responseText);
+                    SCFM_Admin.showNotice(scfmAdmin.strings.error || 'An error occurred. Please try again.', 'error');
                 }
             });
         },
@@ -672,14 +680,21 @@
                             import_data: importData
                         },
                         success: function(response) {
+                            console.log('Import response:', response);
                             if (response.success) {
                                 SCFM_Admin.loadFields();
+                                alert(response.data.message);
                                 SCFM_Admin.showNotice(response.data.message, 'success');
                             } else {
-                                SCFM_Admin.showNotice(response.data.message || scfmAdmin.strings.error, 'error');
+                                var errorMsg = response.data.message || scfmAdmin.strings.error;
+                                console.error('Import failed:', errorMsg);
+                                alert(errorMsg);
+                                SCFM_Admin.showNotice(errorMsg, 'error');
                             }
                         },
-                        error: function() {
+                        error: function(xhr, status, error) {
+                            console.error('Import AJAX error:', status, error, xhr.responseText);
+                            alert('Import failed. Please check the file format and console for details.');
                             SCFM_Admin.showNotice('Import failed. Please check the file format.', 'error');
                         }
                     });
