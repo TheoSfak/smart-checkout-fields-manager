@@ -6,7 +6,7 @@ Tested up to: 6.7
 Requires PHP: 7.4
 Requires WooCommerce: 6.0
 Tested WooCommerce: 9.5
-Stable tag: 1.0.1
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -302,13 +302,6 @@ Default WooCommerce fields remain unaffected.
 
 == Changelog ==
 
-= 1.0.1 (2025-01-17) =
-* Improved: Code quality and WordPress coding standards compliance
-* Improved: Security enhancements for field sanitization
-* Improved: Performance optimizations for field rendering
-* Fixed: Minor UI inconsistencies in admin interface
-* Updated: Documentation and inline comments
-
 = 1.0.0 (2024-12-15) =
 * Initial release
 * 20 field types for Classic Checkout
@@ -322,9 +315,6 @@ Default WooCommerce fields remain unaffected.
 * Developer hooks and filters
 
 == Upgrade Notice ==
-
-= 1.0.1 =
-Recommended update with improved security, performance, and code quality. No breaking changes.
 
 = 1.0.0 =
 Initial release - The complete WooCommerce checkout fields customization solution!
