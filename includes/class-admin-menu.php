@@ -63,6 +63,11 @@ class SCFM_Admin_Menu {
      * @param string $hook Current admin page hook.
      */
     public function enqueue_scripts( $hook ) {
+        // Only load on our plugin page
+        if ( 'woocommerce_page_smart-checkout-fields-manager' !== $hook ) {
+            return;
+        }
+
         // Enqueue WordPress color picker
         wp_enqueue_style( 'wp-color-picker' );
         

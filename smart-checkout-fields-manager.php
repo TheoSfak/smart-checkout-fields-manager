@@ -176,7 +176,7 @@ class Smart_Checkout_Fields_Manager {
         
         // Frontend
         require_once SCFM_PLUGIN_DIR . 'includes/class-checkout-fields.php';
-        require_once SCFM_PLUGIN_DIR . 'includes/class-block-checkout.php';
+        // require_once SCFM_PLUGIN_DIR . 'includes/class-block-checkout.php'; // Removed - block checkout not supported
         require_once SCFM_PLUGIN_DIR . 'includes/class-address-formatter.php';
         require_once SCFM_PLUGIN_DIR . 'includes/class-stylish-manager.php';
     }
@@ -194,7 +194,7 @@ class Smart_Checkout_Fields_Manager {
         
         // Frontend components
         SCFM_Checkout_Fields::instance();
-        SCFM_Block_Checkout::instance();
+        // SCFM_Block_Checkout::instance(); // Removed - block checkout not supported
         SCFM_Address_Formatter::instance();
         SCFM_Stylish_Manager::instance();
         SCFM_Order_Meta::instance();

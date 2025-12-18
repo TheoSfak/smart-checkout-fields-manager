@@ -113,6 +113,13 @@ class SCFM_Import_Export {
             wp_send_json_error( array( 'message' => $result->get_error_message() ) );
         }
         
+        if ( $result === 0 ) {
+            wp_send_json_success( array(
+                'message' => __( 'No new fields to import. All fields already exist.', 'smart-checkout-fields-manager' ),
+                'backup'  => $backup,
+            ) );
+        }
+
         wp_send_json_success( array(
             'message' => sprintf(
                 /* translators: %d: number of fields imported */
@@ -122,7 +129,7 @@ class SCFM_Import_Export {
             'backup'  => $backup,
         ) );
     }
-    
+
     /**
      * Prepare export data.
      *
@@ -284,14 +291,10 @@ class SCFM_Import_Export {
                 $count++;
             }
         }
-        
-        if ( $count === 0 ) {
-            return new WP_Error( 'import_failed', __( 'Failed to import fields.', 'smart-checkout-fields-manager' ) );
-        }
-        
+
         return $count;
     }
-    
+
     /**
      * Export all sections.
      *
