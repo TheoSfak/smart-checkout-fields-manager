@@ -81,7 +81,7 @@ class SCFM_Import_Export {
         }
         
         $section    = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
-        $import_data = isset( $_POST['import_data'] ) ? wp_unslash( $_POST['import_data'] ) : '';
+        $import_data = isset( $_POST['import_data'] ) ? sanitize_text_field( wp_unslash( $_POST['import_data'] ) ) : '';
         
         if ( empty( $section ) || empty( $import_data ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid import data.', 'smart-checkout-fields-manager' ) ) );

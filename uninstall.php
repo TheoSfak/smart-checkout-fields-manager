@@ -34,6 +34,7 @@ delete_option( 'scfm_custom_css' );
 if ( is_multisite() ) {
     global $wpdb;
     
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query acceptable in uninstall for multisite
     $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
     $original_blog_id = get_current_blog_id();
     

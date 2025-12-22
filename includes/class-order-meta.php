@@ -82,6 +82,8 @@ class SCFM_Order_Meta {
                 }
 
                 // Get posted value
+                // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by WooCommerce checkout process
+                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via sanitize_field_value() method below
                 $value = isset( $_POST[ $field_id ] ) ? wp_unslash( $_POST[ $field_id ] ) : '';
 
                 // Sanitize based on field type

@@ -77,6 +77,7 @@ class SCFM_Admin_Settings {
         
         $section   = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         $field_id  = isset( $_POST['field_id'] ) ? sanitize_key( $_POST['field_id'] ) : '';
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via sanitize_field_data() method below
         $field_data = isset( $_POST['field_data'] ) ? wp_unslash( $_POST['field_data'] ) : array();
         
         if ( empty( $section ) || empty( $field_data ) ) {
@@ -185,6 +186,7 @@ class SCFM_Admin_Settings {
         }
         
         $section   = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via sanitize_key() and intval() in the loop below
         $positions = isset( $_POST['positions'] ) ? wp_unslash( $_POST['positions'] ) : array();
         
         if ( empty( $section ) || empty( $positions ) ) {
@@ -328,6 +330,7 @@ class SCFM_Admin_Settings {
             wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
         }
         
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via sanitize_hex_color(), intval(), and sanitize_text_field() below
         $options = isset( $_POST['options'] ) ? wp_unslash( $_POST['options'] ) : array();
         
         // Sanitize options
