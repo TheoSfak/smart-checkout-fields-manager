@@ -35,7 +35,7 @@
             $('.scfm-reset-fields').on('click', this.resetFields);
             
             // GitHub update button
-            $('#scfm-update-github').on('click', this.updateFromGitHub);
+
             
             // Edit field button (delegated)
             $(document).on('click', '.scfm-btn-edit', this.editField);
@@ -903,47 +903,6 @@
             });
         },
         
-        /**
-         * Update plugin from GitHub
-         */
-        updateFromGitHub: function(e) {
-            e.preventDefault();
-            
-            if (!confirm(scfmAdmin.strings.confirm_update)) {
-                return;
-            }
-            
-            var $button = $(this);
-            var originalText = $button.html();
-            var $status = $('#scfm-update-status');
-            
-            $button.prop('disabled', true).html('<span class="spinner is-active" style="float: none; margin: 0 5px 0 0;"></span>' + scfmAdmin.strings.updating);
-            $status.html('<div class="notice notice-info inline"><p>' + scfmAdmin.strings.updating + '</p></div>');
-            
-            $.ajax({
-                url: scfmAdmin.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'scfm_update_from_github',
-                    nonce: scfmAdmin.nonce
-                },
-                success: function(response) {
-                    if (response.success) {
-                        $status.html('<div class="notice notice-success inline"><p>' + response.data.message + '</p></div>');
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    } else {
-                        $status.html('<div class="notice notice-error inline"><p>' + (response.data.message || scfmAdmin.strings.error) + '</p></div>');
-                        $button.prop('disabled', false).html(originalText);
-                    }
-                },
-                error: function() {
-                    $status.html('<div class="notice notice-error inline"><p>' + scfmAdmin.strings.error + '</p></div>');
-                    $button.prop('disabled', false).html(originalText);
-                }
-            });
-        }
     };
     
     // Initialize on document ready
