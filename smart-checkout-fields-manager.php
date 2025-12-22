@@ -4,8 +4,8 @@
  * Plugin URI: https://github.com/TheoSfak/smart-checkout-fields-manager
  * Description: Complete solution for customizing WooCommerce checkout fields. Add, edit, remove, and rearrange fields with 20+ field types. Compatible with Classic & Block checkout.
  * Version: 1.1.0
- * Author: Theo Sfakianakis
- * Author URI: https://github.com/TheoSfak
+ * Author: irmaiden
+ * Author URI: https://profiles.wordpress.org/irmaiden/
  * Text Domain: smart-checkout-fields-manager
  * Domain Path: /languages
  * Requires at least: 5.8
