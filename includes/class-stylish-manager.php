@@ -83,7 +83,7 @@ class SCFM_Stylish_Manager {
         );
         
         if ( isset( $font_urls[ $font ] ) ) {
-            wp_enqueue_style( 'scfm-google-font-' . $font, $font_urls[ $font ], array(), null );
+            wp_enqueue_style( 'scfm-google-font-' . $font, $font_urls[ $font ], array(), SCFM_VERSION );
         }
     }
     
@@ -106,7 +106,7 @@ class SCFM_Stylish_Manager {
         $css = $this->generate_custom_css( $options );
         
         if ( ! empty( $css ) ) {
-            echo '<style id="scfm-stylish-custom">' . wp_strip_all_tags( $css ) . '</style>';
+            echo '<style id="scfm-stylish-custom">' . esc_html( wp_strip_all_tags( $css ) ) . '</style>';
         }
     }
     

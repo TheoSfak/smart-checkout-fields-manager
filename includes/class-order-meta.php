@@ -82,7 +82,7 @@ class SCFM_Order_Meta {
                 }
 
                 // Get posted value
-                $value = isset( $_POST[ $field_id ] ) ? $_POST[ $field_id ] : '';
+                $value = isset( $_POST[ $field_id ] ) ? wp_unslash( $_POST[ $field_id ] ) : '';
 
                 // Sanitize based on field type
                 $value = $this->sanitize_field_value( $value, $field['type'] );

@@ -81,7 +81,7 @@ class SCFM_Import_Export {
         }
         
         $section    = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
-        $import_data = isset( $_POST['import_data'] ) ? $_POST['import_data'] : '';
+        $import_data = isset( $_POST['import_data'] ) ? wp_unslash( $_POST['import_data'] ) : '';
         
         if ( empty( $section ) || empty( $import_data ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid import data.', 'smart-checkout-fields-manager' ) ) );
@@ -170,7 +170,7 @@ class SCFM_Import_Export {
      */
     private function generate_filename( $section ) {
         $site_name = sanitize_title( get_bloginfo( 'name' ) );
-        $date      = date( 'Y-m-d-His' );
+        $date      = gmdate( 'Y-m-d-His' );
         
         return sprintf(
             'scfm-%s-%s-%s.json',
