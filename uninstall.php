@@ -13,9 +13,9 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 // Check if user wants to delete data on uninstall
-$delete_data = get_option( 'scfm_delete_data_on_uninstall', 'no' );
+$scfm_delete_data = get_option( 'scfm_delete_data_on_uninstall', 'no' );
 
-if ( $delete_data !== 'yes' ) {
+if ( $scfm_delete_data !== 'yes' ) {
     // User chose to keep the data, exit without deleting
     exit;
 }
@@ -35,10 +35,10 @@ if ( is_multisite() ) {
     global $wpdb;
     
     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query acceptable in uninstall for multisite
-    $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
-    $original_blog_id = get_current_blog_id();
+    $scfm_blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
+    $scfm_original_blog_id = get_current_blog_id();
     
-    foreach ( $blog_ids as $blog_id ) {
+    foreach ( $scfm_blog_ids as $blog_id ) {
         switch_to_blog( $blog_id );
         
         delete_option( 'scfm_custom_fields' );
@@ -51,7 +51,7 @@ if ( is_multisite() ) {
         delete_option( 'scfm_custom_css' );
     }
     
-    switch_to_blog( $original_blog_id );
+    switch_to_blog( $scfm_original_blog_id );
 }
 
 // Clear any cached data

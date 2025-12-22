@@ -100,6 +100,7 @@ class SCFM_Field_Manager {
             remove_filter( 'woocommerce_checkout_fields', array( SCFM_Checkout_Fields::instance(), 'customize_checkout_fields' ), 20 );
             
             // Get checkout fields with other plugins' modifications
+            // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- This is WooCommerce core hook
             $all_checkout_fields = apply_filters( 'woocommerce_checkout_fields', array(
                 'billing'  => array(),
                 'shipping' => array(),
