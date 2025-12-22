@@ -165,7 +165,7 @@ class SCFM_Field_Manager {
                 $fields = array(
                     'billing_first_name' => array(
                         'type'        => 'text',
-                        'label'       => __( 'First name', 'woocommerce' ),
+                        'label'       => __( 'First name', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -176,7 +176,7 @@ class SCFM_Field_Manager {
                     ),
                     'billing_last_name' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Last name', 'woocommerce' ),
+                        'label'       => __( 'Last name', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -187,7 +187,7 @@ class SCFM_Field_Manager {
                     ),
                     'billing_company' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Company name', 'woocommerce' ),
+                        'label'       => __( 'Company name', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => false,
                         'enabled'     => true,
@@ -198,7 +198,7 @@ class SCFM_Field_Manager {
                     ),
                     'billing_country' => array(
                         'type'        => 'country',
-                        'label'       => __( 'Country / Region', 'woocommerce' ),
+                        'label'       => __( 'Country / Region', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -209,8 +209,8 @@ class SCFM_Field_Manager {
                     ),
                     'billing_address_1' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Street address', 'woocommerce' ),
-                        'placeholder' => __( 'House number and street name', 'woocommerce' ),
+                        'label'       => __( 'Street address', 'smart-checkout-fields-manager' ),
+                        'placeholder' => __( 'House number and street name', 'smart-checkout-fields-manager' ),
                         'required'    => true,
                         'enabled'     => true,
                         'priority'    => 50,
@@ -220,8 +220,8 @@ class SCFM_Field_Manager {
                     ),
                     'billing_address_2' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Apartment, suite, unit, etc.', 'woocommerce' ),
-                        'placeholder' => __( 'Apartment, suite, unit, etc. (optional)', 'woocommerce' ),
+                        'label'       => __( 'Apartment, suite, unit, etc.', 'smart-checkout-fields-manager' ),
+                        'placeholder' => __( 'Apartment, suite, unit, etc. (optional)', 'smart-checkout-fields-manager' ),
                         'required'    => false,
                         'enabled'     => true,
                         'priority'    => 60,
@@ -231,7 +231,7 @@ class SCFM_Field_Manager {
                     ),
                     'billing_city' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Town / City', 'woocommerce' ),
+                        'label'       => __( 'Town / City', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -242,7 +242,7 @@ class SCFM_Field_Manager {
                     ),
                     'billing_state' => array(
                         'type'        => 'state',
-                        'label'       => __( 'State / County', 'woocommerce' ),
+                        'label'       => __( 'State / County', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -254,7 +254,7 @@ class SCFM_Field_Manager {
                     ),
                     'billing_postcode' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Postcode / ZIP', 'woocommerce' ),
+                        'label'       => __( 'Postcode / ZIP', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -266,7 +266,7 @@ class SCFM_Field_Manager {
                     ),
                     'billing_phone' => array(
                         'type'        => 'tel',
-                        'label'       => __( 'Phone', 'woocommerce' ),
+                        'label'       => __( 'Phone', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -278,7 +278,7 @@ class SCFM_Field_Manager {
                     ),
                     'billing_email' => array(
                         'type'        => 'email',
-                        'label'       => __( 'Email address', 'woocommerce' ),
+                        'label'       => __( 'Email address', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -295,7 +295,7 @@ class SCFM_Field_Manager {
                 $fields = array(
                     'shipping_first_name' => array(
                         'type'        => 'text',
-                        'label'       => __( 'First name', 'woocommerce' ),
+                        'label'       => __( 'First name', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -306,7 +306,7 @@ class SCFM_Field_Manager {
                     ),
                     'shipping_last_name' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Last name', 'woocommerce' ),
+                        'label'       => __( 'Last name', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -317,7 +317,7 @@ class SCFM_Field_Manager {
                     ),
                     'shipping_company' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Company name', 'woocommerce' ),
+                        'label'       => __( 'Company name', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => false,
                         'enabled'     => true,
@@ -328,7 +328,7 @@ class SCFM_Field_Manager {
                     ),
                     'shipping_country' => array(
                         'type'        => 'country',
-                        'label'       => __( 'Country / Region', 'woocommerce' ),
+                        'label'       => __( 'Country / Region', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -339,8 +339,8 @@ class SCFM_Field_Manager {
                     ),
                     'shipping_address_1' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Street address', 'woocommerce' ),
-                        'placeholder' => __( 'House number and street name', 'woocommerce' ),
+                        'label'       => __( 'Street address', 'smart-checkout-fields-manager' ),
+                        'placeholder' => __( 'House number and street name', 'smart-checkout-fields-manager' ),
                         'required'    => true,
                         'enabled'     => true,
                         'priority'    => 50,
@@ -350,8 +350,8 @@ class SCFM_Field_Manager {
                     ),
                     'shipping_address_2' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Apartment, suite, unit, etc.', 'woocommerce' ),
-                        'placeholder' => __( 'Apartment, suite, unit, etc. (optional)', 'woocommerce' ),
+                        'label'       => __( 'Apartment, suite, unit, etc.', 'smart-checkout-fields-manager' ),
+                        'placeholder' => __( 'Apartment, suite, unit, etc. (optional)', 'smart-checkout-fields-manager' ),
                         'required'    => false,
                         'enabled'     => true,
                         'priority'    => 60,
@@ -361,7 +361,7 @@ class SCFM_Field_Manager {
                     ),
                     'shipping_city' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Town / City', 'woocommerce' ),
+                        'label'       => __( 'Town / City', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -372,7 +372,7 @@ class SCFM_Field_Manager {
                     ),
                     'shipping_state' => array(
                         'type'        => 'state',
-                        'label'       => __( 'State / County', 'woocommerce' ),
+                        'label'       => __( 'State / County', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -384,7 +384,7 @@ class SCFM_Field_Manager {
                     ),
                     'shipping_postcode' => array(
                         'type'        => 'text',
-                        'label'       => __( 'Postcode / ZIP', 'woocommerce' ),
+                        'label'       => __( 'Postcode / ZIP', 'smart-checkout-fields-manager' ),
                         'placeholder' => '',
                         'required'    => true,
                         'enabled'     => true,
@@ -401,8 +401,8 @@ class SCFM_Field_Manager {
                 $fields = array(
                     'order_comments' => array(
                         'type'        => 'textarea',
-                        'label'       => __( 'Order notes', 'woocommerce' ),
-                        'placeholder' => __( 'Notes about your order, e.g. special notes for delivery.', 'woocommerce' ),
+                        'label'       => __( 'Order notes', 'smart-checkout-fields-manager' ),
+                        'placeholder' => __( 'Notes about your order, e.g. special notes for delivery.', 'smart-checkout-fields-manager' ),
                         'required'    => false,
                         'enabled'     => true,
                         'priority'    => 10,

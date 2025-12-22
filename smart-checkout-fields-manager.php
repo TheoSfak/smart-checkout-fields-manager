@@ -69,9 +69,6 @@ class Smart_Checkout_Fields_Manager {
         // Check if WooCommerce is active
         add_action( 'plugins_loaded', array( $this, 'check_woocommerce' ) );
         
-        // Load plugin textdomain
-        add_action( 'init', array( $this, 'load_textdomain' ) );
-        
         // Initialize plugin
         add_action( 'woocommerce_init', array( $this, 'init' ) );
     }
@@ -125,13 +122,6 @@ class Smart_Checkout_Fields_Manager {
             </p>
         </div>
         <?php
-    }
-    
-    /**
-     * Load plugin textdomain.
-     */
-    public function load_textdomain() {
-        load_plugin_textdomain( 'smart-checkout-fields-manager', false, dirname( SCFM_PLUGIN_BASENAME ) . '/languages' );
     }
     
     /**

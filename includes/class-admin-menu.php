@@ -255,7 +255,7 @@ class SCFM_Admin_Menu {
                                             $is_block_supported = in_array( $type, $block_supported, true );
                                             $badge = $is_block_supported ? ' <span style="color: #2271b1; font-size: 0.85em;">●</span>' : '';
                                         ?>
-                                            <option value="<?php echo esc_attr( $type ); ?>"><?php echo esc_html( $label ) . $badge; ?></option>
+                                            <option value="<?php echo esc_attr( $type ); ?>"><?php echo esc_html( $label ) . wp_kses_post( $badge ); ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                     <p class="description">
@@ -706,10 +706,10 @@ class SCFM_Admin_Menu {
             update_option( 'scfm_delete_data_on_uninstall', $delete_on_uninstall );
             
             // Display & Styling settings
-            $required_indicator = sanitize_text_field( $_POST['scfm_required_indicator'] ?? '*' );
-            $label_position = sanitize_text_field( $_POST['scfm_label_position'] ?? 'above' );
-            $error_position = sanitize_text_field( $_POST['scfm_error_position'] ?? 'below' );
-            $custom_css = wp_strip_all_tags( $_POST['scfm_custom_css'] ?? '' );
+            $required_indicator = sanitize_text_field( wp_unslash( $_POST['scfm_required_indicator'] ?? '*' ) );
+            $label_position = sanitize_text_field( wp_unslash( $_POST['scfm_label_position'] ?? 'above' ) );
+            $error_position = sanitize_text_field( wp_unslash( $_POST['scfm_error_position'] ?? 'below' ) );
+            $custom_css = wp_strip_all_tags( wp_unslash( $_POST['scfm_custom_css'] ?? '' ) );
             
             update_option( 'scfm_required_indicator', $required_indicator );
             update_option( 'scfm_label_position', $label_position );
@@ -1319,6 +1319,7 @@ class SCFM_Admin_Menu {
                     $delete_result = $wp_filesystem->delete( $plugin_path . '/' . $file, true );
                     if ( ! $delete_result ) {
                         $wp_filesystem->delete( $temp_dir, true );
+                        /* translators: %s: file name that failed to delete */
                         wp_send_json_error( array( 'message' => sprintf( __( 'Failed to delete file: %s', 'smart-checkout-fields-manager' ), $file ) ) );
                     }
                 }

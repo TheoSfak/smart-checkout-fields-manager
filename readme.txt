@@ -2,7 +2,7 @@
 Contributors: irmaiden
 Tags: woocommerce, checkout, fields, custom fields, checkout manager
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 6.9
 Requires PHP: 7.4
 Requires WooCommerce: 6.0
 Tested WooCommerce: 9.5
@@ -10,7 +10,7 @@ Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Complete solution for customizing WooCommerce checkout fields. Add, edit, remove, and rearrange fields with 20+ field types. Compatible with Classic & Block checkout.
+Complete WooCommerce checkout customization. Add, edit, remove fields with 20+ types. Classic & Block checkout compatible.
 
 == Description ==
 

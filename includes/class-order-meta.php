@@ -267,7 +267,7 @@ class SCFM_Order_Meta {
         if ( ! empty( $output ) ) {
             echo '<h2>' . esc_html__( 'Additional Information', 'smart-checkout-fields-manager' ) . '</h2>';
             echo '<table class="woocommerce-table woocommerce-table--custom-fields shop_table custom-fields">';
-            echo $output;
+            echo wp_kses_post( $output );
             echo '</table>';
         }
     }
@@ -327,11 +327,11 @@ class SCFM_Order_Meta {
 
         if ( ! empty( $output ) ) {
             if ( $plain_text ) {
-                echo "\n" . __( 'Additional Information:', 'smart-checkout-fields-manager' ) . "\n";
-                echo $output . "\n";
+                echo "\n" . esc_html__( 'Additional Information:', 'smart-checkout-fields-manager' ) . "\n";
+                echo wp_kses_post( $output ) . "\n";
             } else {
                 echo '<h2>' . esc_html__( 'Additional Information', 'smart-checkout-fields-manager' ) . '</h2>';
-                echo $output;
+                echo wp_kses_post( $output );
             }
         }
     }

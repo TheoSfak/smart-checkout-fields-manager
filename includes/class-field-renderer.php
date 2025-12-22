@@ -116,7 +116,7 @@ class SCFM_Field_Renderer {
         $field  = '<p class="form-row ' . esc_attr( implode( ' ', $args['class'] ) ) . '" id="' . esc_attr( $key ) . '_field">';
         
         if ( $args['required'] ) {
-            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'woocommerce' ) . '">*</abbr>';
+            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'smart-checkout-fields-manager' ) . '">*</abbr>';
         }
         
         $field .= '<label>' . wp_kses_post( $args['label'] ) . '</label>';
@@ -153,7 +153,7 @@ class SCFM_Field_Renderer {
         $field  = '<p class="form-row ' . esc_attr( implode( ' ', $args['class'] ) ) . '" id="' . esc_attr( $key ) . '_field">';
         
         if ( $args['required'] ) {
-            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'woocommerce' ) . '">*</abbr>';
+            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'smart-checkout-fields-manager' ) . '">*</abbr>';
         }
         
         $field .= '<label for="' . esc_attr( $key ) . '">' . wp_kses_post( $args['label'] ) . '</label>';

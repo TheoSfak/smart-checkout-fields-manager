@@ -106,7 +106,7 @@ class SCFM_Stylish_Manager {
         $css = $this->generate_custom_css( $options );
         
         if ( ! empty( $css ) ) {
-            echo '<style id="scfm-stylish-custom">' . $css . '</style>';
+            echo '<style id="scfm-stylish-custom">' . wp_strip_all_tags( $css ) . '</style>';
         }
     }
     
