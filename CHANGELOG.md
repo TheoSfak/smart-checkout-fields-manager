@@ -4,6 +4,8 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-12-22
+
 ### Enhanced (Power Beautify - Spectacular Mode)
 - Upgraded Power Beautify with dramatic visual enhancements
 - Animated gradient borders with 5-color transitions (purple, violet, pink, blue)
