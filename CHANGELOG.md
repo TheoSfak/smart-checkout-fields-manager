@@ -6,38 +6,57 @@ All notable changes to Smart Checkout Fields Manager will be documented in this 
 
 ## [1.1.0] - 2025-12-22
 
-### Enhanced (Power Beautify - Spectacular Mode)
-- Upgraded Power Beautify with dramatic visual enhancements
-- Animated gradient borders with 5-color transitions (purple, violet, pink, blue)
+### Added
+- WordPress.org submission preparation with full coding standards compliance
+- Translation support with POT file for Loco Translate compatibility
+- Stylish tab for comprehensive field styling and customization
+- Power Beautify mode for instant professional styling with one click
+- Custom color controls (primary, background, text, label, placeholder)
+- Border radius adjustment (0-30px)
+- Shadow effects (none, light, medium, heavy, glow)
+- Hover and focus effects (glow, scale, lift)
+- Typography controls with 6 Google Fonts (Inter, Roboto, Open Sans, Lato, Montserrat, Poppins)
+- Font size (12-20px) and weight (300-700) customization
+- Animation effects (none, fade, slide, bounce, scale)
+- Custom CSS editor for advanced styling
+- Address Format Manager for customizing checkout layout
+- Live preview in settings for real-time field styling
+
+### Enhanced
+- Power Beautify with dramatic visual enhancements
+- Animated gradient borders with 5-color transitions
 - Multiple layered shadows (3-5 layers) for depth and dimension
 - Pulsing border animation with color transitions
 - Shine effect animation sweeping across fields
 - Focus state with 6 shadow layers and glowing aura effect
 - Hover state with multi-layered shadows and lift animation
 - Gradient text labels with vibrant purple-pink-blue gradients
-- Gradient placeholders with purple tones
-- Button-style inputs with pink gradient (f093fb → f5576c)
-- Enhanced button shadows with glow effects
-- Admin card with 4-color animated gradient background
-- Rotating radial gradient overlay on power card
-- Pulsing and glowing ⚡ power icon animation
-- Spectacular toggle switch with gradient and glow
-- Larger switch (70x36px) with enhanced animations
-- Bounce entrance animation by default
-- Poppins font for modern typography
-- 16px larger font size and 500 weight
-- Rounded corners increased to 16px
-- Transform scale and translateY on interactions
+- Button-style inputs with pink gradient
+- Admin card with animated gradient background
+- Spectacular toggle switch with gradient and glow effects
 
-### Added (Stylish - Field Beautification)
-- New "Stylish" tab with comprehensive field styling options
-- Power Beautify mode for instant professional styling with one click
-- Custom color controls (primary, background, text, label, placeholder)
-- Border radius adjustment (0-30px)
-- Shadow effects (none, light, medium, heavy, glow)
-- Hover and focus effects (glow, scale, lift)
-- Typography controls (6 Google Fonts: Inter, Roboto, Open Sans, Lato, Montserrat, Poppins)
-- Font size (12-20px) and weight (300-700) customization
+### Fixed
+- All WordPress coding standards violations for WordPress.org submission
+- Text domain consistency (changed to 'smart-checkout-fields-manager')
+- Output escaping with wp_kses_post() and esc_html()
+- Input sanitization with wp_unslash() and sanitize_text_field()
+- Nonce verification in AJAX handlers
+- Global variable prefixes with scfm_ namespace
+- Translation support with proper translators comments
+- Date/time functions using gmdate() instead of date()
+- Resource versioning for cache busting
+
+### Changed
+- Author updated to 'irmaiden' for WordPress.org submission
+- Tested up to WordPress 6.9
+- Short description optimized to 114 characters
+- Removed debugging features (GitHub update button)
+- load_plugin_textdomain() removed (WordPress.org handles automatically)
+
+### Security
+- Enhanced input validation and sanitization
+- Proper nonce verification in all form submissions
+- Output escaping for all user-generated content
 - Button-style checkboxes and radio buttons
 - Entrance animations (fade in, slide up, slide in, bounce)
 - Transition speed controls (fast, normal, slow)

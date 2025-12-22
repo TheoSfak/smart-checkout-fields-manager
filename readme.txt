@@ -302,6 +302,29 @@ Default WooCommerce fields remain unaffected.
 
 == Changelog ==
 
+= 1.1.0 (2025-12-22) =
+**New Features:**
+* Added Stylish tab for comprehensive field styling and customization
+* Power Beautify mode for instant professional styling with one click
+* Address Format Manager for customizing checkout layout
+* Custom CSS editor for advanced styling
+* Animation effects (fade, slide, bounce, scale)
+* Typography controls with 6 Google Fonts
+* Shadow, hover, and focus effects
+
+**WordPress.org Ready:**
+* Full WordPress coding standards compliance
+* Translation support with POT file for Loco Translate
+* Enhanced security with proper sanitization and escaping
+* Optimized for WordPress 6.9 and WooCommerce 9.5
+
+**Bug Fixes:**
+* Fixed text domain consistency issues
+* Fixed nonce verification in all AJAX handlers
+* Fixed output escaping for security
+* Fixed global variable prefixes
+* Removed debugging features for production
+
 = 1.0.0 (2024-12-15) =
 * Initial release
 * 20 field types for Classic Checkout
@@ -315,6 +338,9 @@ Default WooCommerce fields remain unaffected.
 * Developer hooks and filters
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Major update with Stylish tab for beautiful field styling, WordPress.org compliance, and enhanced security. Recommended update for all users!
 
 = 1.0.0 =
 Initial release - The complete WooCommerce checkout fields customization solution!
