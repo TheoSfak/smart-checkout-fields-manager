@@ -1,0 +1,367 @@
+/**
+ * Stylish Frontend Styles
+ * Dynamic styles applied to checkout fields based on Stylish settings
+ *
+ * @package Smart_Checkout_Fields_Manager
+ */
+
+/* Power Beautify Base Styles - SPECTACULAR MODE */
+@keyframes powerGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes powerBorderPulse {
+    0%, 100% { border-color: rgba(139, 92, 246, 0.4); }
+    50% { border-color: rgba(59, 130, 246, 0.6); }
+}
+
+@keyframes powerShine {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+body.scfm-power-beautify .woocommerce form .form-row input.input-text,
+body.scfm-power-beautify .woocommerce form .form-row textarea,
+body.scfm-power-beautify .woocommerce form .form-row select {
+    border: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #667eea 100%) border-box;
+    background-size: 400% 400%;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a202c;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15),
+                0 6px 20px rgba(118, 75, 162, 0.12),
+                0 3px 10px rgba(79, 70, 229, 0.1),
+                inset 0 1px 3px rgba(255, 255, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+    animation: powerBorderPulse 3s ease-in-out infinite;
+}
+
+body.scfm-power-beautify .woocommerce form .form-row input.input-text::before,
+body.scfm-power-beautify .woocommerce form .form-row textarea::before,
+body.scfm-power-beautify .woocommerce form .form-row select::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: powerShine 3s infinite;
+    pointer-events: none;
+}
+
+body.scfm-power-beautify .woocommerce form .form-row input.input-text:focus,
+body.scfm-power-beautify .woocommerce form .form-row textarea:focus,
+body.scfm-power-beautify .woocommerce form .form-row select:focus {
+    outline: none;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+    box-shadow: 0 0 0 6px rgba(139, 92, 246, 0.15),
+                0 15px 50px rgba(102, 126, 234, 0.25),
+                0 10px 30px rgba(118, 75, 162, 0.2),
+                0 5px 15px rgba(59, 130, 246, 0.15),
+                inset 0 2px 4px rgba(139, 92, 246, 0.1),
+                0 0 60px rgba(139, 92, 246, 0.3);
+    transform: translateY(-3px) scale(1.02);
+    border: 3px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #667eea 0%, #f093fb 50%, #4facfe 100%) border-box;
+    animation: powerGradient 2s ease infinite;
+}
+
+body.scfm-power-beautify .woocommerce form .form-row input.input-text:hover,
+body.scfm-power-beautify .woocommerce form .form-row textarea:hover,
+body.scfm-power-beautify .woocommerce form .form-row select:hover {
+    box-shadow: 0 12px 45px rgba(102, 126, 234, 0.2),
+                0 8px 25px rgba(118, 75, 162, 0.15),
+                0 4px 15px rgba(79, 70, 229, 0.12),
+                inset 0 1px 3px rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #ffffff 0%, #fafaff 100%);
+}
+
+body.scfm-power-beautify .woocommerce form .form-row label {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+    display: block;
+    text-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+    letter-spacing: 0.3px;
+}
+
+/* CRITICAL: Override gradient for button-style radio/checkbox labels - text must be visible! */
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label,
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="radio"] + label,
+body.scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label,
+body.scfm-button-style .woocommerce form .form-row input[type="radio"] + label {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    -webkit-background-clip: border-box !important;
+    -webkit-text-fill-color: #1e293b !important;
+    background-clip: border-box !important;
+    text-fill-color: #1e293b !important;
+    color: #1e293b !important;
+    text-shadow: none !important;
+}
+
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="checkbox"]:checked + label,
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="radio"]:checked + label,
+body.scfm-button-style .woocommerce form .form-row input[type="checkbox"]:checked + label,
+body.scfm-button-style .woocommerce form .form-row input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+    -webkit-background-clip: border-box !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background-clip: border-box !important;
+    text-fill-color: #ffffff !important;
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label:hover,
+body.scfm-power-beautify.scfm-button-style .woocommerce form .form-row input[type="radio"] + label:hover,
+body.scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label:hover,
+body.scfm-button-style .woocommerce form .form-row input[type="radio"] + label:hover {
+    -webkit-text-fill-color: #0f172a !important;
+    color: #0f172a !important;
+}
+
+body.scfm-power-beautify .woocommerce form .form-row ::placeholder {
+    background: linear-gradient(135deg, #94a3b8 0%, #b794f4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: italic;
+    opacity: 1;
+    font-weight: 500;
+}
+
+/* Shadow Variations */
+.scfm-shadow-none .woocommerce form .form-row input.input-text,
+.scfm-shadow-none .woocommerce form .form-row textarea,
+.scfm-shadow-none .woocommerce form .form-row select {
+    box-shadow: none !important;
+}
+
+.scfm-shadow-light .woocommerce form .form-row input.input-text,
+.scfm-shadow-light .woocommerce form .form-row textarea,
+.scfm-shadow-light .woocommerce form .form-row select {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.scfm-shadow-medium .woocommerce form .form-row input.input-text,
+.scfm-shadow-medium .woocommerce form .form-row textarea,
+.scfm-shadow-medium .woocommerce form .form-row select {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.scfm-shadow-heavy .woocommerce form .form-row input.input-text,
+.scfm-shadow-heavy .woocommerce form .form-row textarea,
+.scfm-shadow-heavy .woocommerce form .form-row select {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.scfm-shadow-glow .woocommerce form .form-row input.input-text,
+.scfm-shadow-glow .woocommerce form .form-row textarea,
+.scfm-shadow-glow .woocommerce form .form-row select {
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.25),
+                0 10px 40px rgba(102, 126, 234, 0.2),
+                0 5px 20px rgba(118, 75, 162, 0.15);
+}
+
+/* Focus Effects */
+.scfm-focus-glow .woocommerce form .form-row input.input-text:focus,
+.scfm-focus-glow .woocommerce form .form-row textarea:focus,
+.scfm-focus-glow .woocommerce form .form-row select:focus {
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.scfm-focus-scale .woocommerce form .form-row input.input-text:focus,
+.scfm-focus-scale .woocommerce form .form-row textarea:focus,
+.scfm-focus-scale .woocommerce form .form-row select:focus {
+    transform: scale(1.02);
+}
+
+.scfm-focus-lift .woocommerce form .form-row input.input-text:focus,
+.scfm-focus-lift .woocommerce form .form-row textarea:focus,
+.scfm-focus-lift .woocommerce form .form-row select:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Style Checkboxes and Radio */
+.scfm-button-style .woocommerce form .form-row input[type="checkbox"],
+.scfm-button-style .woocommerce form .form-row input[type="radio"] {
+    display: none;
+}
+
+.scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label,
+.scfm-button-style .woocommerce form .form-row input[type="radio"] + label {
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: #1e293b !important;
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
+    -webkit-text-fill-color: #1e293b !important;
+    text-shadow: none !important;
+}
+
+.scfm-button-style .woocommerce form .form-row input[type="checkbox"]:checked + label,
+.scfm-button-style .woocommerce form .form-row input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-color: #f093fb;
+    color: #ffffff !important;
+    box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4),
+                0 4px 15px rgba(245, 87, 108, 0.3),
+                0 0 30px rgba(240, 147, 251, 0.3);
+    transform: translateY(-3px) scale(1.05);
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
+    -webkit-text-fill-color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+.scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label:hover,
+.scfm-button-style .woocommerce form .form-row input[type="radio"] + label:hover {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    border-color: #94a3b8;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+}
+
+/* Font Families */
+.scfm-font-inter {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.scfm-font-roboto {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.scfm-font-opensans {
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.scfm-font-lato {
+    font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.scfm-font-montserrat {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.scfm-font-poppins {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Entrance Animations */
+@keyframes scfmFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scfmSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scfmSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scfmBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.scfm-entrance-fadein .woocommerce form .form-row {
+    animation: scfmFadeIn 0.5s ease-out;
+}
+
+.scfm-entrance-slideup .woocommerce form .form-row {
+    animation: scfmSlideUp 0.5s ease-out;
+}
+
+.scfm-entrance-slidein .woocommerce form .form-row {
+    animation: scfmSlideIn 0.5s ease-out;
+}
+
+.scfm-entrance-bounce .woocommerce form .form-row {
+    animation: scfmBounce 0.6s ease-out;
+}
+
+/* Transition Speeds */
+.scfm-transition-fast .woocommerce form .form-row input.input-text,
+.scfm-transition-fast .woocommerce form .form-row textarea,
+.scfm-transition-fast .woocommerce form .form-row select {
+    transition-duration: 0.2s !important;
+}
+
+.scfm-transition-normal .woocommerce form .form-row input.input-text,
+.scfm-transition-normal .woocommerce form .form-row textarea,
+.scfm-transition-normal .woocommerce form .form-row select {
+    transition-duration: 0.3s !important;
+}
+
+.scfm-transition-slow .woocommerce form .form-row input.input-text,
+.scfm-transition-slow .woocommerce form .form-row textarea,
+.scfm-transition-slow .woocommerce form .form-row select {
+    transition-duration: 0.5s !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body.scfm-power-beautify .woocommerce form .form-row input.input-text,
+    body.scfm-power-beautify .woocommerce form .form-row textarea,
+    body.scfm-power-beautify .woocommerce form .form-row select {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 12px 14px;
+    }
+    
+    .scfm-button-style .woocommerce form .form-row input[type="checkbox"] + label,
+    .scfm-button-style .woocommerce form .form-row input[type="radio"] + label {
+        display: block;
+        margin-right: 0;
+    }
+}
