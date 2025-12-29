@@ -10,13 +10,15 @@ Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Complete WooCommerce checkout customization. Add, edit, remove fields with 20+ types. Classic & Block checkout compatible.
+Complete WooCommerce checkout customization. Add, edit, remove fields with 20+ field types for Classic checkout.
 
 == Description ==
 
 🎯 **WooCommerce Checkout Fields Customization Plugin**
 
-Fieldora Checkout for WooCommerce gives you complete control over your WooCommerce checkout. Add unlimited custom fields, edit default fields, rearrange with drag-and-drop, and choose from 20+ field types. Works with both Classic and Block checkout!
+Fieldora Checkout for WooCommerce gives you complete control over your WooCommerce checkout. Add unlimited custom fields, edit default fields, rearrange with drag-and-drop, and choose from 20+ field types.
+
+**Note:** This plugin currently supports Classic WooCommerce checkout only. Block checkout support is planned for a future release.
 
 = Key Features =
 
@@ -51,16 +53,6 @@ Fieldora Checkout for WooCommerce gives you complete control over your WooCommer
 18. **URL** - URL input with validation
 19. **Heading** - Display-only section heading (H3)
 20. **Paragraph** - Display-only paragraph text
-
-**✅ WooCommerce Block Checkout Support**
-
-* **4 Block-Compatible Field Types:** Text ●, Textarea ●, Checkbox ●, Select ●
-* Automatic registration with WooCommerce Blocks API
-* Field location mapping (contact, address, order sections)
-* Custom styling for block checkout fields
-* Validation support
-* Requires WooCommerce Blocks 11.0+
-* Visual indicator (● blue dot) in admin for block-compatible fields
 
 **✅ Comprehensive Field Validation**
 
@@ -142,7 +134,6 @@ Powerful hooks for developers:
 
 = Why Choose Fieldora Checkout for WooCommerce? =
 
-✓ **Both Classic & Block Checkout** - Supports both checkout types
 ✓ **20+ Field Types** - Wide selection of field types
 ✓ **Drag & Drop** - Intuitive interface for field management
 ✓ **No Coding Required** - User-friendly admin interface
@@ -193,10 +184,6 @@ Powerful hooks for developers:
 
 == Frequently Asked Questions ==
 
-= Does this work with WooCommerce Block Checkout? =
-
-Yes! Fieldora Checkout for WooCommerce supports both Classic Checkout (shortcode-based) and Block Checkout (Gutenberg blocks). Currently, 4 field types are compatible with Block Checkout: Text, Textarea, Checkbox, and Select. More block-compatible field types coming soon!
-
 = Can I edit default WooCommerce fields? =
 
 Absolutely! You can edit labels, placeholders, required status, CSS classes, width, and validation rules for all default WooCommerce fields (first name, last name, email, address, etc.). Required fields are protected from deletion to maintain checkout functionality.
@@ -221,7 +208,9 @@ Yes! Use drag-and-drop to reorder fields in the admin interface. Priority number
 
 **Classic Checkout (20 types):** Text, Number, Email, Phone, URL, Password, Hidden, Textarea, Select, Multi-Select, Radio, Checkbox, Checkbox Group, Date, Time, DateTime, Month, Week, Heading, Paragraph
 
-**Block Checkout (4 types):** Text, Textarea, Checkbox, Select
+= Does this work with WooCommerce Block Checkout? =
+
+Not at this time. The plugin is designed for Classic WooCommerce checkout. Block checkout support is planned for a future release.
 
 = Does it support field validation? =
 
@@ -338,7 +327,6 @@ Default WooCommerce fields remain unaffected.
 = 1.0.0 (2024-12-15) =
 * Initial release
 * 20 field types for Classic Checkout
-* 4 field types for Block Checkout
 * Drag-and-drop field reordering
 * Comprehensive field validation
 * Visibility controls (orders, emails, pages)

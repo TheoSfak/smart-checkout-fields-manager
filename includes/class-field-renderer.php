@@ -46,17 +46,6 @@ class SCFM_Field_Renderer {
     }
     
     /**
-     * Check if field type is supported in block checkout.
-     *
-     * @param string $type Field type.
-     * @return bool
-     */
-    public static function is_block_compatible( $type ) {
-        $block_types = array( 'text', 'select', 'radio', 'checkbox' );
-        return in_array( $type, $block_types, true );
-    }
-    
-    /**
      * Initialize custom field rendering.
      */
     public static function init() {

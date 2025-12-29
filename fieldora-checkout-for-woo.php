@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Fieldora Checkout for WooCommerce
  * Plugin URI: https://github.com/TheoSfak/smart-checkout-fields-manager
- * Description: Complete solution for customizing WooCommerce checkout fields. Add, edit, remove, and rearrange fields with 20+ field types. Compatible with Classic & Block checkout.
+ * Description: Complete solution for customizing WooCommerce checkout fields. Add, edit, remove, and rearrange fields with 20+ field types.
  * Version: 1.1.1
  * Author: irmaiden
  * Author URI: https://profiles.wordpress.org/irmaiden/

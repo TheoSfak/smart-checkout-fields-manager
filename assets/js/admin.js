@@ -330,10 +330,6 @@
                 $('input[name="field_data[visibility][customer_emails]"]').prop('checked', field.visibility.customer_emails !== false);
             }
             
-            // Set block checkout visibility
-            $('#scfm-field-block-visible').prop('checked', field.block_checkout_visible !== false);
-            $('#scfm-field-block-location').val(field.block_checkout_location || '');
-            
             // Set address format settings
             $('#scfm-field-show-in-address').prop('checked', field.show_in_address_format || false);
             $('#scfm-field-address-position').val(field.address_format_position || 0);

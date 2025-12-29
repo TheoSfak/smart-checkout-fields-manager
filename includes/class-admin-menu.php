@@ -549,8 +549,6 @@ class SCFM_Admin_Menu {
                                     </select>
                                     <p class="description">
                                         <?php esc_html_e( 'Select the type of field to add.', 'fieldora-checkout-for-woo' ); ?>
-                                        <br>
-                                        <span style="color: #2271b1;">● = <?php esc_html_e( 'Block Checkout Compatible', 'fieldora-checkout-for-woo' ); ?></span>
                                     </p>
                                 </td>
                             </tr>
@@ -669,28 +667,6 @@ class SCFM_Admin_Menu {
                                         <input type="checkbox" name="field_data[visibility][customer_emails]" value="1" checked>
                                         <?php esc_html_e( 'Show in Customer Emails', 'fieldora-checkout-for-woo' ); ?>
                                     </label>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <th scope="row"><?php esc_html_e( 'Block Checkout', 'fieldora-checkout-for-woo' ); ?></th>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" id="scfm-field-block-visible" name="field_data[block_checkout_visible]" value="1" checked>
-                                        <?php esc_html_e( 'Show in Block Checkout', 'fieldora-checkout-for-woo' ); ?>
-                                    </label>
-                                    <p class="description">
-                                        <?php esc_html_e( 'Only text, textarea, checkbox, and select fields are supported in Block Checkout.', 'fieldora-checkout-for-woo' ); ?>
-                                    </p>
-                                    <br>
-                                    <label for="scfm-field-block-location"><?php esc_html_e( 'Block Location:', 'fieldora-checkout-for-woo' ); ?></label>
-                                    <select id="scfm-field-block-location" name="field_data[block_checkout_location]" class="regular-text">
-                                        <option value=""><?php esc_html_e( 'Auto (based on section)', 'fieldora-checkout-for-woo' ); ?></option>
-                                        <option value="contact"><?php esc_html_e( 'Contact Information', 'fieldora-checkout-for-woo' ); ?></option>
-                                        <option value="address"><?php esc_html_e( 'Address', 'fieldora-checkout-for-woo' ); ?></option>
-                                        <option value="order"><?php esc_html_e( 'Additional Information', 'fieldora-checkout-for-woo' ); ?></option>
-                                    </select>
-                                    <p class="description"><?php esc_html_e( 'Where to display this field in Block Checkout.', 'fieldora-checkout-for-woo' ); ?></p>
                                 </td>
                             </tr>
                             

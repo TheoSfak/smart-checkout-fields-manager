@@ -13,6 +13,8 @@
 
 A complete solution for customizing WooCommerce checkout fields. Add, edit, remove, and rearrange fields with 20+ field types. Manage default WooCommerce fields, add custom validation, control visibility, and integrate seamlessly with orders and emails.
 
+**Note:** This plugin currently supports Classic WooCommerce checkout only. Block checkout support is planned for a future release.
+
 ## Features
 
 ### ✅ Complete Checkout Field Customization
@@ -44,22 +46,6 @@ A complete solution for customizing WooCommerce checkout fields. Add, edit, remo
 18. **URL** - URL input with validation
 19. **Heading** - Display-only section heading (H3)
 20. **Paragraph** - Display-only paragraph text
-
-### ✅ Block Checkout Support (4 Field Types)
-**WooCommerce Block Checkout Compatible:**
-1. **Text** ● - Single-line text input
-2. **Textarea** ● - Multi-line text area
-3. **Checkbox** ● - Single checkbox
-4. **Select** ● - Dropdown select menu
-
-**Features:**
-- Automatic registration with WooCommerce Blocks API
-- Field location mapping (contact, address, order sections)
-- Custom styling for block checkout fields
-- Validation support
-- Requires WooCommerce Blocks 11.0+
-- Seamless integration with both Classic and Block checkout
-- Visual indicator (● blue dot) in admin for block-compatible fields
 
 ### ✅ Comprehensive Field Validation
 **Built-in Type Validation:**
@@ -301,7 +287,7 @@ Or use the `scfm_validate_field` action hook to add custom validation.
 
 ### Will this work with WooCommerce Blocks?
 
-The current version (1.0.0) is optimized for the classic WooCommerce checkout. Block checkout support is planned for a future release.
+Not at this time. The plugin is designed for Classic WooCommerce checkout. Block checkout support is planned for a future release.
 
 ### Is this plugin translation-ready?
 

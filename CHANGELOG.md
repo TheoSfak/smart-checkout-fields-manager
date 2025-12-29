@@ -101,8 +101,8 @@ All notable changes to Fieldora Checkout for WooCommerce will be documented in t
 - Utility methods for address formatting and placeholder retrieval
 - SCFM_Address_Formatter class with full address management
 
-### Added (Block Rendering - Advanced Features)
-- Conditional logic support for Block Checkout fields
+### Added (Advanced Features)
+- Conditional logic support for custom fields
 - Dynamic field visibility based on other field values
 - Real-time field show/hide with smooth animations
 - Advanced field rendering with custom classes and attributes
@@ -113,38 +113,12 @@ All notable changes to Fieldora Checkout for WooCommerce will be documented in t
 - Enhanced CSS animations (fadeIn, slideIn, spin)
 - Loading states for conditional fields
 - Custom field markers and visual indicators
-- Half-width field support in Block Checkout
-- Dark mode support for block fields
+- Half-width field support
+- Dark mode support for fields
 - Responsive design improvements
 - Field data passed to JavaScript via wp_localize_script
 - MutationObserver for dynamic content updates
 - Form data collection and evaluation system
-
-### Added (Block Visibility Controls)
-- Granular visibility control for Block Checkout fields
-- "Show in Block Checkout" toggle for each field
-- Custom location selector for Block Checkout (Contact, Address, Additional Info)
-- Auto-location based on field section
-- Block checkout visibility settings saved per field
-- UI controls in field editor modal
-- Validation for block checkout locations
-- Respects field visibility settings in block registration
-
-### Added (Phase 9 - Block Checkout Support)
-- WooCommerce Block Checkout integration
-- Support for 4 field types in Block Checkout:
-  * Text fields
-  * Textarea fields
-  * Checkbox fields
-  * Select/dropdown fields
-- Automatic field registration for Block Checkout
-- Custom styling for block checkout fields
-- Field location mapping (contact, address, order sections)
-- Block checkout validation support
-- Visual indicator (● blue dot) for block-compatible field types in admin
-- Seamless integration with WooCommerce Blocks 11.0+
-- Custom CSS and JavaScript for enhanced block checkout experience
-- Responsive design for mobile block checkout
 
 ### Fixed (Tab Switching)
 - Fixed fields not loading when switching to Shipping or Additional Fields tabs
