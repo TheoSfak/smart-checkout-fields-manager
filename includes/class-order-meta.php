@@ -82,8 +82,7 @@ class SCFM_Order_Meta {
                 }
 
                 // Get posted value
-                // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified by WooCommerce checkout process
-                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via sanitize_field_value() method below
+                // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verified by WooCommerce checkout process, sanitized via sanitize_field_value() below
                 $value = isset( $_POST[ $field_id ] ) ? wp_unslash( $_POST[ $field_id ] ) : '';
 
                 // Sanitize based on field type
@@ -152,7 +151,7 @@ class SCFM_Order_Meta {
      * @param WC_Order $order Order object.
      */
     public function display_billing_fields_admin( $order ) {
-        $this->display_fields_admin( $order, 'billing', __( 'Billing Custom Fields', 'smart-checkout-fields-manager' ) );
+        $this->display_fields_admin( $order, 'billing', __( 'Billing Custom Fields', 'fieldora-checkout-for-woo' ) );
     }
 
     /**
@@ -161,7 +160,7 @@ class SCFM_Order_Meta {
      * @param WC_Order $order Order object.
      */
     public function display_shipping_fields_admin( $order ) {
-        $this->display_fields_admin( $order, 'shipping', __( 'Shipping Custom Fields', 'smart-checkout-fields-manager' ) );
+        $this->display_fields_admin( $order, 'shipping', __( 'Shipping Custom Fields', 'fieldora-checkout-for-woo' ) );
     }
 
     /**
@@ -267,7 +266,7 @@ class SCFM_Order_Meta {
         }
 
         if ( ! empty( $output ) ) {
-            echo '<h2>' . esc_html__( 'Additional Information', 'smart-checkout-fields-manager' ) . '</h2>';
+            echo '<h2>' . esc_html__( 'Additional Information', 'fieldora-checkout-for-woo' ) . '</h2>';
             echo '<table class="woocommerce-table woocommerce-table--custom-fields shop_table custom-fields">';
             echo wp_kses_post( $output );
             echo '</table>';
@@ -329,10 +328,10 @@ class SCFM_Order_Meta {
 
         if ( ! empty( $output ) ) {
             if ( $plain_text ) {
-                echo "\n" . esc_html__( 'Additional Information:', 'smart-checkout-fields-manager' ) . "\n";
+                echo "\n" . esc_html__( 'Additional Information:', 'fieldora-checkout-for-woo' ) . "\n";
                 echo wp_kses_post( $output ) . "\n";
             } else {
-                echo '<h2>' . esc_html__( 'Additional Information', 'smart-checkout-fields-manager' ) . '</h2>';
+                echo '<h2>' . esc_html__( 'Additional Information', 'fieldora-checkout-for-woo' ) . '</h2>';
                 echo wp_kses_post( $output );
             }
         }

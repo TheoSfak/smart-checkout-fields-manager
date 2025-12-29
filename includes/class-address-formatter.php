@@ -287,16 +287,16 @@ class SCFM_Address_Formatter {
      */
     public function get_available_placeholders() {
         $placeholders = array(
-            '{name}'       => __( 'Full Name', 'smart-checkout-fields-manager' ),
-            '{first_name}' => __( 'First Name', 'smart-checkout-fields-manager' ),
-            '{last_name}'  => __( 'Last Name', 'smart-checkout-fields-manager' ),
-            '{company}'    => __( 'Company', 'smart-checkout-fields-manager' ),
-            '{address_1}'  => __( 'Address Line 1', 'smart-checkout-fields-manager' ),
-            '{address_2}'  => __( 'Address Line 2', 'smart-checkout-fields-manager' ),
-            '{city}'       => __( 'City', 'smart-checkout-fields-manager' ),
-            '{state}'      => __( 'State/County', 'smart-checkout-fields-manager' ),
-            '{postcode}'   => __( 'Postcode/ZIP', 'smart-checkout-fields-manager' ),
-            '{country}'    => __( 'Country', 'smart-checkout-fields-manager' ),
+            '{name}'       => __( 'Full Name', 'fieldora-checkout-for-woo' ),
+            '{first_name}' => __( 'First Name', 'fieldora-checkout-for-woo' ),
+            '{last_name}'  => __( 'Last Name', 'fieldora-checkout-for-woo' ),
+            '{company}'    => __( 'Company', 'fieldora-checkout-for-woo' ),
+            '{address_1}'  => __( 'Address Line 1', 'fieldora-checkout-for-woo' ),
+            '{address_2}'  => __( 'Address Line 2', 'fieldora-checkout-for-woo' ),
+            '{city}'       => __( 'City', 'fieldora-checkout-for-woo' ),
+            '{state}'      => __( 'State/County', 'fieldora-checkout-for-woo' ),
+            '{postcode}'   => __( 'Postcode/ZIP', 'fieldora-checkout-for-woo' ),
+            '{country}'    => __( 'Country', 'fieldora-checkout-for-woo' ),
         );
         
         // Add custom fields

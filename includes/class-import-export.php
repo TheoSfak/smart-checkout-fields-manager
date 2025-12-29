@@ -49,19 +49,19 @@ class SCFM_Import_Export {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $section = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         
         if ( empty( $section ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid section.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid section.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $export_data = $this->prepare_export_data( $section );
         
         if ( empty( $export_data['fields'] ) ) {
-            wp_send_json_error( array( 'message' => __( 'No custom fields exist to export.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'No custom fields exist to export.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         wp_send_json_success( array(
@@ -77,21 +77,21 @@ class SCFM_Import_Export {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $section    = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         $import_data = isset( $_POST['import_data'] ) ? sanitize_text_field( wp_unslash( $_POST['import_data'] ) ) : '';
         
         if ( empty( $section ) || empty( $import_data ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid import data.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid import data.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Decode JSON
         $data = json_decode( stripslashes( $import_data ), true );
         
         if ( json_last_error() !== JSON_ERROR_NONE ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid JSON format.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid JSON format.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Validate import data
@@ -115,7 +115,7 @@ class SCFM_Import_Export {
         
         if ( $result === 0 ) {
             wp_send_json_success( array(
-                'message' => __( 'No new fields to import. All fields already exist.', 'smart-checkout-fields-manager' ),
+                'message' => __( 'No new fields to import. All fields already exist.', 'fieldora-checkout-for-woo' ),
                 'backup'  => $backup,
             ) );
         }
@@ -123,7 +123,7 @@ class SCFM_Import_Export {
         wp_send_json_success( array(
             'message' => sprintf(
                 /* translators: %d: number of fields imported */
-                __( 'Successfully imported %d field(s).', 'smart-checkout-fields-manager' ),
+                __( 'Successfully imported %d field(s).', 'fieldora-checkout-for-woo' ),
                 $result
             ),
             'backup'  => $backup,
@@ -154,7 +154,7 @@ class SCFM_Import_Export {
         
         return array(
             'version'    => SCFM_VERSION,
-            'plugin'     => 'Smart Checkout Fields Manager',
+            'plugin'     => 'Fieldora Checkout for WooCommerce',
             'section'    => $section,
             'exported'   => current_time( 'mysql' ),
             'fields'     => $custom_fields,
@@ -189,12 +189,12 @@ class SCFM_Import_Export {
      */
     private function validate_import_data( $data, $section ) {
         // Check required keys
-        if ( ! isset( $data['plugin'] ) || $data['plugin'] !== 'Smart Checkout Fields Manager' ) {
-            return new WP_Error( 'invalid_plugin', __( 'Invalid plugin identifier.', 'smart-checkout-fields-manager' ) );
+        if ( ! isset( $data['plugin'] ) || $data['plugin'] !== 'Fieldora Checkout for WooCommerce' ) {
+            return new WP_Error( 'invalid_plugin', __( 'Invalid plugin identifier.', 'fieldora-checkout-for-woo' ) );
         }
         
         if ( ! isset( $data['section'] ) ) {
-            return new WP_Error( 'missing_section', __( 'Section information missing.', 'smart-checkout-fields-manager' ) );
+            return new WP_Error( 'missing_section', __( 'Section information missing.', 'fieldora-checkout-for-woo' ) );
         }
         
         if ( $data['section'] !== $section ) {
@@ -202,7 +202,7 @@ class SCFM_Import_Export {
                 'section_mismatch',
                 sprintf(
                     /* translators: 1: imported section, 2: current section */
-                    __( 'Section mismatch. File contains %1$s fields, but you are importing to %2$s.', 'smart-checkout-fields-manager' ),
+                    __( 'Section mismatch. File contains %1$s fields, but you are importing to %2$s.', 'fieldora-checkout-for-woo' ),
                     $data['section'],
                     $section
                 )
@@ -210,11 +210,11 @@ class SCFM_Import_Export {
         }
         
         if ( ! isset( $data['fields'] ) || ! is_array( $data['fields'] ) ) {
-            return new WP_Error( 'invalid_fields', __( 'Invalid fields data.', 'smart-checkout-fields-manager' ) );
+            return new WP_Error( 'invalid_fields', __( 'Invalid fields data.', 'fieldora-checkout-for-woo' ) );
         }
         
         if ( empty( $data['fields'] ) ) {
-            return new WP_Error( 'empty_fields', __( 'No fields to import.', 'smart-checkout-fields-manager' ) );
+            return new WP_Error( 'empty_fields', __( 'No fields to import.', 'fieldora-checkout-for-woo' ) );
         }
         
         // Validate each field structure
@@ -224,7 +224,7 @@ class SCFM_Import_Export {
                     'invalid_field_structure',
                     sprintf(
                         /* translators: %s: field ID */
-                        __( 'Invalid field structure for field: %s', 'smart-checkout-fields-manager' ),
+                        __( 'Invalid field structure for field: %s', 'fieldora-checkout-for-woo' ),
                         $field_id
                     )
                 );
@@ -303,7 +303,7 @@ class SCFM_Import_Export {
     public function export_all_sections() {
         $export_data = array(
             'version'  => SCFM_VERSION,
-            'plugin'   => 'Smart Checkout Fields Manager',
+            'plugin'   => 'Fieldora Checkout for WooCommerce',
             'exported' => current_time( 'mysql' ),
             'sections' => array(),
         );

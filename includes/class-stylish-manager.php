@@ -39,7 +39,6 @@ class SCFM_Stylish_Manager {
      */
     private function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-        add_action( 'wp_head', array( $this, 'output_custom_styles' ), 999 );
         add_filter( 'body_class', array( $this, 'add_body_classes' ) );
     }
     
@@ -65,6 +64,28 @@ class SCFM_Stylish_Manager {
         if ( $font_family !== 'default' ) {
             $this->enqueue_google_font( $font_family );
         }
+        
+        // Add custom inline styles
+        $this->add_custom_inline_styles();
+    }
+    
+    /**
+     * Add custom inline styles based on settings.
+     */
+    private function add_custom_inline_styles() {
+        $options = get_option( 'scfm_stylish_options', array() );
+        $power_beautify = isset( $options['power_beautify'] ) && $options['power_beautify'];
+        
+        // If power beautify is enabled, use preset values
+        if ( $power_beautify ) {
+            $options = array_merge( $this->get_power_beautify_defaults(), $options );
+        }
+        
+        $css = $this->generate_custom_css( $options );
+        
+        if ( ! empty( $css ) ) {
+            wp_add_inline_style( 'scfm-stylish-frontend', wp_strip_all_tags( $css ) );
+        }
     }
     
     /**
@@ -84,29 +105,6 @@ class SCFM_Stylish_Manager {
         
         if ( isset( $font_urls[ $font ] ) ) {
             wp_enqueue_style( 'scfm-google-font-' . $font, $font_urls[ $font ], array(), SCFM_VERSION );
-        }
-    }
-    
-    /**
-     * Output custom inline styles based on settings.
-     */
-    public function output_custom_styles() {
-        if ( ! is_checkout() && ! is_account_page() ) {
-            return;
-        }
-        
-        $options = get_option( 'scfm_stylish_options', array() );
-        $power_beautify = isset( $options['power_beautify'] ) && $options['power_beautify'];
-        
-        // If power beautify is enabled, use preset values
-        if ( $power_beautify ) {
-            $options = array_merge( $this->get_power_beautify_defaults(), $options );
-        }
-        
-        $css = $this->generate_custom_css( $options );
-        
-        if ( ! empty( $css ) ) {
-            echo '<style id="scfm-stylish-custom">' . esc_html( wp_strip_all_tags( $css ) ) . '</style>';
         }
     }
     

@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall Smart Checkout Fields Manager
+ * Uninstall Fieldora Checkout for WooCommerce
  *
  * Removes all plugin data from the database when the plugin is deleted.
  *

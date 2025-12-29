@@ -1,4 +1,4 @@
-=== Smart Checkout Fields Manager ===
+=== Fieldora Checkout for WooCommerce ===
 Contributors: irmaiden
 Tags: woocommerce, checkout, fields, custom fields, checkout manager
 Requires at least: 5.8
@@ -6,7 +6,7 @@ Tested up to: 6.9
 Requires PHP: 7.4
 Requires WooCommerce: 6.0
 Tested WooCommerce: 9.5
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,9 +14,9 @@ Complete WooCommerce checkout customization. Add, edit, remove fields with 20+ t
 
 == Description ==
 
-🎯 **The Ultimate WooCommerce Checkout Fields Customization Plugin**
+🎯 **WooCommerce Checkout Fields Customization Plugin**
 
-Smart Checkout Fields Manager gives you complete control over your WooCommerce checkout. Add unlimited custom fields, edit default fields, rearrange with drag-and-drop, and choose from 20+ field types. Works seamlessly with both Classic and Block checkout!
+Fieldora Checkout for WooCommerce gives you complete control over your WooCommerce checkout. Add unlimited custom fields, edit default fields, rearrange with drag-and-drop, and choose from 20+ field types. Works with both Classic and Block checkout!
 
 = Key Features =
 
@@ -140,15 +140,14 @@ Powerful hooks for developers:
 * **Custom Products**: Collect personalization details, custom specifications
 * **Multi-Vendor**: Add vendor-specific information fields
 
-= Why Choose Smart Checkout Fields Manager? =
+= Why Choose Fieldora Checkout for WooCommerce? =
 
-✓ **Both Classic & Block Checkout** - The only plugin supporting both seamlessly
-✓ **20+ Field Types** - Most comprehensive field type selection
+✓ **Both Classic & Block Checkout** - Supports both checkout types
+✓ **20+ Field Types** - Wide selection of field types
 ✓ **Drag & Drop** - Intuitive interface for field management
 ✓ **No Coding Required** - User-friendly admin interface
 ✓ **Developer Friendly** - Extensive hooks and filters
 ✓ **Translation Ready** - Works in any language
-✓ **Free Forever** - Core features always free
 ✓ **Active Development** - Regular updates and improvements
 
 = Premium Features (Coming Soon) =
@@ -170,7 +169,7 @@ Powerful hooks for developers:
 
 1. Log in to your WordPress admin panel
 2. Navigate to Plugins → Add New
-3. Search for "Smart Checkout Fields Manager"
+3. Search for "Fieldora Checkout for WooCommerce"
 4. Click "Install Now" then "Activate"
 5. Go to WooCommerce → Checkout Fields to start customizing
 
@@ -196,7 +195,7 @@ Powerful hooks for developers:
 
 = Does this work with WooCommerce Block Checkout? =
 
-Yes! Smart Checkout Fields Manager supports both Classic Checkout (shortcode-based) and Block Checkout (Gutenberg blocks). Currently, 4 field types are compatible with Block Checkout: Text, Textarea, Checkbox, and Select. More block-compatible field types coming soon!
+Yes! Fieldora Checkout for WooCommerce supports both Classic Checkout (shortcode-based) and Block Checkout (Gutenberg blocks). Currently, 4 field types are compatible with Block Checkout: Text, Textarea, Checkbox, and Select. More block-compatible field types coming soon!
 
 = Can I edit default WooCommerce fields? =
 
@@ -254,7 +253,7 @@ Absolutely! The plugin provides extensive hooks:
 
 = Is it compatible with other plugins? =
 
-Smart Checkout Fields Manager is designed to work with:
+Fieldora Checkout for WooCommerce is designed to work with:
 * All WooCommerce themes
 * Popular page builders (Elementor, Divi, etc.)
 * Checkout optimization plugins
@@ -301,6 +300,17 @@ Default WooCommerce fields remain unaffected.
 9. Customer email - Custom fields included in order emails
 
 == Changelog ==
+
+= 1.1.1 (2025-12-29) =
+**Rebranding:**
+* Renamed plugin to "Fieldora Checkout for WooCommerce"
+* Updated text domain to "fieldora-checkout-for-woo"
+* Updated all promotional language per WordPress.org guidelines
+
+**Technical Improvements:**
+* Fixed inline scripts/styles - now properly enqueued via wp_add_inline_style/script
+* Fixed PHPCS nonce verification warnings
+* Updated folder and file naming to match new slug
 
 = 1.1.0 (2025-12-22) =
 **New Features:**

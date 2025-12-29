@@ -22,26 +22,26 @@ class SCFM_Field_Renderer {
      */
     public static function get_field_types() {
         return array(
-            'text'           => __( 'Text', 'smart-checkout-fields-manager' ),
-            'number'         => __( 'Number', 'smart-checkout-fields-manager' ),
-            'hidden'         => __( 'Hidden', 'smart-checkout-fields-manager' ),
-            'password'       => __( 'Password', 'smart-checkout-fields-manager' ),
-            'email'          => __( 'Email', 'smart-checkout-fields-manager' ),
-            'tel'            => __( 'Phone', 'smart-checkout-fields-manager' ),
-            'radio'          => __( 'Radio', 'smart-checkout-fields-manager' ),
-            'textarea'       => __( 'Textarea', 'smart-checkout-fields-manager' ),
-            'select'         => __( 'Select', 'smart-checkout-fields-manager' ),
-            'checkbox'       => __( 'Checkbox', 'smart-checkout-fields-manager' ),
-            'checkboxgroup'  => __( 'Checkbox Group', 'smart-checkout-fields-manager' ),
-            'datetime-local' => __( 'DateTime Local', 'smart-checkout-fields-manager' ),
-            'date'           => __( 'Date', 'smart-checkout-fields-manager' ),
-            'month'          => __( 'Month', 'smart-checkout-fields-manager' ),
-            'time'           => __( 'Time', 'smart-checkout-fields-manager' ),
-            'week'           => __( 'Week', 'smart-checkout-fields-manager' ),
-            'url'            => __( 'URL', 'smart-checkout-fields-manager' ),
-            'multiselect'    => __( 'Multi Select', 'smart-checkout-fields-manager' ),
-            'heading'        => __( 'Heading', 'smart-checkout-fields-manager' ),
-            'paragraph'      => __( 'Paragraph', 'smart-checkout-fields-manager' ),
+            'text'           => __( 'Text', 'fieldora-checkout-for-woo' ),
+            'number'         => __( 'Number', 'fieldora-checkout-for-woo' ),
+            'hidden'         => __( 'Hidden', 'fieldora-checkout-for-woo' ),
+            'password'       => __( 'Password', 'fieldora-checkout-for-woo' ),
+            'email'          => __( 'Email', 'fieldora-checkout-for-woo' ),
+            'tel'            => __( 'Phone', 'fieldora-checkout-for-woo' ),
+            'radio'          => __( 'Radio', 'fieldora-checkout-for-woo' ),
+            'textarea'       => __( 'Textarea', 'fieldora-checkout-for-woo' ),
+            'select'         => __( 'Select', 'fieldora-checkout-for-woo' ),
+            'checkbox'       => __( 'Checkbox', 'fieldora-checkout-for-woo' ),
+            'checkboxgroup'  => __( 'Checkbox Group', 'fieldora-checkout-for-woo' ),
+            'datetime-local' => __( 'DateTime Local', 'fieldora-checkout-for-woo' ),
+            'date'           => __( 'Date', 'fieldora-checkout-for-woo' ),
+            'month'          => __( 'Month', 'fieldora-checkout-for-woo' ),
+            'time'           => __( 'Time', 'fieldora-checkout-for-woo' ),
+            'week'           => __( 'Week', 'fieldora-checkout-for-woo' ),
+            'url'            => __( 'URL', 'fieldora-checkout-for-woo' ),
+            'multiselect'    => __( 'Multi Select', 'fieldora-checkout-for-woo' ),
+            'heading'        => __( 'Heading', 'fieldora-checkout-for-woo' ),
+            'paragraph'      => __( 'Paragraph', 'fieldora-checkout-for-woo' ),
         );
     }
     
@@ -116,7 +116,7 @@ class SCFM_Field_Renderer {
         $field  = '<p class="form-row ' . esc_attr( implode( ' ', $args['class'] ) ) . '" id="' . esc_attr( $key ) . '_field">';
         
         if ( $args['required'] ) {
-            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'smart-checkout-fields-manager' ) . '">*</abbr>';
+            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'fieldora-checkout-for-woo' ) . '">*</abbr>';
         }
         
         $field .= '<label>' . wp_kses_post( $args['label'] ) . '</label>';
@@ -153,7 +153,7 @@ class SCFM_Field_Renderer {
         $field  = '<p class="form-row ' . esc_attr( implode( ' ', $args['class'] ) ) . '" id="' . esc_attr( $key ) . '_field">';
         
         if ( $args['required'] ) {
-            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'smart-checkout-fields-manager' ) . '">*</abbr>';
+            $args['label'] .= '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'fieldora-checkout-for-woo' ) . '">*</abbr>';
         }
         
         $field .= '<label for="' . esc_attr( $key ) . '">' . wp_kses_post( $args['label'] ) . '</label>';

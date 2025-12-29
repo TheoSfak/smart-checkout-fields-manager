@@ -1,8 +1,26 @@
 # Changelog
 
-All notable changes to Smart Checkout Fields Manager will be documented in this file.
+All notable changes to Fieldora Checkout for WooCommerce will be documented in this file.
 
 ## [Unreleased]
+
+## [1.1.1] - 2025-12-29
+
+### Changed
+- **Rebranding**: Renamed plugin to "Fieldora Checkout for WooCommerce" per WordPress.org requirements
+- Updated text domain from `smart-checkout-fields-manager` to `fieldora-checkout-for-woo`
+- Updated plugin slug to `fieldora-checkout-for-woo`
+- Removed promotional language ("Ultimate", "Most comprehensive", "Free Forever") from readme
+
+### Fixed
+- Moved inline `<style>` and `<script>` tags to proper `wp_add_inline_style()` and `wp_add_inline_script()` functions
+- Fixed PHPCS nonce verification warnings in order meta handling
+- Updated all 298 text domain instances across 9 PHP files
+
+### Technical
+- Renamed main plugin file from `smart-checkout-fields-manager.php` to `fieldora-checkout-for-woo.php`
+- Renamed plugin folder from `smart-checkout-fields-manager` to `fieldora-checkout-for-woo`
+- All WordPress coding standards compliance issues resolved
 
 ## [1.1.0] - 2025-12-22
 

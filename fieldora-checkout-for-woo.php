@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: Smart Checkout Fields Manager
+ * Plugin Name: Fieldora Checkout for WooCommerce
  * Plugin URI: https://github.com/TheoSfak/smart-checkout-fields-manager
  * Description: Complete solution for customizing WooCommerce checkout fields. Add, edit, remove, and rearrange fields with 20+ field types. Compatible with Classic & Block checkout.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: irmaiden
  * Author URI: https://profiles.wordpress.org/irmaiden/
- * Text Domain: smart-checkout-fields-manager
+ * Text Domain: fieldora-checkout-for-woo
  * Domain Path: /languages
  * Requires at least: 5.8
  * Requires PHP: 7.4
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'SCFM_VERSION', '1.1.0' );
+define( 'SCFM_VERSION', '1.1.1' );
 define( 'SCFM_PLUGIN_FILE', __FILE__ );
 define( 'SCFM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SCFM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -113,8 +113,8 @@ class Smart_Checkout_Fields_Manager {
                 echo wp_kses_post(
                     sprintf(
                         /* translators: 1: plugin name, 2: WooCommerce link */
-                        __( '<strong>%1$s</strong> requires <a href="%2$s" target="_blank">WooCommerce</a> to be installed and activated.', 'smart-checkout-fields-manager' ),
-                        'Smart Checkout Fields Manager',
+                        __( '<strong>%1$s</strong> requires <a href="%2$s" target="_blank">WooCommerce</a> to be installed and activated.', 'fieldora-checkout-for-woo' ),
+                        'Fieldora Checkout for WooCommerce',
                         'https://wordpress.org/plugins/woocommerce/'
                     )
                 );

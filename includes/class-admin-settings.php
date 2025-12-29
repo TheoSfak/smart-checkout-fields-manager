@@ -55,7 +55,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $section = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : 'billing';
@@ -72,7 +72,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $section   = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
@@ -81,7 +81,7 @@ class SCFM_Admin_Settings {
         $field_data = isset( $_POST['field_data'] ) ? wp_unslash( $_POST['field_data'] ) : array();
         
         if ( empty( $section ) || empty( $field_data ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid field data.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid field data.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Sanitize field data
@@ -97,12 +97,12 @@ class SCFM_Admin_Settings {
         
         if ( $result ) {
             wp_send_json_success( array( 
-                'message' => __( 'Field saved successfully.', 'smart-checkout-fields-manager' ),
+                'message' => __( 'Field saved successfully.', 'fieldora-checkout-for-woo' ),
                 'field_id' => $field_id,
                 'field_data' => $sanitized_data
             ) );
         } else {
-            wp_send_json_error( array( 'message' => __( 'Failed to save field.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Failed to save field.', 'fieldora-checkout-for-woo' ) ) );
         }
     }
     
@@ -113,20 +113,20 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $section  = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         $field_id = isset( $_POST['field_id'] ) ? sanitize_key( $_POST['field_id'] ) : '';
         
         if ( empty( $section ) || empty( $field_id ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Check if it's a default WooCommerce field
         $field = SCFM_Field_Manager::get_field( $section, $field_id );
         if ( isset( $field['default_wc'] ) && $field['default_wc'] ) {
-            wp_send_json_error( array( 'message' => __( 'Cannot delete default WooCommerce fields.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Cannot delete default WooCommerce fields.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Delete field
@@ -134,9 +134,9 @@ class SCFM_Admin_Settings {
         
         if ( $result ) {
             do_action( 'scfm_field_deleted', $section, $field_id );
-            wp_send_json_success( array( 'message' => __( 'Field deleted successfully.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_success( array( 'message' => __( 'Field deleted successfully.', 'fieldora-checkout-for-woo' ) ) );
         } else {
-            wp_send_json_error( array( 'message' => __( 'Failed to delete field.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Failed to delete field.', 'fieldora-checkout-for-woo' ) ) );
         }
     }
     
@@ -147,7 +147,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $section  = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
@@ -155,13 +155,13 @@ class SCFM_Admin_Settings {
         $enabled  = isset( $_POST['enabled'] ) && $_POST['enabled'] === 'true';
         
         if ( empty( $section ) || empty( $field_id ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid field ID.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Get field
         $field = SCFM_Field_Manager::get_field( $section, $field_id );
         if ( ! $field ) {
-            wp_send_json_error( array( 'message' => __( 'Field not found.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Field not found.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Update enabled status
@@ -169,9 +169,9 @@ class SCFM_Admin_Settings {
         $result = SCFM_Field_Manager::save_field( $section, $field_id, $field );
         
         if ( $result ) {
-            wp_send_json_success( array( 'message' => __( 'Field status updated.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_success( array( 'message' => __( 'Field status updated.', 'fieldora-checkout-for-woo' ) ) );
         } else {
-            wp_send_json_error( array( 'message' => __( 'Failed to update field status.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Failed to update field status.', 'fieldora-checkout-for-woo' ) ) );
         }
     }
     
@@ -182,7 +182,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $section   = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
@@ -190,7 +190,7 @@ class SCFM_Admin_Settings {
         $positions = isset( $_POST['positions'] ) ? wp_unslash( $_POST['positions'] ) : array();
         
         if ( empty( $section ) || empty( $positions ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid position data.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid position data.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Get all fields including defaults
@@ -209,7 +209,7 @@ class SCFM_Admin_Settings {
             }
         }
         
-        wp_send_json_success( array( 'message' => __( 'Field positions updated.', 'smart-checkout-fields-manager' ) ) );
+        wp_send_json_success( array( 'message' => __( 'Field positions updated.', 'fieldora-checkout-for-woo' ) ) );
     }
     
     /**
@@ -219,22 +219,22 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         $section = isset( $_POST['section'] ) ? sanitize_key( $_POST['section'] ) : '';
         
         if ( empty( $section ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid section.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Invalid section.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // Reset fields
         $result = SCFM_Field_Manager::reset_fields( $section );
         
         if ( $result ) {
-            wp_send_json_success( array( 'message' => __( 'Fields reset to defaults successfully.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_success( array( 'message' => __( 'Fields reset to defaults successfully.', 'fieldora-checkout-for-woo' ) ) );
         } else {
-            wp_send_json_error( array( 'message' => __( 'Failed to reset fields.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Failed to reset fields.', 'fieldora-checkout-for-woo' ) ) );
         }
     }
     
@@ -327,7 +327,7 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized via sanitize_hex_color(), intval(), and sanitize_text_field() below
@@ -357,7 +357,7 @@ class SCFM_Admin_Settings {
         
         update_option( 'scfm_stylish_options', $sanitized_options );
         
-        wp_send_json_success( array( 'message' => __( 'Stylish settings saved successfully!', 'smart-checkout-fields-manager' ) ) );
+        wp_send_json_success( array( 'message' => __( 'Stylish settings saved successfully!', 'fieldora-checkout-for-woo' ) ) );
     }
     
     /**
@@ -367,11 +367,11 @@ class SCFM_Admin_Settings {
         check_ajax_referer( 'scfm_admin_nonce', 'nonce' );
         
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'smart-checkout-fields-manager' ) ) );
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'fieldora-checkout-for-woo' ) ) );
         }
         
         delete_option( 'scfm_stylish_options' );
         
-        wp_send_json_success( array( 'message' => __( 'Stylish settings reset to defaults.', 'smart-checkout-fields-manager' ) ) );
+        wp_send_json_success( array( 'message' => __( 'Stylish settings reset to defaults.', 'fieldora-checkout-for-woo' ) ) );
     }
 }
