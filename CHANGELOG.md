@@ -4,6 +4,12 @@ All notable changes to Fieldora Checkout for WooCommerce will be documented in t
 
 ## [Unreleased]
 
+## [1.1.3] - 2025-12-30
+
+### Fixed
+- PHPCS warnings in `uninstall.php` - renamed variables to use proper `scfm_` prefix
+- Added `phpcs:ignore` comment for unavoidable direct database query in multisite cleanup
+
 ## [1.1.2] - 2025-12-30
 
 ### Security

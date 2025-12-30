@@ -6,7 +6,7 @@ Tested up to: 6.9
 Requires PHP: 7.4
 Requires WooCommerce: 6.0
 Tested WooCommerce: 9.5
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -289,6 +289,11 @@ Default WooCommerce fields remain unaffected.
 9. Customer email - Custom fields included in order emails
 
 == Changelog ==
+
+= 1.1.3 (2025-12-30) =
+**Code Quality:**
+* Fixed PHPCS warnings in uninstall.php - added proper variable prefixes
+* Added phpcs:ignore comment for required direct database query in multisite cleanup
 
 = 1.1.2 (2025-12-30) =
 **WordPress.org Compliance Fixes:**
