@@ -3,7 +3,7 @@
  * Plugin Name: Fieldora Checkout for WooCommerce
  * Plugin URI: https://github.com/TheoSfak/smart-checkout-fields-manager
  * Description: Complete solution for customizing WooCommerce checkout fields. Add, edit, remove, and rearrange fields with 20+ field types.
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: irmaiden
  * Author URI: https://profiles.wordpress.org/irmaiden/
  * Text Domain: fieldora-checkout-for-woo
@@ -12,6 +12,7 @@
  * Requires PHP: 7.4
  * WC requires at least: 6.0
  * WC tested up to: 8.5
+ * Requires Plugins: woocommerce
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -22,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'SCFM_VERSION', '1.1.1' );
+define( 'SCFM_VERSION', '1.1.2' );
 define( 'SCFM_PLUGIN_FILE', __FILE__ );
 define( 'SCFM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SCFM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -31,19 +32,19 @@ define( 'SCFM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 /**
  * Main plugin class.
  */
-class Smart_Checkout_Fields_Manager {
+class SCFM_Checkout_Fields_Manager {
     
     /**
      * Single instance of the class.
      *
-     * @var Smart_Checkout_Fields_Manager
+     * @var SCFM_Checkout_Fields_Manager
      */
     private static $instance = null;
     
     /**
      * Get single instance of the class.
      *
-     * @return Smart_Checkout_Fields_Manager
+     * @return SCFM_Checkout_Fields_Manager
      */
     public static function instance() {
         if ( is_null( self::$instance ) ) {
@@ -220,12 +221,12 @@ class Smart_Checkout_Fields_Manager {
 }
 
 /**
- * Get main instance of Smart_Checkout_Fields_Manager.
+ * Get main instance of SCFM_Checkout_Fields_Manager.
  *
- * @return Smart_Checkout_Fields_Manager
+ * @return SCFM_Checkout_Fields_Manager
  */
 function SCFM() {
-    return Smart_Checkout_Fields_Manager::instance();
+    return SCFM_Checkout_Fields_Manager::instance();
 }
 
 // Initialize plugin.

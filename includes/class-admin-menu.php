@@ -974,12 +974,10 @@ class SCFM_Admin_Menu {
             $required_indicator = sanitize_text_field( wp_unslash( $_POST['scfm_required_indicator'] ?? '*' ) );
             $label_position = sanitize_text_field( wp_unslash( $_POST['scfm_label_position'] ?? 'above' ) );
             $error_position = sanitize_text_field( wp_unslash( $_POST['scfm_error_position'] ?? 'below' ) );
-            $custom_css = wp_strip_all_tags( wp_unslash( $_POST['scfm_custom_css'] ?? '' ) );
             
             update_option( 'scfm_required_indicator', $required_indicator );
             update_option( 'scfm_label_position', $label_position );
             update_option( 'scfm_error_position', $error_position );
-            update_option( 'scfm_custom_css', $custom_css );
             
             echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Settings saved successfully.', 'fieldora-checkout-for-woo' ) . '</p></div>';
         }
@@ -988,7 +986,6 @@ class SCFM_Admin_Menu {
         $required_indicator = get_option( 'scfm_required_indicator', '*' );
         $label_position = get_option( 'scfm_label_position', 'above' );
         $error_position = get_option( 'scfm_error_position', 'below' );
-        $custom_css = get_option( 'scfm_custom_css', '' );
         ?>
         <div class="scfm-settings-container">
             <h2><?php esc_html_e( 'General Settings', 'fieldora-checkout-for-woo' ); ?></h2>
@@ -1053,23 +1050,6 @@ class SCFM_Admin_Menu {
                             </select>
                             <p class="description">
                                 <?php esc_html_e( 'Choose where validation error messages appear.', 'fieldora-checkout-for-woo' ); ?>
-                            </p>
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <th scope="row">
-                            <label for="scfm_custom_css">
-                                <?php esc_html_e( 'Custom CSS', 'fieldora-checkout-for-woo' ); ?>
-                            </label>
-                        </th>
-                        <td>
-                            <textarea name="scfm_custom_css" 
-                                      id="scfm_custom_css" 
-                                      rows="10" 
-                                      class="large-text code"><?php echo esc_textarea( $custom_css ); ?></textarea>
-                            <p class="description">
-                                <?php esc_html_e( 'Add custom CSS styles for checkout fields. Do not include <style> tags.', 'fieldora-checkout-for-woo' ); ?>
                             </p>
                         </td>
                     </tr>

@@ -58,17 +58,11 @@ class SCFM_Checkout_Fields {
                 SCFM_VERSION
             );
             
-            // Add custom CSS from settings
-            $custom_css = get_option( 'scfm_custom_css', '' );
-            if ( ! empty( $custom_css ) ) {
-                wp_add_inline_style( 'scfm-frontend', $custom_css );
-            }
-            
             // Add label position styles
             $label_position = get_option( 'scfm_label_position', 'above' );
             $position_css = $this->get_label_position_css( $label_position );
             if ( ! empty( $position_css ) ) {
-                wp_add_inline_style( 'scfm-frontend', $position_css );
+                wp_add_inline_style( 'scfm-frontend', wp_strip_all_tags( $position_css ) );
             }
             
             // Enqueue frontend JavaScript

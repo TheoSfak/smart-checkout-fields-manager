@@ -20,7 +20,6 @@ delete_option( 'scfm_delete_data_on_uninstall' );
 delete_option( 'scfm_required_indicator' );
 delete_option( 'scfm_label_position' );
 delete_option( 'scfm_error_position' );
-delete_option( 'scfm_custom_css' );
 
 // For multisite
 if ( function_exists( 'is_multisite' ) && is_multisite() ) {
@@ -39,7 +38,6 @@ if ( function_exists( 'is_multisite' ) && is_multisite() ) {
         delete_option( 'scfm_required_indicator' );
         delete_option( 'scfm_label_position' );
         delete_option( 'scfm_error_position' );
-        delete_option( 'scfm_custom_css' );
     }
     
     switch_to_blog( $original_blog_id );

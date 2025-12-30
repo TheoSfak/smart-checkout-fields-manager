@@ -4,6 +4,22 @@ All notable changes to Fieldora Checkout for WooCommerce will be documented in t
 
 ## [Unreleased]
 
+## [1.1.2] - 2025-12-30
+
+### Security
+- Removed arbitrary custom CSS editor functionality (WordPress.org security requirement)
+- Added proper CSS escaping using `wp_strip_all_tags()` for all inline styles
+
+### Changed
+- Added "Requires Plugins: woocommerce" header for better dependency management
+- Renamed main class from `Smart_Checkout_Fields_Manager` to `SCFM_Checkout_Fields_Manager` for consistent naming
+- All plugin elements now use consistent `SCFM_` prefix per WordPress.org guidelines
+
+### Fixed
+- CSS escaping in `class-checkout-fields.php` - properly escaped before output
+- Verified CSS escaping in `class-stylish-manager.php`
+- Removed custom CSS functionality from admin settings
+
 ## [1.1.1] - 2025-12-29
 
 ### Changed

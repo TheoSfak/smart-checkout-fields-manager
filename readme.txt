@@ -6,7 +6,7 @@ Tested up to: 6.9
 Requires PHP: 7.4
 Requires WooCommerce: 6.0
 Tested WooCommerce: 9.5
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -289,6 +289,14 @@ Default WooCommerce fields remain unaffected.
 9. Customer email - Custom fields included in order emails
 
 == Changelog ==
+
+= 1.1.2 (2025-12-30) =
+**WordPress.org Compliance Fixes:**
+* Added "Requires Plugins: woocommerce" header for proper dependency management
+* Removed arbitrary custom CSS editor (security improvement)
+* Fixed CSS escaping - all inline styles now use wp_strip_all_tags()
+* Renamed main class from Smart_Checkout_Fields_Manager to SCFM_Checkout_Fields_Manager for consistent prefixing
+* All elements now use consistent SCFM_ prefix per WordPress.org guidelines
 
 = 1.1.1 (2025-12-29) =
 **Rebranding:**
